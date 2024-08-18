@@ -11,7 +11,7 @@
     <description>Core Task components for Codev Software (Net 8.0)</description>
     <copyright>Copyright 2024</copyright>
     <icon>images\Codev_Logo.png</icon>
-    <iconUrl>https://cdn.craftcode.com/content/_codevlogo.png</iconUrl>
+    <iconUrl>https://cdn.codev.net/content/_codevlogo.png</iconUrl>
     <dependencies>
       <group targetFramework="net8.0" />
     </dependencies>
