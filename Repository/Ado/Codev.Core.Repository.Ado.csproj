@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <AssemblyName>Codev.Core.Repository.Ado</AssemblyName>
+    <RootNamespace>Codev.Core.Repository.Ado</RootNamespace>
+    <Version>3.1.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.1.11" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+  </ItemGroup>
+
+</Project>

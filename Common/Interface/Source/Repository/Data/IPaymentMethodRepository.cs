@@ -1,0 +1,36 @@
+﻿//-----------------------------------------------------------------------------
+// <copyright file="IPaymentMethodRepository.cs" company="Codev Software, LLC">
+// Copyright © 2024
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace Codev.Core.Common.Interface
+{
+    using Codev.Core.Common.Base;
+    using Codev.Core.Common.Model;
+
+    ///------------------------------------------------------------------------
+    /// <summary>
+    /// This interface defines the payment method repository access.
+    /// </summary>
+    ///------------------------------------------------------------------------
+    public interface IPaymentMethodRepository : IRepository<PaymentMethodEntity>
+    {
+        #region Methods
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Return all payment methods for the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        EntityCollection<PaymentMethodEntity> GetAllByIdentity(
+            IdentityEntity identity);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Return payment method for the payment.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        PaymentMethodEntity GetByPayment(
+            PaymentEntity payment);
+        #endregion
+    }
+}

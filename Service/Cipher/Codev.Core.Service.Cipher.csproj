@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <AssemblyName>Codev.Core.Service.Cipher</AssemblyName>
+    <RootNamespace>Codev.Core.Service.Cipher</RootNamespace>
+    <Version>3.1.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Cipher\Dev</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Cipher\Test</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Stage|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Cipher\Stage</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Live|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Cipher\Live</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+    <ProjectReference Include="..\..\Provider\Cipher\Codev.Core.Provider.Cipher.csproj" />
+    <ProjectReference Include="..\Common\Codev.Core.Service.Common.csproj" />
+  </ItemGroup>
+
+</Project>

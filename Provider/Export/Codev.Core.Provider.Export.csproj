@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <AssemblyName>Codev.Core.Provider.Export</AssemblyName>
+    <RootNamespace>Codev.Core.Provider.Export</RootNamespace>
+    <Version>3.1.1</Version>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\WkHtmlToPdf\help-wkhtmltoimage.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\WkHtmlToPdf\help-wkhtmltopdf.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\WkHtmlToPdf\wkhtmltoimage.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\WkHtmlToPdf\wkhtmltopdf.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /icerky $(ProjectDir)bin\$(Configuration)\net8.0\Resources $(SolutionDir)Publish\bin\Export\$(Configuration)\net7.0\Resources" />
+  </Target>
+
+</Project>

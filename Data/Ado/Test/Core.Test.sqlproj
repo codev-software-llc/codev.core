@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Core.Test</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{a7e13183-48cf-44a0-b870-570d5794939e}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Codev.Core.Test</RootNamespace>
+    <AssemblyName>Core.Test</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultSchema>core</DefaultSchema>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Dev|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatTSqlWarningsAsErrors>True</TreatTSqlWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Live|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Stage|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Tables" />
+    <Folder Include="StoredProcedures" />
+    <Folder Include="Schemas" />
+    <Folder Include="Scripts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\MerchantCards.sql" />
+    <Build Include="Tables\MerchantTransactions.sql" />
+    <Build Include="Tables\MerchantSubscriptions.sql" />
+    <Build Include="Tables\MerchantPlans.sql" />
+    <Build Include="StoredProcedures\MerchantPlan_Add.sql" />
+    <Build Include="StoredProcedures\MerchantPlan_Delete.sql" />
+    <Build Include="StoredProcedures\MerchantPlan_GetAll.sql" />
+    <Build Include="StoredProcedures\MerchantPlan_GetById.sql" />
+    <Build Include="StoredProcedures\MerchantPlan_Purge.sql" />
+    <Build Include="StoredProcedures\MerchantPlan_Update.sql" />
+    <Build Include="Tables\MerchantCustomers.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_Add.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_Delete.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_GetAll.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_GetById.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_Purge.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_Update.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_Add.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_Delete.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_GetAll.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_GetById.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_Purge.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_Update.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_GetAllByPlanId.sql" />
+    <Build Include="StoredProcedures\MerchantSubscription_GetAllByCustomerId.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_GetBySubscriptionId.sql" />
+    <Build Include="StoredProcedures\MerchantPlan_GetBySubscriptionId.sql" />
+    <Build Include="StoredProcedures\MerchantCard_GetAllByCustomerId.sql" />
+    <Build Include="StoredProcedures\MerchantCustomer_GetByCardId.sql" />
+    <Build Include="Schemas\CoreSchema.sql" />
+    <Build Include="StoredProcedures\MerchantCard_Add.sql" />
+    <Build Include="StoredProcedures\MerchantCard_Delete.sql" />
+    <Build Include="StoredProcedures\MerchantCard_GetAll.sql" />
+    <Build Include="StoredProcedures\MerchantCard_GetById.sql" />
+    <Build Include="StoredProcedures\MerchantCard_GetByTransactionId.sql" />
+    <Build Include="StoredProcedures\MerchantCard_Purge.sql" />
+    <Build Include="StoredProcedures\MerchantCard_Update.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_Update.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_Purge.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_GetById.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_GetByAllByGroupId.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_GetByAllByCardId.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_GetAll.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_Delete.sql" />
+    <Build Include="StoredProcedures\MerchantTransaction_Add.sql" />
+    <PostDeploy Include="Scripts\PopulateTest.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Codev.Core.Test.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.Data.sqlproj">
+      <Name>Core.Data</Name>
+      <Project>{bc482886-14c9-4040-b301-55ae9a26b578}</Project>
+      <Private>True</Private>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+</Project>

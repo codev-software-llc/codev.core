@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <AssemblyName>Codev.Core.Provider.Cipher</AssemblyName>
+    <RootNamespace>Codev.Core.Provider.Cipher</RootNamespace>
+    <Version>3.1.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Dev</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Core.Data</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{bc482886-14c9-4040-b301-55ae9a26b578}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Codev.Core.Data</RootNamespace>
+    <AssemblyName>Codev.Core.Data</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultSchema>core</DefaultSchema>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Dev|AnyCPU' ">
+    <OutputPath>bin\Dev\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatTSqlWarningsAsErrors>True</TreatTSqlWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Live|AnyCPU' ">
+    <OutputPath>bin\Live\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Stage|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\Stage\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\Test\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="StoredProcedures" />
+    <Folder Include="Tables" />
+    <Folder Include="Users" />
+    <Folder Include="Scripts" />
+    <Folder Include="Schemas" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Blobs.sql" />
+    <Build Include="Tables\Settings.sql" />
+    <Build Include="StoredProcedures\Blob_Add.sql" />
+    <Build Include="StoredProcedures\Blob_Delete.sql" />
+    <Build Include="StoredProcedures\Blob_GetAll.sql" />
+    <Build Include="StoredProcedures\Blob_GetById.sql" />
+    <Build Include="StoredProcedures\Blob_Purge.sql" />
+    <Build Include="StoredProcedures\Blob_Update.sql" />
+    <Build Include="StoredProcedures\Blob_GetByName.sql" />
+    <Build Include="StoredProcedures\Blob_GetAllByPartialName.sql" />
+    <Build Include="Tables\Identities.sql" />
+    <Build Include="StoredProcedures\Identity_Add.sql" />
+    <Build Include="StoredProcedures\Identity_Delete.sql" />
+    <Build Include="StoredProcedures\Identity_GetAll.sql" />
+    <Build Include="StoredProcedures\Identity_GetById.sql" />
+    <Build Include="StoredProcedures\Identity_Purge.sql" />
+    <Build Include="StoredProcedures\Identity_Update.sql" />
+    <Build Include="Tables\ErrorLog.sql" />
+    <Build Include="StoredProcedures\ErrorLog_Add.sql" />
+    <Build Include="StoredProcedures\ErrorLog_Delete.sql" />
+    <Build Include="StoredProcedures\ErrorLog_GetAll.sql" />
+    <Build Include="StoredProcedures\ErrorLog_GetById.sql" />
+    <Build Include="StoredProcedures\ErrorLog_Purge.sql" />
+    <Build Include="StoredProcedures\ErrorLog_Update.sql" />
+    <Build Include="StoredProcedures\Setting_Add.sql" />
+    <Build Include="StoredProcedures\Setting_Delete.sql" />
+    <Build Include="StoredProcedures\Setting_GetAll.sql" />
+    <Build Include="StoredProcedures\Setting_Purge.sql" />
+    <Build Include="StoredProcedures\Setting_Update.sql" />
+    <Build Include="StoredProcedures\Setting_GetById.sql" />
+    <Build Include="StoredProcedures\ScheduledTask_Add.sql" />
+    <Build Include="StoredProcedures\ScheduledTask_Delete.sql" />
+    <Build Include="StoredProcedures\ScheduledTask_GetAll.sql" />
+    <Build Include="StoredProcedures\ScheduledTask_GetById.sql" />
+    <Build Include="StoredProcedures\ScheduledTask_GetAllByIdentityId.sql" />
+    <Build Include="StoredProcedures\ScheduledTask_Purge.sql" />
+    <Build Include="StoredProcedures\ScheduledTask_Update.sql" />
+    <Build Include="Tables\ScheduledTasks.sql" />
+    <Build Include="StoredProcedures\EnumType_Add.sql" />
+    <Build Include="StoredProcedures\EnumType_Delete.sql" />
+    <Build Include="StoredProcedures\EnumType_GetAll.sql" />
+    <Build Include="StoredProcedures\EnumType_GetById.sql" />
+    <Build Include="StoredProcedures\EnumType_Purge.sql" />
+    <Build Include="StoredProcedures\EnumType_Update.sql" />
+    <Build Include="Tables\EnumTypes.sql" />
+    <PostDeploy Include="Scripts\PopulateData.sql" />
+    <Build Include="StoredProcedures\Setting_GetByName.sql" />
+    <Build Include="StoredProcedures\ErrorLog_PurgeAll.sql" />
+    <Build Include="StoredProcedures\ErrorLog_GetAllByDateRange.sql" />
+    <Build Include="StoredProcedures\ErrorLog_GetStatistics.sql" />
+    <Build Include="StoredProcedures\License_Add.sql" />
+    <Build Include="StoredProcedures\License_Delete.sql" />
+    <Build Include="StoredProcedures\License_GetAll.sql" />
+    <Build Include="StoredProcedures\License_GetById.sql" />
+    <Build Include="StoredProcedures\License_Purge.sql" />
+    <Build Include="StoredProcedures\License_Update.sql" />
+    <Build Include="Tables\Licenses.sql" />
+    <Build Include="StoredProcedures\License_GetAllByApplication.sql" />
+    <Build Include="Tables\Sessions.sql" />
+    <Build Include="StoredProcedures\Session_Add.sql" />
+    <Build Include="StoredProcedures\Session_Delete.sql" />
+    <Build Include="StoredProcedures\Session_GetAll.sql" />
+    <Build Include="StoredProcedures\Session_GetById.sql" />
+    <Build Include="StoredProcedures\Session_Purge.sql" />
+    <Build Include="StoredProcedures\Session_Update.sql" />
+    <Build Include="StoredProcedures\Identity_GetBySessionId.sql" />
+    <Build Include="StoredProcedures\Session_PurgeAllExpired.sql" />
+    <Build Include="Tables\Destinations.sql" />
+    <Build Include="StoredProcedures\Destination_Add.sql" />
+    <Build Include="StoredProcedures\Destination_Delete.sql" />
+    <Build Include="StoredProcedures\Destination_GetAll.sql" />
+    <Build Include="StoredProcedures\Destination_GetById.sql" />
+    <Build Include="StoredProcedures\Destination_Purge.sql" />
+    <Build Include="StoredProcedures\Destination_Update.sql" />
+    <Build Include="StoredProcedures\Destination_GetAllByIdentityId.sql" />
+    <Build Include="StoredProcedures\Identity_GetByDestinationId.sql" />
+    <Build Include="Tables\ServiceLinks.sql" />
+    <Build Include="StoredProcedures\ServiceLink_Add.sql" />
+    <Build Include="StoredProcedures\ServiceLink_Delete.sql" />
+    <Build Include="StoredProcedures\ServiceLink_GetAll.sql" />
+    <Build Include="StoredProcedures\ServiceLink_GetById.sql" />
+    <Build Include="StoredProcedures\ServiceLink_Purge.sql" />
+    <Build Include="StoredProcedures\ServiceLink_Update.sql" />
+    <Build Include="StoredProcedures\ServiceLink_GetByTinyUrl.sql" />
+    <Build Include="StoredProcedures\ServiceLink_PurgeAllByIdentityId.sql" />
+    <Build Include="Users\CodevCoreUser.sql" />
+    <Build Include="StoredProcedures\Destination_GetByConfirmationSecret.sql" />
+    <Build Include="StoredProcedures\Destination_GetByAddress.sql" />
+    <Build Include="StoredProcedures\Session_GetAllByIdentityId.sql" />
+    <Build Include="StoredProcedures\Session_GetBySecret.sql" />
+    <Build Include="StoredProcedures\Identity_GetByErrorLogId.sql" />
+    <Build Include="StoredProcedures\Identity_GetByBlobId.sql" />
+    <Build Include="StoredProcedures\Identity_GetByLicenseId.sql" />
+    <Build Include="StoredProcedures\Identity_GetByServiceLinkId.sql" />
+    <Build Include="StoredProcedures\ServiceLink_GetAllByIdentityId.sql" />
+    <Build Include="StoredProcedures\Identity_GetByScheduledTaskId.sql" />
+    <Build Include="Tables\Payments.sql" />
+    <Build Include="Tables\PaymentMethods.sql" />
+    <Build Include="Tables\PaymentTransactions.sql" />
+    <Build Include="StoredProcedures\Payment_Add.sql" />
+    <Build Include="StoredProcedures\Payment_Delete.sql" />
+    <Build Include="StoredProcedures\Payment_GetAll.sql" />
+    <Build Include="StoredProcedures\Payment_GetAllByIdentityId.sql" />
+    <Build Include="StoredProcedures\Payment_GetById.sql" />
+    <Build Include="StoredProcedures\Payment_GetByPaymentTransactionId.sql" />
+    <Build Include="StoredProcedures\Payment_Purge.sql" />
+    <Build Include="StoredProcedures\Payment_Update.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_Add.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_Delete.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_GetAll.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_GetAllByIdentityId.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_GetById.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_GetByPaymentId.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_Purge.sql" />
+    <Build Include="StoredProcedures\PaymentMethod_Update.sql" />
+    <Build Include="StoredProcedures\PaymentTransaction_Add.sql" />
+    <Build Include="StoredProcedures\PaymentTransaction_Delete.sql" />
+    <Build Include="StoredProcedures\PaymentTransaction_GetAll.sql" />
+    <Build Include="StoredProcedures\PaymentTransaction_GetAllByPaymentId.sql" />
+    <Build Include="StoredProcedures\PaymentTransaction_GetById.sql" />
+    <Build Include="StoredProcedures\PaymentTransaction_Purge.sql" />
+    <Build Include="StoredProcedures\PaymentTransaction_Update.sql" />
+    <Build Include="Tables\Subscriptions.sql" />
+    <Build Include="StoredProcedures\Subscription_Add.sql" />
+    <Build Include="StoredProcedures\Subscription_Delete.sql" />
+    <Build Include="StoredProcedures\Subscription_GetAll.sql" />
+    <Build Include="StoredProcedures\Subscription_GetById.sql" />
+    <Build Include="StoredProcedures\Subscription_Purge.sql" />
+    <Build Include="StoredProcedures\Subscription_Update.sql" />
+    <Build Include="StoredProcedures\Subscription_GetLicenseStatistics.sql" />
+    <Build Include="StoredProcedures\Identity_GetBySubscriptionId.sql" />
+    <Build Include="StoredProcedures\License_GetBySubscriptionId.sql" />
+    <Build Include="StoredProcedures\Identity_GetByPaymentMethodId.sql" />
+    <Build Include="StoredProcedures\Subscription_GetAllByIdentityId.sql" />
+    <Build Include="StoredProcedures\Subscription_GetAllByLicenseId.sql" />
+    <Build Include="Tables\Communication.sql" />
+    <Build Include="StoredProcedures\Communication_Add.sql" />
+    <Build Include="StoredProcedures\Communication_Delete.sql" />
+    <Build Include="StoredProcedures\Communication_Purge.sql" />
+    <Build Include="StoredProcedures\Communication_Update.sql" />
+    <Build Include="StoredProcedures\Communication_GetAll.sql" />
+    <Build Include="StoredProcedures\Communication_GetById.sql" />
+    <Build Include="StoredProcedures\Blob_PurgeAllByIdentityId.sql" />
+    <Build Include="Schemas\CoreSchema.sql" />
+    <Build Include="Tables\BlobContents.sql" />
+    <Build Include="StoredProcedures\BlobContent_Add.sql" />
+    <Build Include="StoredProcedures\BlobContent_Delete.sql" />
+    <Build Include="StoredProcedures\BlobContent_GetAll.sql" />
+    <Build Include="StoredProcedures\BlobContent_GeAllByBlobId.sql" />
+    <Build Include="StoredProcedures\BlobContent_GetById.sql" />
+    <Build Include="StoredProcedures\BlobContent_Purge.sql" />
+    <Build Include="StoredProcedures\BlobContent_Update.sql" />
+    <Build Include="StoredProcedures\Blob_GetByBlobContentId.sql" />
+    <Build Include="StoredProcedures\BlobContent_GetCurrent.sql" />
+    <Build Include="StoredProcedures\BlobContent_SetCurrent.sql" />
+    <Build Include="StoredProcedures\Blob_CancelDrafts.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Codev.Core.Data.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+</Project>

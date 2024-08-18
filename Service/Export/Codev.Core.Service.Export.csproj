@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <AssemblyName>Codev.Core.Service.Export</AssemblyName>
+    <RootNamespace>Codev.Core.Service.Export</RootNamespace>
+    <Version>3.1.1</Version>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Export\Dev</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Export\Test</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Stage|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Export\Stage</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Live|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Export\Live</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+    <ProjectReference Include="..\..\Provider\Export\Codev.Core.Provider.Export.csproj" />
+    <ProjectReference Include="..\Common\Codev.Core.Service.Common.csproj" />
+  </ItemGroup>
+
+</Project>

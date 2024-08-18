@@ -1,0 +1,129 @@
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ScheduledTaskEntity.cs" company="Codev Software, LLC">
+// Copyright © 2024
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace Codev.Core.Common.Model
+{
+    using System;
+    using Codev.Core.Common.Base;
+    using NodaTime;
+
+    ///------------------------------------------------------------------------
+    /// <summary>
+    /// This entity is used to represent a background task item.
+    /// </summary>
+    ///------------------------------------------------------------------------
+    public class ScheduledTaskEntity : BaseEntity
+    {
+        #region Constructors
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Construct the entity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public ScheduledTaskEntity(
+            Instant instantNow) : base(instantNow)
+        {
+            this.Initialize();
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Construct the entity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public ScheduledTaskEntity(
+            BaseEntity baseEntity) : base(baseEntity)
+        {
+            this.Initialize();
+        }
+        #endregion
+
+        #region Properties (Base)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the entity flags.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public ScheduledTaskFlags Flags { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the time we should deal with the task.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Instant AttentionAt { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the task priority.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public ScheduledTaskPriorityType Priority { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the category for the task.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public String Category { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set type of the detail parameter.  Usually this is the type
+        /// name.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public String DetailType { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the task specific details.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public String Detail { get; set; }
+        #endregion
+
+        #region Properties (Reference)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public virtual IdentityEntity Identity
+        {
+            get
+            {
+                return this.LazyIdentity.Value;
+            }
+
+            set
+            {
+                this.LazyIdentity = new Lazy<IdentityEntity>(() => value);
+            }
+        }
+        #endregion
+
+        #region Properties (Lazy Loading)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the lazy loading reference for the identity entity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Lazy<IdentityEntity> LazyIdentity { get; set; }
+        #endregion
+
+        #region Methods (Private)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Initialize the entity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private void Initialize()
+        {
+            this.LazyIdentity = new Lazy<IdentityEntity>();
+        }
+        #endregion
+    }
+}

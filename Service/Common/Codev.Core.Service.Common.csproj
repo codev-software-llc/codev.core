@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <AssemblyName>Codev.Core.Service.Common</AssemblyName>
+    <RootNamespace>Codev.Core.Service.Common</RootNamespace>
+    <Version>3.1.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Common\Dev</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Common\Test</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Stage|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Common\Stage</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Live|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Common\Live</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+    <ProjectReference Include="..\..\Provider\Common\Codev.Core.Provider.Common.csproj" />
+    <ProjectReference Include="..\..\Provider\Secret\Codev.Core.Provider.Secret.csproj" />
+    <ProjectReference Include="..\..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
+  </ItemGroup>
+
+</Project>

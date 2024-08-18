@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <AssemblyName>Codev.Core.Service.Communication</AssemblyName>
+    <RootNamespace>Codev.Core.Service.Communication</RootNamespace>
+    <Version>3.1.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Communication\Dev</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Communication\Test</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Stage|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Communication\Stage</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Live|AnyCPU'">
+    <OutputPath>..\..\Publish\bin\Communication\Live</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+    <ProjectReference Include="..\..\Provider\Communication\Codev.Core.Provider.Communication.csproj" />
+    <ProjectReference Include="..\..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
+    <ProjectReference Include="..\Common\Codev.Core.Service.Common.csproj" />
+  </ItemGroup>
+
+</Project>

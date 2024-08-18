@@ -1,0 +1,22 @@
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ReportSize.cs" company="Codev Software, LLC">
+// Copyright © 2024
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace Codev.Core.Common.Model
+{
+    using System;
+
+    ///------------------------------------------------------------------------
+    /// <summary>
+    /// This contains the size of reports.
+    /// </summary>
+    ///------------------------------------------------------------------------
+    [Flags]
+    public enum ReportSize : int
+    {
+        Large  = 0,
+        Medium = 1,
+        Small  = 2
+    }
+}
