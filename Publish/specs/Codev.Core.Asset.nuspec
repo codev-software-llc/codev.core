@@ -11,12 +11,13 @@
     <description>Core Blob Assets components for Codev Software (Net 8.0)</description>
     <copyright>Copyright 2024</copyright>
     <icon>images\Codev_Logo.png</icon>
-    <iconUrl>https://cdn.codev.net/content/_codevlogo.png</iconUrl>
+    <readme>docs\readme.md</readme>
     <dependencies>
       <group targetFramework="net8.0" />
     </dependencies>
   </metadata>
   <files>
+    <file src="..\docs\readme.md" target="docs\" />
     <file src="..\images\Codev_Logo.png" target="images\" />
     <file src="..\bin\asset\dev\net8.0\*.dll" target="lib\net8.0" />
     <file src="..\bin\asset\dev\net8.0\*.pdb" target="lib\net8.0\symbols" />
