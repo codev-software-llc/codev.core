@@ -18,7 +18,7 @@ namespace Codev.Core.Provider.Banking.Memory
     /// This is the web api call for a connect.
     /// </summary>
     ///------------------------------------------------------------------------
-    public class FakeSubscriptionCustomerProvider : ISubscriptionCustomerProvider
+    public class MemorySubscriptionCustomerProvider : ISubscriptionCustomerProvider
     {
         #region Member Variables
         ///--------------------------------------------------------------------
@@ -35,7 +35,7 @@ namespace Codev.Core.Provider.Banking.Memory
         /// Instantiate the provider.
         /// </summary>
         ///--------------------------------------------------------------------
-        public FakeSubscriptionCustomerProvider()
+        public MemorySubscriptionCustomerProvider()
         {
             this.Customers = new Dictionary<Int32, MerchantCustomerEntity>();
         }

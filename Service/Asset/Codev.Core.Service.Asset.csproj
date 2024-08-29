@@ -12,14 +12,6 @@
     <OutputPath>..\..\Publish\bin\Asset\Dev</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|AnyCPU'">
-    <OutputPath>..\..\Publish\bin\Asset\Test</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Stage|AnyCPU'">
-    <OutputPath>..\..\Publish\bin\Asset\Stage</OutputPath>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Live|AnyCPU'">
     <OutputPath>..\..\Publish\bin\Asset\Live</OutputPath>
   </PropertyGroup>
