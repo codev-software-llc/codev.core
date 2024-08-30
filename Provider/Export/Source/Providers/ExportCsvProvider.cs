@@ -24,10 +24,8 @@ namespace Codev.Core.Provider
         /// Instantiate the object.
         /// </summary>
         ///---------------------------------------------------------------
-        public ExportCsvProvider(
-            String name)
+        public ExportCsvProvider()
         {
-            this.Name = name;
         }
         #endregion
 
@@ -37,7 +35,13 @@ namespace Codev.Core.Provider
         /// Return the name of the export provider.
         /// </summary>
         ///---------------------------------------------------------------
-        public String Name { get; private set; }
+        public String Format
+        {
+            get
+            {
+                return "csv";
+            }
+        }
         #endregion
 
         #region Methods

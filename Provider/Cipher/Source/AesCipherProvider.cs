@@ -20,6 +20,15 @@ namespace Codev.Core.Provider
     ///------------------------------------------------------------------------
     public sealed class AesCipherProvider : ICipherProvider
     {
+        #region Constants
+        /// -------------------------------------------------------------------
+        /// <summary>
+        /// Sets a default hash.
+        /// </summary>
+        /// -------------------------------------------------------------------
+        private const String DefaultHash = "bd76fa41-fdd9-4ec9-a740-65f5b9f05eaf";
+        #endregion
+
         #region Constructors
         /// -------------------------------------------------------------------
         /// <summary>
@@ -27,7 +36,7 @@ namespace Codev.Core.Provider
         /// </summary>
         /// -------------------------------------------------------------------
         public AesCipherProvider(
-            String keyHash)
+            String keyHash = DefaultHash)
         {
             this.Cipher = Aes.Create();
 

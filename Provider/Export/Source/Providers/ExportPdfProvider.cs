@@ -42,10 +42,8 @@ namespace Codev.Core.Provider
         /// Instantiate the object.
         /// </summary>
         ///---------------------------------------------------------------
-        public ExportPdfProvider(
-            String name)
+        public ExportPdfProvider()
         {
-            this.Name = name;
         }
         #endregion
 
@@ -55,7 +53,13 @@ namespace Codev.Core.Provider
         /// Return the name of the export provider.
         /// </summary>
         ///---------------------------------------------------------------
-        public String Name { get; private set; }
+        public String Format
+        {
+            get
+            {
+                return "pdf";
+            }
+        }
         #endregion
 
         #region Methods

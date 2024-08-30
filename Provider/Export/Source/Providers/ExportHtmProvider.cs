@@ -23,10 +23,8 @@ namespace Codev.Core.Provider
         /// Instantiate the object.
         /// </summary>
         ///---------------------------------------------------------------
-        public ExportHtmProvider(
-            String name)
+        public ExportHtmProvider()
         {
-            this.Name = name;
         }
         #endregion
 
@@ -36,7 +34,13 @@ namespace Codev.Core.Provider
         /// Get or set the name of the provider.
         /// </summary>
         ///---------------------------------------------------------------
-        public String Name { get; private set; }
+        public String Format
+        {
+            get
+            {
+                return "htm";
+            }
+        }
         #endregion
 
         #region Methods

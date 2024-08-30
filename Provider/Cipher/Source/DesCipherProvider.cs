@@ -20,6 +20,15 @@ namespace Codev.Core.Provider
     ///------------------------------------------------------------------------
     public sealed class DesCipherProvider : ICipherProvider
     {
+        #region Constants
+        /// -------------------------------------------------------------------
+        /// <summary>
+        /// Sets a default hash.
+        /// </summary>
+        /// -------------------------------------------------------------------
+        private const String DefaultHash = "e1c146b6-7ff5-4aa3-ae8d-2e328e8dcc26";
+        #endregion
+
         #region Constructors
         /// -------------------------------------------------------------------
         /// <summary>
@@ -27,7 +36,7 @@ namespace Codev.Core.Provider
         /// </summary>
         /// -------------------------------------------------------------------
         public DesCipherProvider(
-            String keyHash)
+            String keyHash = DefaultHash)
         {
             this.Cipher = DES.Create();
 

@@ -19,10 +19,10 @@ namespace Codev.Core.Common.Interface
         #region Properties
         ///---------------------------------------------------------------
         /// <summary>
-        /// Return the name of the export provider.
+        /// Return the format of the export provider (xml, htm, csv, txt).
         /// </summary>
         ///---------------------------------------------------------------
-        String Name { get; }
+        String Format { get; }
         #endregion
 
         #region Methods

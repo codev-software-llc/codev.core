@@ -11,7 +11,8 @@ namespace Codev.Core.Provider
 
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This implements the ICacheService interface for the cache.
+    /// This implements the ICacheService interface for a default cache.  This
+    /// is essentially a "No" cache implementation.
     /// </summary>
     ///------------------------------------------------------------------------
     public sealed class NoCacheProvider : ICacheProvider

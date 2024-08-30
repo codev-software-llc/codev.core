@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Source\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Resources\WkHtmlToPdf\help-wkhtmltoimage.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

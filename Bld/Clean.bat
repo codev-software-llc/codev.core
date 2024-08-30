@@ -105,6 +105,21 @@ for %%X IN (Asset,Banking,Cache,Cipher,Common,Communication,Export,Licensing,Tas
   )
 )
 
+for %%X IN (Infrastructure) DO (
+
+  @if EXIST "..\%%X" (
+    pushd ..\%%X
+
+    FOR %%Y IN (obj,bin) DO (
+      @if EXIST %%Y (
+        rd /s /q %%Y
+      )
+    )
+
+    popd
+  )
+)
+
 
 @rem ----------------------------------------------------------------
 @rem Restore the directory.

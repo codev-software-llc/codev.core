@@ -56,14 +56,16 @@ namespace Codev.Core.Service.Export
             DataTable source,
             String    format)
         {
-            IExportProvider exportProvider = this.ExportProviders.Where(x => String.Compare(format, x.Name, StringComparison.OrdinalIgnoreCase) == 0).FirstOrDefault();
+            IExportProvider exportProvider = this.ExportProviders.Where(x => String.Compare(format, x.Format, StringComparison.OrdinalIgnoreCase) == 0).FirstOrDefault();
 
             if (exportProvider != null)
             {
                 return exportProvider.Convert(source);
             }
-
-            return new Byte[] { };
+            else
+            {
+                throw new CoreProviderException(CoreErrorCode.DoesNotExist, "Format is not supported");
+            }
         }
 
         ///---------------------------------------------------------------
@@ -76,14 +78,16 @@ namespace Codev.Core.Service.Export
             String    format,
             String    styleSheet)
         {
-            IExportProvider exportProvider = this.ExportProviders.Where(x => String.Compare(format, x.Name, StringComparison.OrdinalIgnoreCase) == 0).FirstOrDefault();
+            IExportProvider exportProvider = this.ExportProviders.Where(x => String.Compare(format, x.Format, StringComparison.OrdinalIgnoreCase) == 0).FirstOrDefault();
 
             if (exportProvider != null)
             {
                 return exportProvider.Convert(source, styleSheet);
             }
-
-            return new Byte[] { };
+            else
+            {
+                throw new CoreProviderException(CoreErrorCode.DoesNotExist, "Format is not supported");
+            }
         }
         #endregion
     }
