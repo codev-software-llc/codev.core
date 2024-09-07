@@ -9,6 +9,7 @@ namespace Codev.Core.Service.Common
     using System.Collections.Generic;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>

@@ -10,6 +10,7 @@ namespace Codev.Core.Service.Common
     using System.Security.Cryptography.X509Certificates;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>

@@ -24,6 +24,16 @@ namespace Codev.Core.Common.Base
         public EntityCollection() : base(new EntityComparer<T>())
         {
         }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// This construct the collection.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public EntityCollection(
+            IEnumerable<T> enumerable) : base(enumerable, new EntityComparer<T>())
+        {
+        }
         #endregion
 
         #region Events

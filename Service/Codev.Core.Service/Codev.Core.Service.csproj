@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Dev;Live</Configurations>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\Interface\" />
+    <Folder Include="Source\Contract\" />
+    <Folder Include="Source\Implementation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+  </ItemGroup>
+
+</Project>

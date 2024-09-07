@@ -8,6 +8,7 @@ namespace Codev.Core.Service.Common
     using System;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
     using NodaTime;
 
     ///------------------------------------------------------------------------

@@ -95,6 +95,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Infrastructure", "Infrastructure\Codev.Core.Infrastructure.csproj", "{96189712-8FBA-42B0-B71D-018C16AEA175}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Service", "Service\Codev.Core.Service\Codev.Core.Service.csproj", "{6A9BB754-2907-438F-9CCB-EA1D992377F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Dev|Any CPU = Dev|Any CPU
@@ -225,6 +227,10 @@ Global
 		{96189712-8FBA-42B0-B71D-018C16AEA175}.Dev|Any CPU.Build.0 = Dev|Any CPU
 		{96189712-8FBA-42B0-B71D-018C16AEA175}.Live|Any CPU.ActiveCfg = Live|Any CPU
 		{96189712-8FBA-42B0-B71D-018C16AEA175}.Live|Any CPU.Build.0 = Live|Any CPU
+		{6A9BB754-2907-438F-9CCB-EA1D992377F4}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
+		{6A9BB754-2907-438F-9CCB-EA1D992377F4}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{6A9BB754-2907-438F-9CCB-EA1D992377F4}.Live|Any CPU.ActiveCfg = Live|Any CPU
+		{6A9BB754-2907-438F-9CCB-EA1D992377F4}.Live|Any CPU.Build.0 = Live|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -268,6 +274,7 @@ Global
 		{9BD38D3E-B3D9-4AF1-BA2E-946947491914} = {B5C9C95A-6613-4416-AD2B-D2DE263D2D25}
 		{5FCDE4D0-B954-462B-97F0-30E07FFDF2FC} = {B5C9C95A-6613-4416-AD2B-D2DE263D2D25}
 		{96189712-8FBA-42B0-B71D-018C16AEA175} = {587F527A-94B2-496E-815B-216028E17581}
+		{6A9BB754-2907-438F-9CCB-EA1D992377F4} = {EA64948B-2579-417B-8C5C-F12D01D1FB3D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5167CFC-6137-48BB-A6E6-2582271994D3}

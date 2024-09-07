@@ -8,6 +8,7 @@ namespace Codev.Core.Service.Asset
     using System;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>

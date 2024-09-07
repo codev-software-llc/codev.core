@@ -9,6 +9,7 @@ namespace Codev.Core.Service.Banking
     using System.Collections.Generic;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -90,10 +91,10 @@ namespace Codev.Core.Service.Banking
         /// </summary>
         ///--------------------------------------------------------------------
         Payment IPaymentService.Refund(
-            Reference<Identity>       identityReference,
-            Reference<PaymentMethod>  paymentMethodReference,
-            Reference<Payment>        paymentReference,
-            PaymentAmount             paymentAmount)
+            Reference<Identity>      identityReference,
+            Reference<PaymentMethod> paymentMethodReference,
+            Reference<Payment>       paymentReference,
+            PaymentAmount            paymentAmount)
         {
             try
             {

@@ -9,6 +9,7 @@ namespace Codev.Core.Service.Export
     using System.Data;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>

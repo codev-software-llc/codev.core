@@ -175,7 +175,7 @@ namespace Codev.Core.Repository.Sqlite
             }
             else
             {
-                using (IUnitOfWork localWork = new UnitOfWork(dataSource))
+                using (IUnitOfWork localWork = new UnitOfWorkSqlite(dataSource))
                 {
                     SqliteAccess.DoCall(localWork, commandType, commandText, setupCallback, workerCallback);
 

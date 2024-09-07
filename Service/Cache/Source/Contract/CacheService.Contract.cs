@@ -8,6 +8,7 @@ namespace Codev.Core.Service.Cache
     using System;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -25,7 +26,7 @@ namespace Codev.Core.Service.Cache
         /// </summary>
         ///---------------------------------------------------------------
         void ICacheService.Add<T>(
-            String    key,
+            String   key,
             T        item,
             Duration expiration)
         {

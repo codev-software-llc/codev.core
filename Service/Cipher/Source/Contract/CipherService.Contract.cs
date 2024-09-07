@@ -8,6 +8,7 @@ namespace Codev.Core.Service.Cipher
     using System;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
+    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
