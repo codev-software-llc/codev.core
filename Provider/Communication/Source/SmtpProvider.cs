@@ -10,7 +10,7 @@ namespace Codev.Core.Provider
     using System.Net;
     using System.Net.Mail;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
 
     ///------------------------------------------------------------------------

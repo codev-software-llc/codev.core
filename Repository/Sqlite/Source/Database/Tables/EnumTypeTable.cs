@@ -8,7 +8,7 @@ namespace Codev.Core.Repository.Sqlite
     using System;
     using System.Data;
     using System.Data.Common;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Microsoft.Data.Sqlite;
 
     ///------------------------------------------------------------------------

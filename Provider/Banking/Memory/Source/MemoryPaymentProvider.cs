@@ -7,7 +7,7 @@ namespace Codev.Core.Provider.Banking.Memory
 {
     using System;
     using Codev.Core.Model;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using NodaTime;
 
     ///------------------------------------------------------------------------

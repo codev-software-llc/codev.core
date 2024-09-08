@@ -7,7 +7,7 @@ namespace Codev.Core.Service.Export
 {
     using System;
     using System.Data;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
     /// <summary>

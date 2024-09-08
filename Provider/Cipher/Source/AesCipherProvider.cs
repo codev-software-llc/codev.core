@@ -10,7 +10,7 @@ namespace Codev.Core.Provider
     using System.Security.Cryptography;
     using System.Text;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
     /// <summary>

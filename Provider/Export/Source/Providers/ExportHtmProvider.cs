@@ -8,7 +8,7 @@ namespace Codev.Core.Provider
     using System;
     using System.Data;
     using System.Text;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
     /// <summary>

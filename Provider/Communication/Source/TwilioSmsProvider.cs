@@ -6,7 +6,7 @@
 namespace Codev.Core.Provider
 {
     using System;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
     using Twilio;
     using Twilio.Rest.Api.V2010.Account;

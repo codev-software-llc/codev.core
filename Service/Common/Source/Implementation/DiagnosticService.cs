@@ -11,7 +11,7 @@ namespace Codev.Core.Service.Common
     using System.Data.Common;
     using System.Linq;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
     using NodaTime;
 

@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Service.Common
 {
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using NodaTime;
 
     ///------------------------------------------------------------------------

@@ -9,7 +9,7 @@ namespace Codev.Core.Provider.Banking.Stripe
     using System.Linq;
     using System.Net;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
 
     ///------------------------------------------------------------------------

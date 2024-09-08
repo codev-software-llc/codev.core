@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Interface.csproj" />
     <ProjectReference Include="..\..\Provider\Communication\Codev.Core.Provider.Communication.csproj" />
   </ItemGroup>
 

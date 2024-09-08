@@ -6,7 +6,7 @@
 namespace Codev.Core.Provider.Banking.PayPal
 {
     using System;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
     using NodaTime;
 

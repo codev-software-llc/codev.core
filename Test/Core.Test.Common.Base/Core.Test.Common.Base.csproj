@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Base\Codev.Core.Base.csproj" />
-    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Interface.csproj" />
     <ProjectReference Include="..\..\Provider\Cipher\Codev.Core.Provider.Cipher.csproj" />
   </ItemGroup>
 

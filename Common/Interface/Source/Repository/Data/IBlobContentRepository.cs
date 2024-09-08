@@ -1,9 +1,9 @@
 ﻿//-----------------------------------------------------------------------------
-// <copyright file="IBlobConentRepository.cs" company="Codev Software, LLC">
+// <copyright file="IBlobContentRepository.cs" company="Codev Software, LLC">
 // Copyright © 2024
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Codev.Core.Common.Interface
+namespace Codev.Core.Interface
 {
     using Codev.Core.Base;
     using Codev.Core.Model;

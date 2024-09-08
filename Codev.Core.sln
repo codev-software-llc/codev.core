@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Base", "Common\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Model", "Common\Model\Codev.Core.Model.csproj", "{CB88D285-F07C-4A29-94DF-FE83AFA068CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Common.Interface", "Common\Interface\Codev.Core.Common.Interface.csproj", "{5C10AAF0-7973-4178-81B8-F9F1F632BBFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Interface", "Common\Interface\Codev.Core.Interface.csproj", "{5C10AAF0-7973-4178-81B8-F9F1F632BBFE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{13355FDE-E0D1-45C8-A794-B75253F56E66}"
 EndProject

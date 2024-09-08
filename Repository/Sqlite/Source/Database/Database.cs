@@ -12,7 +12,7 @@ namespace Codev.Core.Repository.Sqlite
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Microsoft.Data.Sqlite;
 
     ///------------------------------------------------------------------------

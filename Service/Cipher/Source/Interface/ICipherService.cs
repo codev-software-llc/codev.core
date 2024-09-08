@@ -6,7 +6,7 @@
 namespace Codev.Core.Service.Cipher
 {
     using System;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
     /// <summary>

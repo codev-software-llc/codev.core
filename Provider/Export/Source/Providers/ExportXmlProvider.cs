@@ -10,7 +10,7 @@ namespace Codev.Core.Provider
     using System.IO;
     using System.Text;
     using System.Xml;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
     /// <summary>

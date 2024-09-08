@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Infrastructure
 {
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Provider;
     using Codev.Core.Provider.Banking.Memory;
     using Codev.Core.Repository.Ado;

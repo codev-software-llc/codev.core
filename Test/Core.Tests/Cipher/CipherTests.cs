@@ -1,5 +1,5 @@
 using System;
-using Codev.Core.Common.Interface;
+using Codev.Core.Interface;
 using Codev.Core.Provider;
 using Codev.Core.Repository.Ado;
 using Codev.Core.Service.Cipher;

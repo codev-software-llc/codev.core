@@ -11,7 +11,7 @@ namespace Codev.Core.Provider
     using System.IO;
     using System.Reflection;
     using System.Text;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
     /// <summary>

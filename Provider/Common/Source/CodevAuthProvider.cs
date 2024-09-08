@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Provider
 {
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
     /// <summary>

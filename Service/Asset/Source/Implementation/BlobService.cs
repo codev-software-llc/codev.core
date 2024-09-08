@@ -7,7 +7,7 @@ namespace Codev.Core.Service.Asset
 {
     using System;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
     using Codev.Core.Service.Common;
     using NodaTime;

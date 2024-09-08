@@ -3,7 +3,7 @@
 // Copyright © 2024
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Codev.Core.Common.Interface
+namespace Codev.Core.Interface
 {
     using System;
     using NodaTime;

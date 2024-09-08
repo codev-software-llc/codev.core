@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Base\Codev.Core.Base.csproj" />
-    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
+    <ProjectReference Include="..\..\Common\Interface\Codev.Core.Interface.csproj" />
     <ProjectReference Include="..\..\Common\Model\Codev.Core.Model.csproj" />
     <ProjectReference Include="..\..\Provider\Export\Codev.Core.Provider.Export.csproj" />
     <ProjectReference Include="..\Common\Codev.Core.Service.Common.csproj" />

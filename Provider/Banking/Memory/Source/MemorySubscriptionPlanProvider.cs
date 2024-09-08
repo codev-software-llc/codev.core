@@ -10,7 +10,7 @@ namespace Codev.Core.Provider.Banking.Memory
     using System.Linq;
     using System.Threading;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
     using NodaTime;
 

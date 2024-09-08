@@ -11,7 +11,7 @@ namespace Codev.Core.Service.Common
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using NodaTime;
 
     ///------------------------------------------------------------------------

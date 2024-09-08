@@ -7,7 +7,7 @@ namespace Codev.Core.Provider.Banking.Stub
 {
     using System;
     using Codev.Core.Base;
-    using Codev.Core.Common.Interface;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
     using NodaTime;
 
