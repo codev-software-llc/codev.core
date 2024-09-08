@@ -7,9 +7,9 @@ namespace Codev.Core.Service.Communication
 {
     using System;
     using System.Collections.Generic;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
 
     /// -----------------------------------------------------------------------
     /// <summary>

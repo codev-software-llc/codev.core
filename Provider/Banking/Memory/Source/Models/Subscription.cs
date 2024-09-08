@@ -6,7 +6,7 @@
 namespace Codev.Core.Provider.Banking.Memory
 {
     using System;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
     /// <summary>

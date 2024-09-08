@@ -8,9 +8,9 @@ namespace Codev.Core.Repository.Sqlite
     using System;
     using System.Data;
     using System.Text.Json;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
     using NodaTime;
 
     ///------------------------------------------------------------------------

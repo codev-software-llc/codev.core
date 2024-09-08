@@ -6,7 +6,7 @@
 namespace Codev.Core.Common.Interface
 {
     using System;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
     /// <summary>

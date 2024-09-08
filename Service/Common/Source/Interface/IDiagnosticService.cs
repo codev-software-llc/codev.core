@@ -9,9 +9,9 @@ namespace Codev.Core.Service.Common
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
     using NodaTime;
 
     ///------------------------------------------------------------------------

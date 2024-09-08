@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D278C867-369E-433E-9E83-79FC87D117F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Common.Base", "Common\Base\Codev.Core.Common.Base.csproj", "{8039A090-CD44-4BE0-BEB2-116B448E43EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Base", "Common\Base\Codev.Core.Base.csproj", "{8039A090-CD44-4BE0-BEB2-116B448E43EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Common.Model", "Common\Model\Codev.Core.Common.Model.csproj", "{CB88D285-F07C-4A29-94DF-FE83AFA068CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Model", "Common\Model\Codev.Core.Model.csproj", "{CB88D285-F07C-4A29-94DF-FE83AFA068CD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Common.Interface", "Common\Interface\Codev.Core.Common.Interface.csproj", "{5C10AAF0-7973-4178-81B8-F9F1F632BBFE}"
 EndProject
@@ -98,6 +98,15 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codev.Core.Service", "Service\Codev.Core.Service\Codev.Core.Service.csproj", "{6A9BB754-2907-438F-9CCB-EA1D992377F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test.Service.Clock", "Test\Core.Test.Service.Clock\Core.Test.Service.Clock.csproj", "{1612827F-EF1A-461A-B95D-C3E5C389B387}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{00D1AA80-DE79-4B2A-8E0A-182DC08782CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{AB29C55A-0A70-4042-8662-11FD05193988}"
+	ProjectSection(SolutionItems) = preProject
+		Bld\Build.bat = Bld\Build.bat
+		Bld\BuildEnums.bat = Bld\BuildEnums.bat
+		Bld\Clean.bat = Bld\Clean.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -282,6 +291,7 @@ Global
 		{96189712-8FBA-42B0-B71D-018C16AEA175} = {587F527A-94B2-496E-815B-216028E17581}
 		{6A9BB754-2907-438F-9CCB-EA1D992377F4} = {EA64948B-2579-417B-8C5C-F12D01D1FB3D}
 		{1612827F-EF1A-461A-B95D-C3E5C389B387} = {B5C9C95A-6613-4416-AD2B-D2DE263D2D25}
+		{AB29C55A-0A70-4042-8662-11FD05193988} = {00D1AA80-DE79-4B2A-8E0A-182DC08782CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5167CFC-6137-48BB-A6E6-2582271994D3}

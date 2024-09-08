@@ -3,7 +3,7 @@
 // Copyright © 2024
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Codev.Core.Common.Model
+namespace Codev.Core.Model
 {
     using System;
     using System.Collections.Generic;

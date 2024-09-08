@@ -3,9 +3,9 @@
 // Copyright © 2024
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Codev.Core.Common.Model
+namespace Codev.Core.Model
 {
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
     /// <summary>

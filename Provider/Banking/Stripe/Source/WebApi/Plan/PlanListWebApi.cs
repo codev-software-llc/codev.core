@@ -7,7 +7,7 @@ namespace Codev.Core.Provider.Banking.Stripe
 {
     using System;
     using System.Threading.Tasks;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
     /// <summary>

@@ -6,7 +6,7 @@
 namespace Core.Test.Provider.Cipher
 {
     using System;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
     using Codev.Core.Provider;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

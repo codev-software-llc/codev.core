@@ -7,7 +7,7 @@ namespace Core.Test.Provider.Base
 {
     using System;
     using System.Text.Json;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NodaTime;
     using NodaTime.Serialization.SystemTextJson;

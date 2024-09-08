@@ -9,9 +9,9 @@ namespace Codev.Core.Provider.Banking.Memory
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
     using NodaTime;
 
     ///------------------------------------------------------------------------

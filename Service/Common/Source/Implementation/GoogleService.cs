@@ -10,7 +10,7 @@ namespace Codev.Core.Service.Common
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
     using NodaTime;
 

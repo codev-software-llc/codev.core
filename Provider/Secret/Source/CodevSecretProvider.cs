@@ -6,7 +6,7 @@
 namespace Codev.Core.Provider
 {
     using System;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
 
     ///------------------------------------------------------------------------

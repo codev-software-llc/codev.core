@@ -33,9 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Base.csproj" />
     <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
-    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Model.csproj" />
     <ProjectReference Include="..\..\Provider\Communication\Codev.Core.Provider.Communication.csproj" />
     <ProjectReference Include="..\..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
     <ProjectReference Include="..\Common\Codev.Core.Service.Common.csproj" />

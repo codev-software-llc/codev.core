@@ -33,9 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\..\Common\Base\Codev.Core.Base.csproj" />
     <ProjectReference Include="..\..\Common\Interface\Codev.Core.Common.Interface.csproj" />
-    <ProjectReference Include="..\..\Common\Model\Codev.Core.Common.Model.csproj" />
+    <ProjectReference Include="..\..\Common\Model\Codev.Core.Model.csproj" />
     <ProjectReference Include="..\..\Provider\Banking\Fake\Codev.Core.Provider.Banking.Fake.csproj" />
     <ProjectReference Include="..\..\Provider\Banking\Memory\Codev.Core.Provider.Banking.Memory.csproj" />
     <ProjectReference Include="..\..\Provider\Banking\PayPal\Codev.Core.Provider.Banking.PayPal.csproj" />

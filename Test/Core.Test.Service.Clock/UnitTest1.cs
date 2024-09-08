@@ -1,6 +1,6 @@
 namespace Core.Test.Service.Clock
 {
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
     using Codev.Core.Repository.Ado;
     using Codev.Core.Service.Common;

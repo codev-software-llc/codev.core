@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Base\Codev.Core.Common.Base.csproj" />
-    <ProjectReference Include="..\Model\Codev.Core.Common.Model.csproj" />
+    <ProjectReference Include="..\Base\Codev.Core.Base.csproj" />
+    <ProjectReference Include="..\Model\Codev.Core.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

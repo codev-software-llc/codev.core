@@ -3,14 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Configurations>Dev;Live</Configurations>
-    <AssemblyName>Codev.Core.Common.Model</AssemblyName>
-    <RootNamespace>Codev.Core.Common.Model</RootNamespace>
-    <Version>3.1.1</Version>
-    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Base\Codev.Core.Common.Base.csproj" />
+    <ProjectReference Include="..\Base\Codev.Core.Base.csproj" />
   </ItemGroup>
 
   <ItemGroup>

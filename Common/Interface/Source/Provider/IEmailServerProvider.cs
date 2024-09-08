@@ -7,7 +7,7 @@ namespace Codev.Core.Common.Interface
 {
     using System;
     using System.Collections.Generic;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
 
     /// -----------------------------------------------------------------------
     /// <summary>

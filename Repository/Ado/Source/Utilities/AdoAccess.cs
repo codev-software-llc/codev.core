@@ -11,7 +11,7 @@ namespace Codev.Core.Repository.Ado
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Threading;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
     /// <summary>

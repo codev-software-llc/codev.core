@@ -6,7 +6,7 @@
 namespace Codev.Core.Provider.Banking.Fake
 {
     using System;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
 
     ///------------------------------------------------------------------------
     /// <summary>

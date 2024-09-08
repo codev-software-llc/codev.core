@@ -7,8 +7,8 @@ namespace Codev.Core.Service.Banking
 {
     using System;
     using System.Collections.Generic;
-    using Codev.Core.Common.Base;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Base;
+    using Codev.Core.Model;
 
     ///------------------------------------------------------------------------
     /// <summary>

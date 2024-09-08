@@ -6,8 +6,8 @@
 namespace Codev.Core.Common.Interface
 {
     using System;
-    using Codev.Core.Common.Base;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Base;
+    using Codev.Core.Model;
     using NodaTime;
 
     ///------------------------------------------------------------------------

@@ -9,9 +9,9 @@ namespace Codev.Core.Provider
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Mail;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
 
     ///------------------------------------------------------------------------
     /// <summary>

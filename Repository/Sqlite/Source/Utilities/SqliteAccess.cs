@@ -9,7 +9,7 @@ namespace Codev.Core.Repository.Sqlite
     using System.Collections.Generic;
     using System.Data;
     using System.Threading;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Microsoft.Data.Sqlite;
 
     ///------------------------------------------------------------------------

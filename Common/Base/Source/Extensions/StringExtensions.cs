@@ -3,7 +3,7 @@
 // Copyright © 2024
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Codev.Core.Common.Base
+namespace Codev.Core.Base
 {
     using System;
 

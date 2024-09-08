@@ -7,9 +7,9 @@ namespace Codev.Core.Repository.Ado.Test
 {
     using System;
     using System.Data;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
     using NodaTime;
 
     ///------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 namespace Codev.Core.Common.Interface
 {
     using System;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
 
     ///------------------------------------------------------------------------
     /// <summary>

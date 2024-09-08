@@ -9,9 +9,9 @@ namespace Codev.Core.Service.Export
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
 
     ///------------------------------------------------------------------------
     /// <summary>

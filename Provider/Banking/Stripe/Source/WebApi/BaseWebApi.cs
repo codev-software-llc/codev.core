@@ -12,7 +12,7 @@ namespace Codev.Core.Provider.Banking.Stripe
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
     /// <summary>

@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Repository.Ado
 {
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
     using Codev.Core.Common.Interface;
 
     ///------------------------------------------------------------------------

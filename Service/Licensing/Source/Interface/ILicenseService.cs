@@ -8,7 +8,7 @@ namespace Codev.Core.Service.Licensing
     using System;
     using System.Collections.Generic;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
     using NodaTime;
 
     ///------------------------------------------------------------------------

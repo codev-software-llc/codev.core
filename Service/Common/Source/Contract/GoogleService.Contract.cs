@@ -8,8 +8,8 @@ namespace Codev.Core.Service.Common
     using System;
     using System.Collections.Generic;
     using System.Security.Cryptography.X509Certificates;
-    using Codev.Core.Common.Base;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Base;
+    using Codev.Core.Model;
 
     ///------------------------------------------------------------------------
     /// <summary>

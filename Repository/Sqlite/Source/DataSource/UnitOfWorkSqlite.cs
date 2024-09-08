@@ -10,7 +10,7 @@ namespace Codev.Core.Repository.Sqlite
     using System.Data;
     using System.Threading;
     using System.Transactions;
-    using Codev.Core.Common.Base;
+    using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
     /// <summary>

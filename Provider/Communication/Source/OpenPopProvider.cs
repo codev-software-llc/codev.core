@@ -8,7 +8,7 @@ namespace Codev.Core.Provider
     using System;
     using System.Collections.Generic;
     using Codev.Core.Common.Interface;
-    using Codev.Core.Common.Model;
+    using Codev.Core.Model;
 
     //using OpenPop.Mime;
     //using OpenPop.Pop3;

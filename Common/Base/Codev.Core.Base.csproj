@@ -3,10 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Configurations>Dev;Live</Configurations>
-    <AssemblyName>Codev.Core.Common.Base</AssemblyName>
-    <RootNamespace>Codev.Core.Common.Base</RootNamespace>
-    <Version>3.1.1</Version>
-    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
