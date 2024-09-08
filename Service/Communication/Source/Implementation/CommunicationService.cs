@@ -29,12 +29,12 @@ namespace Codev.Core.Service.Communication
         /// </summary>
         ///--------------------------------------------------------------------
         public CommunicationService(
-            ICoreDataSource          dataSource,
+            ICoreUnitOfWork          unitOfWork,
             ICommunicationRepository communicationRepository,
             IEmailClientProvider     emailClientProvider,
             ISmsClientProvider       smsClientProvider,
             IEmailServerProvider     emailServerProvider,
-            IClockService            clockService) : base(dataSource)
+            IClockService            clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<ICommunicationRepository>("communicationRepository", communicationRepository);
             Validation.ValidateParameter<ISmsClientProvider>      ("smsClientProvider"      , smsClientProvider      );

@@ -26,8 +26,8 @@ namespace Codev.Core.Service.Cache
         /// </summary>
         ///---------------------------------------------------------------
         public CacheService(
-            ICoreDataSource dataSource,
-            ICacheProvider  cacheProvider) : base(dataSource)
+            ICoreUnitOfWork unitOfWork,
+            ICacheProvider  cacheProvider) : base(unitOfWork)
         {
             Validation.ValidateParameter<ICacheProvider>("cacheProvider", cacheProvider);
 

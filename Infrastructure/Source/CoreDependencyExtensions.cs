@@ -5,10 +5,8 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Infrastructure
 {
-    using System;
     using Codev.Core.Common.Interface;
     using Codev.Core.Provider;
-    using Codev.Core.Provider.Banking.Fake;
     using Codev.Core.Provider.Banking.Memory;
     using Codev.Core.Repository.Ado;
     using Codev.Core.Service.Asset;
@@ -40,6 +38,8 @@ namespace Codev.Core.Infrastructure
         public static IServiceCollection AddCoreInfrastructure(
             this IServiceCollection services)
         {
+            services.AddSingleton<ICoreUnitOfWork, CoreUnitOfWork>();
+
             // Add the repositories.
             //
             services.AddSingleton<IBlobRepository              , BlobRepository>();

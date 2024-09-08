@@ -9,7 +9,6 @@ namespace Codev.Core.Service.Export
     using System.Data;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -37,11 +36,11 @@ namespace Codev.Core.Service.Export
 
                 Byte[] value = new Byte[] { };
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     value = this.Convert(source, format);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return value;
@@ -83,11 +82,11 @@ namespace Codev.Core.Service.Export
 
                 Byte[] value = new Byte[] { };
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     value = this.Convert(source, format, styleSheet);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return value;

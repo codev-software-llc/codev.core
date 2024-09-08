@@ -28,8 +28,8 @@ namespace Codev.Core.Service.Common
         /// </summary>
         ///---------------------------------------------------------------
         public GoogleService(
-            ICoreDataSource dataSource,
-            IClockService   clockService) : base(dataSource)
+            ICoreUnitOfWork unitOfWork,
+            IClockService   clockService) : base(unitOfWork)
         {
             this.ClockService = clockService;
         }

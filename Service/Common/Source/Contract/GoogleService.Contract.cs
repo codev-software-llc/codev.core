@@ -10,7 +10,6 @@ namespace Codev.Core.Service.Common
     using System.Security.Cryptography.X509Certificates;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -40,11 +39,11 @@ namespace Codev.Core.Service.Common
 
                 String token = String.Empty;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     token = this.CreateToken(impersonatedUser, serviceAccount, certificate, claims);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return token;

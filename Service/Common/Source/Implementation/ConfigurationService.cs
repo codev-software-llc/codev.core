@@ -27,10 +27,10 @@ namespace Codev.Core.Service.Common
         /// </summary>
         ///---------------------------------------------------------------
         public ConfigurationService(
-            ICoreDataSource     dataSource,
+            ICoreUnitOfWork     unitOfWork,
             ISettingRepository  settingRepository,
             IEnumTypeRepository enumTypeRepository,
-            IClockService       clockService) : base(dataSource)
+            IClockService       clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<ISettingRepository> ("settingRepository" , settingRepository );
             Validation.ValidateParameter<IEnumTypeRepository>("enumTypeRepository", enumTypeRepository);

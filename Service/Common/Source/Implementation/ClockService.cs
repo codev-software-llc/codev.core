@@ -34,8 +34,8 @@ namespace Codev.Core.Service.Common
         /// </summary>
         ///---------------------------------------------------------------
         public ClockService(
-            ICoreDataSource    dataSource,
-            ISettingRepository settingRepository) : base(dataSource)
+            ICoreUnitOfWork    unitOfWork,
+            ISettingRepository settingRepository) : base(unitOfWork)
         {
             Validation.ValidateParameter<ISettingRepository>("settingRepository", settingRepository);
 

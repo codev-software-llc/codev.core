@@ -9,7 +9,6 @@ namespace Codev.Core.Service.Banking
     using System.Collections.Generic;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -40,7 +39,7 @@ namespace Codev.Core.Service.Banking
 
                 Payment receipt = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -62,7 +61,7 @@ namespace Codev.Core.Service.Banking
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return receipt;
@@ -105,7 +104,7 @@ namespace Codev.Core.Service.Banking
 
                 Payment receipt = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -127,7 +126,7 @@ namespace Codev.Core.Service.Banking
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return receipt;
@@ -167,7 +166,7 @@ namespace Codev.Core.Service.Banking
 
                 PaymentMethod paymentMethod = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -180,7 +179,7 @@ namespace Codev.Core.Service.Banking
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return paymentMethod;
@@ -217,7 +216,7 @@ namespace Codev.Core.Service.Banking
             {
                 Validation.ValidateParameter<Reference<PaymentMethod>>("paymentMethodReference", paymentMethodReference);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
 
@@ -230,7 +229,7 @@ namespace Codev.Core.Service.Banking
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -265,7 +264,7 @@ namespace Codev.Core.Service.Banking
 
                 PaymentMethod paymentMethod = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
 
@@ -278,7 +277,7 @@ namespace Codev.Core.Service.Banking
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return paymentMethod;
@@ -315,7 +314,7 @@ namespace Codev.Core.Service.Banking
 
                 List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -328,7 +327,7 @@ namespace Codev.Core.Service.Banking
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return paymentMethods;
@@ -363,7 +362,7 @@ namespace Codev.Core.Service.Banking
             {
                 Validation.ValidateParameter<Reference<PaymentMethod>>("paymentMethodReference", paymentMethodReference);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
 
@@ -376,7 +375,7 @@ namespace Codev.Core.Service.Banking
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -414,7 +413,7 @@ namespace Codev.Core.Service.Banking
 
                 Boolean isValid = false;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -428,7 +427,7 @@ namespace Codev.Core.Service.Banking
 
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return isValid;

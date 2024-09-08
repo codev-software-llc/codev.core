@@ -8,7 +8,6 @@ namespace Codev.Core.Service.Cache
     using System;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -36,11 +35,11 @@ namespace Codev.Core.Service.Cache
                 Validation.ValidateParameter<T>       ("item"          , item      );
                 Validation.ValidateParameter<Duration>("expirationDate", expiration);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Add<T>(key, item, expiration);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -73,11 +72,11 @@ namespace Codev.Core.Service.Cache
             {
                 Validation.ValidateParameter<String>("key", key);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Delete<T>(key);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -107,11 +106,11 @@ namespace Codev.Core.Service.Cache
         {
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Flush();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -146,11 +145,11 @@ namespace Codev.Core.Service.Cache
 
                 T value = default(T);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     value = this.Get<T>(key);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return value;
@@ -187,11 +186,11 @@ namespace Codev.Core.Service.Cache
                 Validation.ValidateParameter<String>("key" , key );
                 Validation.ValidateParameter<T>     ("item", item);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Update<T>(key, item);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)

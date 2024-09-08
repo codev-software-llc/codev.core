@@ -8,7 +8,6 @@ namespace Codev.Core.Service.Common
     using System;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -30,11 +29,11 @@ namespace Codev.Core.Service.Common
             {
                 Instant instant;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     instant = this.GetCurrentInstant();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return instant;
@@ -67,11 +66,11 @@ namespace Codev.Core.Service.Common
 
                 LocalDateTime localDateTime;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     localDateTime = this.GetLocalDateTime(dtz);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return localDateTime;
@@ -105,11 +104,11 @@ namespace Codev.Core.Service.Common
             {
                 DateTimeZone dtz;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     dtz = this.GetDefaultTimeZone();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return dtz;
@@ -144,11 +143,11 @@ namespace Codev.Core.Service.Common
             {
                 Validation.ValidateParameter<Duration>("timeAdvance", timeAdvance);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Advance(timeAdvance);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -178,11 +177,11 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Reset();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)

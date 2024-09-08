@@ -28,8 +28,8 @@ namespace Codev.Core.Service.Export
         /// </summary>
         ///---------------------------------------------------------------
         public ExportService(
-            ICoreDataSource              dataSource,
-            IEnumerable<IExportProvider> exportProviders) : base(dataSource)
+            ICoreUnitOfWork              unitOfWork,
+            IEnumerable<IExportProvider> exportProviders) : base(unitOfWork)
         {
             Validation.ValidateParameter<IEnumerable<IExportProvider>>("exportProviders", exportProviders);
 

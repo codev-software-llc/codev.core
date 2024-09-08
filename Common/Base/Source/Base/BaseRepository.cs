@@ -10,7 +10,7 @@ namespace Codev.Core.Common.Base
 
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This is a base class for storing common information across repositories.
+    /// This is a base class for all repositories.
     /// </summary>
     ///------------------------------------------------------------------------
     public class BaseRepository

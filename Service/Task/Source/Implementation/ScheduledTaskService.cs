@@ -28,10 +28,10 @@ namespace Codev.Core.Service.Task
         /// </summary>
         ///---------------------------------------------------------------
         public ScheduledTaskService(
-            ICoreDataSource          dataSource,
+            ICoreUnitOfWork          unitOfWork,
             IIdentityRepository      identityRepository,
             IScheduledTaskRepository taskRepository,
-            IClockService            clockService) : base(dataSource)
+            IClockService            clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<IIdentityRepository>     ("identityRepository", identityRepository);
             Validation.ValidateParameter<IScheduledTaskRepository>("taskRepository"    , taskRepository    );

@@ -26,11 +26,11 @@ namespace Codev.Core.Service.Asset
         /// </summary>
         ///---------------------------------------------------------------
         public BlobService(
-            ICoreDataSource        dataSource,
+            ICoreUnitOfWork        unitOfWork,
             IIdentityRepository    identityRepository,
             IBlobRepository        blobRepository,
             IBlobContentRepository blobContentRepository,
-            IClockService          clockService) : base(dataSource)
+            IClockService          clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<IIdentityRepository>   ("identityRepository", identityRepository   );
             Validation.ValidateParameter<IBlobRepository>       ("blobRepository"    , blobRepository       );

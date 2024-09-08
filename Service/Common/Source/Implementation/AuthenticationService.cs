@@ -11,7 +11,6 @@ namespace Codev.Core.Service.Common
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Interface;
     using Codev.Core.Common.Model;
-    using Microsoft.VisualBasic;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -59,12 +58,12 @@ namespace Codev.Core.Service.Common
         /// </summary>
         ///---------------------------------------------------------------
         public AuthenticationService(
-            ICoreDataSource        dataSource,
+            ICoreUnitOfWork        unitOfWork,
             ISecretProvider        secretProvider,
             IIdentityRepository    identityRepository,
             IDestinationRepository destinationRepository,
             ISessionRepository     sessionRepository,
-            IClockService          clockService) : base(dataSource)
+            IClockService          clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<ISecretProvider>("secretProvider", secretProvider);
 

@@ -9,7 +9,6 @@ namespace Codev.Core.Service.Communication
     using System.Collections.Generic;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -42,11 +41,11 @@ namespace Codev.Core.Service.Communication
                 name        = Validation.ValidateDefault<String>("name"       , name       , String.Empty);
                 comments    = Validation.ValidateDefault<String>("comments"   , comments   , String.Empty);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Receive(application, category, subcategory, name, emailAddress, comments);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -78,11 +77,11 @@ namespace Codev.Core.Service.Communication
             {
                 List<Message> communications = new List<Message>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     communications = this.GetUnprocessed();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return communications;
@@ -116,11 +115,11 @@ namespace Codev.Core.Service.Communication
             {
                 List<String> types = new List<String>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     types = this.GetCommunicationTypes();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return types;
@@ -155,11 +154,11 @@ namespace Codev.Core.Service.Communication
             {
                 Validation.ValidateParameter<Message>("communication", communication);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.SetProcessed(communication);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -192,11 +191,11 @@ namespace Codev.Core.Service.Communication
             {
                 Validation.ValidateParameter<SmtpMessage>("emailMessage", emailMessage);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Send(emailMessage);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -229,11 +228,11 @@ namespace Codev.Core.Service.Communication
             {
                 Validation.ValidateParameter<SmsMessage>("smsMessage", smsMessage);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Send(smsMessage);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -269,11 +268,11 @@ namespace Codev.Core.Service.Communication
 
                 List<PopMessage> messages = new List<PopMessage>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     messages = this.GetBouncedMessages(deleteAfterFetch, senderAddressFilter);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return messages;

@@ -13,11 +13,9 @@ namespace Core.Tests
         [TestMethod]
         public void Test_Aes()
         {
-            ICoreDataSource ds = new CoreDataSource("local", "Codev.Core", "CodevCoreUser", "C0d3vC0r3", "core", "core", 10, 30, 30, false, false);
-
             ICipherProvider provider = new AesCipherProvider("test");
 
-            ICipherService service = new CipherService(ds, provider);
+            ICipherService service = new CipherService(provider);
 
             String encrypted = service.EncryptString("I Am A String");
 
@@ -27,11 +25,9 @@ namespace Core.Tests
         [TestMethod]
         public void Test_Des()
         {
-            ICoreDataSource ds = new CoreDataSource("local", "Codev.Core", "CodevCoreUser", "C0d3vC0r3", "core", "core", 10, 30, 30, false, false);
-
             ICipherProvider provider = new DesCipherProvider("test");
 
-            ICipherService service = new CipherService(ds, provider);
+            ICipherService service = new CipherService(provider);
 
             String encrypted = service.EncryptString("I Am A String");
 

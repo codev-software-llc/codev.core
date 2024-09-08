@@ -7,7 +7,7 @@ namespace Codev.Core.Common.Base
 {
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This is a base class for the service.
+    /// This is a base class for all services.
     /// </summary>
     ///------------------------------------------------------------------------
     public class BaseService
@@ -19,19 +19,19 @@ namespace Codev.Core.Common.Base
         /// </summary>
         ///--------------------------------------------------------------------
         protected BaseService(
-            IDataSource dataSource)
+            IUnitOfWork unitOfWork)
         {
-            this.DataSource = dataSource;
+            this.UnitOfWork = unitOfWork;
         }
         #endregion
 
         #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Get or set the data source for the service.
+        /// Get or set the unit of work wrapper around the datasource.
         /// </summary>
         ///--------------------------------------------------------------------
-        protected IDataSource DataSource { get; private set; }
+        protected IUnitOfWork UnitOfWork { get; private set; }
         #endregion
     }
 }

@@ -9,7 +9,6 @@ namespace Codev.Core.Service.Common
     using System.Collections.Generic;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -38,7 +37,7 @@ namespace Codev.Core.Service.Common
 
                 Destination destination = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -60,7 +59,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return destination;
@@ -95,11 +94,11 @@ namespace Codev.Core.Service.Common
             {
                 Validation.ValidateParameter<Instant>("instant", instant);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.ClearSessions(instant);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -134,7 +133,7 @@ namespace Codev.Core.Service.Common
 
                 Destination destination = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
@@ -147,7 +146,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return destination;
@@ -188,7 +187,7 @@ namespace Codev.Core.Service.Common
 
                 Session session = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
@@ -201,7 +200,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return session;
@@ -238,7 +237,7 @@ namespace Codev.Core.Service.Common
 
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(destinationAddress, DestinationType.Any);
 
@@ -251,7 +250,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -288,7 +287,7 @@ namespace Codev.Core.Service.Common
 
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -301,7 +300,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -338,7 +337,7 @@ namespace Codev.Core.Service.Common
 
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
@@ -351,7 +350,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -388,11 +387,11 @@ namespace Codev.Core.Service.Common
 
                 Identity identity = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     identity = this.GetIdentityByConfirmationSecret(confirmationSecret);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return identity;
@@ -429,7 +428,7 @@ namespace Codev.Core.Service.Common
 
                 List<Destination> destinations = new List<Destination>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -442,7 +441,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return destinations;
@@ -479,7 +478,7 @@ namespace Codev.Core.Service.Common
 
                 Identity identity = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     SessionEntity sessionEntity = this.SessionRepository.GetBySessionSecret(sessionSecret);
 
@@ -492,7 +491,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Session does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return identity;
@@ -534,7 +533,7 @@ namespace Codev.Core.Service.Common
 
                 Destination destination = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(address, destinationType);
 
@@ -547,7 +546,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return destination;
@@ -583,7 +582,7 @@ namespace Codev.Core.Service.Common
             {
                 Validation.ValidateParameter<String>("sessionSecret", sessionSecret);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     SessionEntity sessionEntity = this.SessionRepository.GetBySessionSecret(sessionSecret);
 
@@ -592,7 +591,7 @@ namespace Codev.Core.Service.Common
                         this.Logout(sessionEntity, logoutAll);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -629,11 +628,11 @@ namespace Codev.Core.Service.Common
 
                 Destination destination = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     destination = this.Register(emailAddress, expiration);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return destination;
@@ -668,7 +667,7 @@ namespace Codev.Core.Service.Common
             {
                 Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
@@ -681,7 +680,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -714,7 +713,7 @@ namespace Codev.Core.Service.Common
             {
                 Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -729,7 +728,8 @@ namespace Codev.Core.Service.Common
                         // existent entity as being removed.
                         //
                     }
-                    work.Commit();
+
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -762,7 +762,7 @@ namespace Codev.Core.Service.Common
             {
                 Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
@@ -775,7 +775,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -810,7 +810,7 @@ namespace Codev.Core.Service.Common
                 Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
                 Validation.ValidateParameter<DateTimeZone>       ("timeZone"         , timeZone         );
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -823,7 +823,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)

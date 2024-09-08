@@ -8,7 +8,6 @@ namespace Codev.Core.Service.Cipher
     using System;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -30,16 +29,7 @@ namespace Codev.Core.Service.Cipher
             {
                 Validation.ValidateParameter<String>("clearText", clearText);
 
-                String value = String.Empty;
-
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
-                {
-                    value = this.EncryptString(clearText);
-
-                    work.Commit();
-                }
-
-                return value;
+                return this.EncryptString(clearText);
             }
             catch (CoreDataException cde)
             {
@@ -71,16 +61,7 @@ namespace Codev.Core.Service.Cipher
             {
                 Validation.ValidateParameter<String>("encryptedText", encryptedText);
 
-                String value = String.Empty;
-
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
-                {
-                    value = this.DecryptString(encryptedText);
-
-                    work.Commit();
-                }
-
-                return value;
+                return this.DecryptString(encryptedText);
             }
             catch (CoreDataException cde)
             {

@@ -16,7 +16,7 @@ namespace Codev.Core.Service.Cipher
     /// type functionality.
     /// </summary>
     ///------------------------------------------------------------------------
-    public sealed partial class CipherService : BaseService, ICipherService
+    public sealed partial class CipherService : ICipherService
     {
         #region Constructors
         /// -------------------------------------------------------------------
@@ -25,8 +25,7 @@ namespace Codev.Core.Service.Cipher
         /// </summary>
         /// -------------------------------------------------------------------
         public CipherService(
-            ICoreDataSource dataSource,
-            ICipherProvider cipherProvider) : base(dataSource)
+            ICipherProvider cipherProvider)
         {
             Validation.ValidateParameter<ICipherProvider>("cipherProvider", cipherProvider);
 

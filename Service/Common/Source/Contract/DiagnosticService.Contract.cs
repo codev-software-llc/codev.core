@@ -11,7 +11,6 @@ namespace Codev.Core.Service.Common
     using System.Data.Common;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -42,7 +41,7 @@ namespace Codev.Core.Service.Common
 
                 tag = Validation.ValidateDefault<String>("tag", tag, String.Empty);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -55,7 +54,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -94,7 +93,7 @@ namespace Codev.Core.Service.Common
 
                 tag = Validation.ValidateDefault<String>("tag", tag, String.Empty);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -107,7 +106,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -147,7 +146,7 @@ namespace Codev.Core.Service.Common
 
                 tag = Validation.ValidateDefault<String>("tag", tag, String.Empty);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity;
 
@@ -165,7 +164,7 @@ namespace Codev.Core.Service.Common
                         this.LogException(identityEntity, componentType, tag, exception);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -195,11 +194,11 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.BeginProfiling();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -229,11 +228,11 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.EndProfiling();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -265,11 +264,11 @@ namespace Codev.Core.Service.Common
             {
                 String results = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     results = this.RenderProfileResults();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return results;
@@ -306,11 +305,11 @@ namespace Codev.Core.Service.Common
 
                 IDbConnection connection = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     connection = this.ProfileConnection(connectionString);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return connection;
@@ -349,11 +348,11 @@ namespace Codev.Core.Service.Common
 
                 DbDataReader profileReader = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     profileReader = this.ProfileReader(connection, reader);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return profileReader;
@@ -388,7 +387,7 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     List<ErrorLog> entries = new List<ErrorLog>();
 
@@ -403,7 +402,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
 
                     return entries;
                 }
@@ -438,7 +437,7 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     List<ErrorLog> entries = new List<ErrorLog>();
 
@@ -453,7 +452,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
 
                     return entries;
                 }

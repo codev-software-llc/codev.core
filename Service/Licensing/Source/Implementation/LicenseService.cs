@@ -29,12 +29,12 @@ namespace Codev.Core.Service.Licensing
         /// </summary>
         ///---------------------------------------------------------------
         public LicenseService(
-            ICoreDataSource           dataSource,
+            ICoreUnitOfWork           unitOfWork,
             IIdentityRepository       identityRepository,
             ILicenseRepository        licenseRepository,
             ISubscriptionRepository   subscriptionRepository,
             ISubscriptionPlanProvider subscriptionPlanProvider,
-            IClockService             clockService) : base(dataSource)
+            IClockService             clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<IIdentityRepository>      ("identityRepository"    , identityRepository      );
             Validation.ValidateParameter<ILicenseRepository>       ("licenseRepository"     , licenseRepository       );

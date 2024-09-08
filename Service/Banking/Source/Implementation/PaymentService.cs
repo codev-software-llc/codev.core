@@ -28,12 +28,12 @@ namespace Codev.Core.Service.Banking
         /// </summary>
         ///---------------------------------------------------------------
         public PaymentService(
-            ICoreDataSource               dataSource,
+            ICoreUnitOfWork               unitOfWork,
             IIdentityRepository           identityRepository,
             IPaymentMethodRepository      paymentMethodRepository,
             IPaymentProvider              paymentProvider,
             ISubscriptionCustomerProvider customerProvider,
-            IClockService                 clockService) : base(dataSource)
+            IClockService                 clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<IIdentityRepository>          ("identityRepository"     , identityRepository     );
             Validation.ValidateParameter<IPaymentMethodRepository>     ("paymentMethodRepository", paymentMethodRepository);

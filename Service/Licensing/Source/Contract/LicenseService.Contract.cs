@@ -9,7 +9,6 @@ namespace Codev.Core.Service.Licensing
     using System.Collections.Generic;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -48,11 +47,11 @@ namespace Codev.Core.Service.Licensing
 
                 License license = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     license = this.Create(identity, applicationName, name, cost, interval, intervalCount, trialDays, features);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return license;
@@ -87,11 +86,11 @@ namespace Codev.Core.Service.Licensing
             {
                 Validation.ValidateParameter<License>("license", license);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Delete(license);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -126,11 +125,11 @@ namespace Codev.Core.Service.Licensing
 
                 List<License> licenses = new List<License>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     licenses = this.GetAll(applicationName);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return licenses;
@@ -167,11 +166,11 @@ namespace Codev.Core.Service.Licensing
 
                 License license = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     license = this.Get(id);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return license;
@@ -211,11 +210,11 @@ namespace Codev.Core.Service.Licensing
 
                 features = Validation.ValidateDefault<List<LicenseFeature>>("features", features, new List<LicenseFeature>());
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Update(license, name, features);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -254,11 +253,11 @@ namespace Codev.Core.Service.Licensing
 
                 Subscription subscription = null;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     subscription = this.Subscribe(license, identity, dateExpiration);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return subscription;
@@ -293,11 +292,11 @@ namespace Codev.Core.Service.Licensing
             {
                 Validation.ValidateParameter<Subscription> ("subscription" , subscription);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.Unsubscribe(subscription);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -332,11 +331,11 @@ namespace Codev.Core.Service.Licensing
 
                 List<Subscription> subscriptions = new List<Subscription>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     subscriptions = this.GetSubscriptions(identity);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return subscriptions;
@@ -373,11 +372,11 @@ namespace Codev.Core.Service.Licensing
 
                 List<Subscription> subscriptions = new List<Subscription>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     subscriptions = this.GetSubscriptions(license);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return subscriptions;

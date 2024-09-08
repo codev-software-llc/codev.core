@@ -29,10 +29,10 @@ namespace Codev.Core.Service.Common
         /// </summary>
         /// -------------------------------------------------------------------
         public DiagnosticService(
-            ICoreDataSource     dataSource,
+            ICoreUnitOfWork     unitOfWork,
             IIdentityRepository identityRepository,
             IErrorLogRepository errorLogRepository,
-            IClockService       clockService) : base(dataSource)
+            IClockService       clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<IIdentityRepository>("identityRepository", identityRepository);
             Validation.ValidateParameter<IErrorLogRepository>("errorLogRepository", errorLogRepository);

@@ -28,10 +28,10 @@ namespace Codev.Core.Service.Communication
         /// </summary>
         ///---------------------------------------------------------------
         public ServiceLinkService(
-            ICoreDataSource        dataSource,
+            ICoreUnitOfWork        unitOfWork,
             IIdentityRepository    identityRepository,
             IServiceLinkRepository serviceLinkRepository,
-            IClockService          clockService) : base(dataSource)
+            IClockService          clockService) : base(unitOfWork)
         {
             Validation.ValidateParameter<IIdentityRepository>   ("identityRepository"   , identityRepository   );
             Validation.ValidateParameter<IServiceLinkRepository>("serviceLinkRepository", serviceLinkRepository);

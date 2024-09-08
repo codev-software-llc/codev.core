@@ -9,7 +9,6 @@ namespace Codev.Core.Service.Common
     using System.Collections.Generic;
     using Codev.Core.Common.Base;
     using Codev.Core.Common.Model;
-    using Codev.Core.Repository.Ado;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -30,11 +29,11 @@ namespace Codev.Core.Service.Common
             {
                 String version = String.Empty;
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     version = this.GetVersion();
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return version;
@@ -71,11 +70,11 @@ namespace Codev.Core.Service.Common
                 Validation.ValidateParameter<String>("settingName" , settingName );
                 Validation.ValidateParameter<T>     ("settingValue", settingValue);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     this.SetValue<T>(settingName, settingValue);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -110,11 +109,11 @@ namespace Codev.Core.Service.Common
 
                 T settingValue = default(T);
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     settingValue = this.GetValue<T>(settingName);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return settingValue;
@@ -151,11 +150,11 @@ namespace Codev.Core.Service.Common
 
                 List<EnumType> enumTypes = new List<EnumType>();
 
-                using (IUnitOfWork work = new UnitOfWork(this.DataSource))
+                using (this.UnitOfWork.Begin())
                 {
                     enumTypes = this.GetAllEnumTypes(applicationName);
 
-                    work.Commit();
+                    this.UnitOfWork.Commit();
                 }
 
                 return enumTypes;
