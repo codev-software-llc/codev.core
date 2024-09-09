@@ -29,11 +29,11 @@ namespace Codev.Core.Service.Common
             {
                 String version = String.Empty;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     version = this.GetVersion();
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return version;
@@ -70,11 +70,11 @@ namespace Codev.Core.Service.Common
                 Validation.ValidateParameter<String>("settingName" , settingName );
                 Validation.ValidateParameter<T>     ("settingValue", settingValue);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.SetValue<T>(settingName, settingValue);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -109,11 +109,11 @@ namespace Codev.Core.Service.Common
 
                 T settingValue = default(T);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     settingValue = this.GetValue<T>(settingName);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return settingValue;
@@ -150,11 +150,11 @@ namespace Codev.Core.Service.Common
 
                 List<EnumType> enumTypes = new List<EnumType>();
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     enumTypes = this.GetAllEnumTypes(applicationName);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return enumTypes;

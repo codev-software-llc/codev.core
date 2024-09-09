@@ -6,9 +6,8 @@
 namespace Codev.Core.Service.Common
 {
     using System;
-    using Codev.Core.Base;
-    using Codev.Core.Interface;
     using Codev.Core.Model;
+    using Microsoft.Extensions.Caching.Memory;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -16,7 +15,7 @@ namespace Codev.Core.Service.Common
     /// This implements the IClockService interface for clock manipulation.
     /// </summary>
     ///------------------------------------------------------------------------
-    public sealed partial class ClockService : BaseService, IClockService
+    public sealed partial class ClockService : IClockService
     {
         #region Constants
         ///--------------------------------------------------------------------
@@ -24,7 +23,7 @@ namespace Codev.Core.Service.Common
         /// Defines the name we use to lookup the setting with.
         /// </summary>
         ///--------------------------------------------------------------------
-        private const String TimeHopHoursName = "TimeHopHours";
+        private const String TimeHopHoursName = "ClockService_Duration";
         #endregion
 
         #region Constructors
@@ -34,22 +33,21 @@ namespace Codev.Core.Service.Common
         /// </summary>
         ///---------------------------------------------------------------
         public ClockService(
-            ICoreUnitOfWork    unitOfWork,
-            ISettingRepository settingRepository) : base(unitOfWork)
+            IMemoryCache memoryCache)
         {
-            Validation.ValidateParameter<ISettingRepository>("settingRepository", settingRepository);
+            Validation.ValidateParameter<IMemoryCache>("memoryCache", memoryCache);
 
-            this.SettingRepository = settingRepository;
+            this.Cache = memoryCache;
         }
         #endregion
 
         #region Properties
         ///---------------------------------------------------------------
         /// <summary>
-        /// Get or set the setting repository.
+        /// Get or set the memory cache.
         /// </summary>
         ///---------------------------------------------------------------
-        private ISettingRepository SettingRepository { get; set; }
+        private IMemoryCache Cache { get; set; }
         #endregion
 
         #region Methods
@@ -62,35 +60,49 @@ namespace Codev.Core.Service.Common
         {
             Instant instantNow = SystemClock.Instance.GetCurrentInstant();
 
-            DateTimeZone dtz = NodaTime.DateTimeZoneProviders.Tzdb.GetSystemDefault();
+            // Get the advances to apply to current instance.
+            //
+            Duration duration = this.Cache.Get<Duration>(TimeHopHoursName);
 
-            LocalDateTime ldt = instantNow.ToLocalDateTime(dtz);
-
-            Duration milliseconds = Duration.FromMilliseconds(ldt.Millisecond);
-
-            SettingEntity entity = this.SettingRepository.GetByName(TimeHopHoursName);
-
-            if (entity != null)
+            if (duration != null)
             {
-                Int32 seconds = Convert.ToInt32(entity.Value);
-
-                Duration duration = Duration.FromSeconds(seconds);
-
                 instantNow = instantNow.Plus(duration);
             }
-            else
-            {
-                entity = new SettingEntity(instantNow)
-                    {
-                        Flags = SettingFlags.None,
-                        Name  = TimeHopHoursName,
-                        Value = "0"
-                    };
 
-                this.SettingRepository.Add(entity);
-            }
+            return instantNow;
 
-            return instantNow.Minus(milliseconds);
+
+            //Instant instantNow = SystemClock.Instance.GetCurrentInstant();
+            //
+            //DateTimeZone dtz = NodaTime.DateTimeZoneProviders.Tzdb.GetSystemDefault();
+            //
+            //LocalDateTime ldt = instantNow.ToLocalDateTime(dtz);
+            //
+            //Duration milliseconds = Duration.FromMilliseconds(ldt.Millisecond);
+            //
+            //SettingEntity entity = this.SettingRepository.GetByName(TimeHopHoursName);
+            //
+            //if (entity != null)
+            //{
+            //    Int32 seconds = Convert.ToInt32(entity.Value);
+            //
+            //    Duration duration = Duration.FromSeconds(seconds);
+            //
+            //    instantNow = instantNow.Plus(duration);
+            //}
+            //else
+            //{
+            //    entity = new SettingEntity(instantNow)
+            //        {
+            //            Flags = SettingFlags.None,
+            //            Name  = TimeHopHoursName,
+            //            Value = "0"
+            //        };
+            //
+            //    this.SettingRepository.Add(entity);
+            //}
+            //
+            //return instantNow.Minus(milliseconds);
         }
 
         ///--------------------------------------------------------------------
@@ -101,30 +113,22 @@ namespace Codev.Core.Service.Common
         public LocalDateTime GetLocalDateTime(
             DateTimeZone dtz)
         {
+            // Get the current time.
+            //
             Instant instantNow = SystemClock.Instance.GetCurrentInstant();
 
-            SettingEntity entity = this.SettingRepository.GetByName(TimeHopHoursName);
+            // Get any advances that we need to apply to the current
+            // time.
+            //
+            Duration duration = this.Cache.Get<Duration>(TimeHopHoursName);
 
-            if (entity != null)
+            if (duration != null)
             {
-                Int32 seconds = Convert.ToInt32(entity.Value);
-
-                Duration duration = Duration.FromSeconds(seconds);
-
                 instantNow = instantNow.Plus(duration);
             }
-            else
-            {
-                entity = new SettingEntity(instantNow)
-                    {
-                        Flags = SettingFlags.None,
-                        Name  = TimeHopHoursName,
-                        Value = "0"
-                    };
 
-                this.SettingRepository.Add(entity);
-            }
-
+            // Return the time.
+            //
             ZonedDateTime zdt = instantNow.InZone(dtz);
 
             return zdt.LocalDateTime;
@@ -137,7 +141,7 @@ namespace Codev.Core.Service.Common
         ///--------------------------------------------------------------------
         public DateTimeZone GetDefaultTimeZone()
         {
-            return NodaTime.DateTimeZone.Utc;
+            return DateTimeZone.Utc;
         }
 
         ///--------------------------------------------------------------------
@@ -148,23 +152,19 @@ namespace Codev.Core.Service.Common
         public void Advance(
             Duration timeAdvance)
         {
-            SettingEntity entity = this.SettingRepository.GetByName(TimeHopHoursName);
+            // Get the current advance setting.
+            //
+            Duration duration = this.Cache.Get<Duration>(TimeHopHoursName);
 
-            if (entity != null)
+            if (duration != null)
             {
-                Int32 currentSeconds = Convert.ToInt32(entity.Value);
+                duration = duration.Plus(timeAdvance);
 
-                Duration current = Duration.FromSeconds(currentSeconds);
-
-                current = current.Plus(timeAdvance);
-
-                entity.Value = Convert.ToInt32(current.TotalSeconds).ToString();
-
-                this.SettingRepository.Update(entity);
+                this.Cache.Set<Duration>(TimeHopHoursName, duration, DateTimeOffset.Now.AddDays(1));
             }
             else
             {
-                throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Setting does not exist");
+                this.Cache.Set<Duration>(TimeHopHoursName, timeAdvance, DateTimeOffset.Now.AddDays(1));
             }
         }
 
@@ -175,14 +175,7 @@ namespace Codev.Core.Service.Common
         ///--------------------------------------------------------------------
         public void Reset()
         {
-            SettingEntity entity = this.SettingRepository.GetByName(TimeHopHoursName);
-            
-            if (entity != null)
-            {
-                entity.Value = "0";
-            
-                this.SettingRepository.Update(entity);
-            }
+            this.Cache.Set<Duration>(TimeHopHoursName, Duration.Zero);
         }
         #endregion
     }

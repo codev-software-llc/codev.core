@@ -38,6 +38,12 @@ namespace Codev.Core.Infrastructure
         public static IServiceCollection AddCoreInfrastructure(
             this IServiceCollection services)
         {
+            // Add the memory caching.
+            //
+            services.AddMemoryCache();
+
+            // Add the unit of work for db transactions.
+            //
             services.AddSingleton<ICoreUnitOfWork, CoreUnitOfWork>();
 
             // Add the repositories.

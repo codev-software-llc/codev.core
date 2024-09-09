@@ -39,7 +39,7 @@ namespace Codev.Core.Service.Asset
 
                 Blob blob = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -61,7 +61,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return blob;
@@ -96,7 +96,7 @@ namespace Codev.Core.Service.Asset
             {
                 Validation.ValidateParameter<Reference<Blob>>("blobReference", blobReference);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
 
@@ -109,7 +109,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -142,7 +142,7 @@ namespace Codev.Core.Service.Asset
             {
                 Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -155,7 +155,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -192,7 +192,7 @@ namespace Codev.Core.Service.Asset
 
                 Blob blob = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -214,7 +214,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return blob;
@@ -251,7 +251,7 @@ namespace Codev.Core.Service.Asset
 
                 BlobContent blobContent = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
 
@@ -264,7 +264,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return blobContent;
@@ -299,7 +299,7 @@ namespace Codev.Core.Service.Asset
             {
                 Validation.ValidateParameter<Reference<Blob>>("blobReference", blobReference);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
 
@@ -312,7 +312,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -347,7 +347,7 @@ namespace Codev.Core.Service.Asset
 
                 BlobContent blobContent = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
 
@@ -365,7 +365,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return blobContent;
@@ -402,7 +402,7 @@ namespace Codev.Core.Service.Asset
 
                 BlobContent blobContent = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
 
@@ -415,7 +415,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob Content does not exist");
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return blobContent;
@@ -450,7 +450,7 @@ namespace Codev.Core.Service.Asset
             {
                 Validation.ValidateParameter<Reference<BlobContent>>("blobContentReference", blobContentReference);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
 
@@ -463,7 +463,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -498,7 +498,7 @@ namespace Codev.Core.Service.Asset
                 Validation.ValidateParameter<Reference<Blob>>("blobReference", blobReference);
                 Validation.ValidateParameter<String>         ("blobName"     , blobName     );
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
 
@@ -511,7 +511,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -549,7 +549,7 @@ namespace Codev.Core.Service.Asset
 
                 content = Validation.ValidateDefault<Byte[]>("content", content, new Byte[] { });
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
 
@@ -562,7 +562,7 @@ namespace Codev.Core.Service.Asset
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)

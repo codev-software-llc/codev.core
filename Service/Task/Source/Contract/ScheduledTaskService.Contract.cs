@@ -33,11 +33,11 @@ namespace Codev.Core.Service.Task
             {
                 Validation.ValidateParameter<ScheduledTask>("task", task);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Cancel(task);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -72,11 +72,11 @@ namespace Codev.Core.Service.Task
 
                 ScheduledTask task = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     task = this.Get(id);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return task;
@@ -113,11 +113,11 @@ namespace Codev.Core.Service.Task
 
                 Validation.ValidateParameter<Identity>("identity", identity);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     tasks = this.GetAll(identity);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return tasks;
@@ -161,11 +161,11 @@ namespace Codev.Core.Service.Task
                 Validation.ValidateParameter<String>       ("detailTypeName"  , detailTypeName  );
                 Validation.ValidateParameter<String>       ("serializedDetail", serializedDetail);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Schedule(identity, nextAttentionAt, priority, category, detailTypeName, serializedDetail);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -200,11 +200,11 @@ namespace Codev.Core.Service.Task
             {
                 Validation.ValidateParameter<Action<ScheduledTask, ScheduledTaskEventArgs>>("clientWorkder", clientWorker);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Run(priority, clientWorker);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -241,11 +241,11 @@ namespace Codev.Core.Service.Task
                 Validation.ValidateParameter<String>                                       ("category"     , category    );
                 Validation.ValidateParameter<Action<ScheduledTask, ScheduledTaskEventArgs>>("clientWorkder", clientWorker);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Run(category, priority, clientWorker);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -275,11 +275,11 @@ namespace Codev.Core.Service.Task
         {
             try
             {
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.GarbageCollect();
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)

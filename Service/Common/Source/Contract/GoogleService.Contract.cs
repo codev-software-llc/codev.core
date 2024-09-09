@@ -39,11 +39,11 @@ namespace Codev.Core.Service.Common
 
                 String token = String.Empty;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     token = this.CreateToken(impersonatedUser, serviceAccount, certificate, claims);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return token;

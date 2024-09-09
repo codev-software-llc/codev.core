@@ -4,6 +4,8 @@ namespace Core.Test.Service.Clock
     using Codev.Core.Interface;
     using Codev.Core.Repository.Ado;
     using Codev.Core.Service.Common;
+    using Microsoft.Extensions.Caching.Memory;
+    using NodaTime;
 
     public class Tests
     {
@@ -15,22 +17,23 @@ namespace Core.Test.Service.Clock
         [Test]
         public void Test1()
         {
-            ICoreDataSource dataSource = new CoreDataSource(
-                "localhost,1411",
-                "Codev.TimeCog.Local",
-                "timecoguser",
-                "Tim3in@B0tt13",
-                "core",
-                "Core",
-                10,
-                30,
-                30, false, false);
+            MemoryCacheOptions options = new MemoryCacheOptions()
+            {
 
-            ICoreUnitOfWork unitOfWork = new CoreUnitOfWork(dataSource);
+            };
 
-            ISettingRepository settingRepository = new SettingRepository(dataSource);
+            IMemoryCache cache = new MemoryCache(options);
 
-            IClockService clockService = new ClockService(unitOfWork, settingRepository);
+            IClockService clockService = new ClockService(cache);
+
+
+            Instant instant = clockService.GetCurrentInstant();
+
+            clockService.Advance(Duration.FromDays(1));
+
+            instant = clockService.GetCurrentInstant();
+
+            LocalDateTime ldt = clockService.GetLocalDateTime(DateTimeZone.Utc);
 
             clockService.Reset();
 

@@ -6,7 +6,6 @@
 namespace Codev.Core.Service.Cache
 {
     using System;
-    using Codev.Core.Base;
     using Codev.Core.Interface;
     using Codev.Core.Model;
     using NodaTime;
@@ -17,7 +16,7 @@ namespace Codev.Core.Service.Cache
     /// caching.
     /// </summary>
     ///------------------------------------------------------------------------
-    public sealed partial class CacheService : BaseService, ICacheService
+    public sealed partial class CacheService : ICacheService
     {
         #region Constructors
         ///---------------------------------------------------------------
@@ -26,8 +25,7 @@ namespace Codev.Core.Service.Cache
         /// </summary>
         ///---------------------------------------------------------------
         public CacheService(
-            ICoreUnitOfWork unitOfWork,
-            ICacheProvider  cacheProvider) : base(unitOfWork)
+            ICacheProvider cacheProvider)
         {
             Validation.ValidateParameter<ICacheProvider>("cacheProvider", cacheProvider);
 

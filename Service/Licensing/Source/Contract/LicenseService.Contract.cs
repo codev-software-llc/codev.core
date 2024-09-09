@@ -47,11 +47,11 @@ namespace Codev.Core.Service.Licensing
 
                 License license = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     license = this.Create(identity, applicationName, name, cost, interval, intervalCount, trialDays, features);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return license;
@@ -86,11 +86,11 @@ namespace Codev.Core.Service.Licensing
             {
                 Validation.ValidateParameter<License>("license", license);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Delete(license);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -125,11 +125,11 @@ namespace Codev.Core.Service.Licensing
 
                 List<License> licenses = new List<License>();
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     licenses = this.GetAll(applicationName);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return licenses;
@@ -166,11 +166,11 @@ namespace Codev.Core.Service.Licensing
 
                 License license = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     license = this.Get(id);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return license;
@@ -210,11 +210,11 @@ namespace Codev.Core.Service.Licensing
 
                 features = Validation.ValidateDefault<List<LicenseFeature>>("features", features, new List<LicenseFeature>());
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Update(license, name, features);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -253,11 +253,11 @@ namespace Codev.Core.Service.Licensing
 
                 Subscription subscription = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     subscription = this.Subscribe(license, identity, dateExpiration);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return subscription;
@@ -292,11 +292,11 @@ namespace Codev.Core.Service.Licensing
             {
                 Validation.ValidateParameter<Subscription> ("subscription" , subscription);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Unsubscribe(subscription);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -331,11 +331,11 @@ namespace Codev.Core.Service.Licensing
 
                 List<Subscription> subscriptions = new List<Subscription>();
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     subscriptions = this.GetSubscriptions(identity);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return subscriptions;
@@ -372,11 +372,11 @@ namespace Codev.Core.Service.Licensing
 
                 List<Subscription> subscriptions = new List<Subscription>();
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     subscriptions = this.GetSubscriptions(license);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return subscriptions;

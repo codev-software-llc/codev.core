@@ -201,27 +201,30 @@ namespace Codev.Core.Repository.Ado
             // storage.  We will work of the current unit-of-work from
             // this stack.
             //
-            Stack<IUnitOfWork> unitOfWork = GetUnitOfWorkFromThread();
+            Stack<IUnitOfWork> stack = GetUnitOfWorkFromThread();
 
             // If we don't have a unit of work in the stack, then 
             // create a local scope unit of work that we will use for
             // the call.
             //
-            IUnitOfWork work = (unitOfWork.Count > 0 ? unitOfWork.Peek() : null);
+            IUnitOfWork unitOfWork = (stack.Count > 0 ? stack.Peek() : null);
 
             procedureName = String.Format("[{0}].[{1}]", dataSource.SchemaName, procedureName);
 
-            if (work != null)
+            if (unitOfWork != null)
             {
-                AdoAccess.DoProcedureCall(work, procedureName, setupCallback, workerCallback);
+                AdoAccess.DoProcedureCall(unitOfWork, procedureName, setupCallback, workerCallback);
             }
             else
             {
                 using (IUnitOfWork localWork = new UnitOfWork(dataSource))
                 {
-                    AdoAccess.DoProcedureCall(localWork, procedureName, setupCallback, workerCallback);
+                    using (IUnitOfWork work = localWork.Begin())
+                    {
+                        AdoAccess.DoProcedureCall(work, procedureName, setupCallback, workerCallback);
 
-                    localWork.Commit();
+                        work.Commit();
+                    }
                 }
             }
         }

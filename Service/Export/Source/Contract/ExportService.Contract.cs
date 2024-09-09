@@ -36,11 +36,11 @@ namespace Codev.Core.Service.Export
 
                 Byte[] value = new Byte[] { };
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     value = this.Convert(source, format);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return value;
@@ -82,11 +82,11 @@ namespace Codev.Core.Service.Export
 
                 Byte[] value = new Byte[] { };
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     value = this.Convert(source, format, styleSheet);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return value;

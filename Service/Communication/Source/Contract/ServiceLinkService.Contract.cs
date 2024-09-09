@@ -38,11 +38,11 @@ namespace Codev.Core.Service.Communication
 
                 ServiceLink serviceLink = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     serviceLink = this.Add(identity, detailTypeName, serializedDetail);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return serviceLink;
@@ -77,11 +77,11 @@ namespace Codev.Core.Service.Communication
             {
                 Validation.ValidateParameter<Identity>("identity", identity);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.DeleteAll(identity);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -116,11 +116,11 @@ namespace Codev.Core.Service.Communication
 
                 ServiceLink serviceLink = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     serviceLink = this.GetByTinyUrl(tinyUrl);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
                 return serviceLink;
             }
@@ -153,11 +153,11 @@ namespace Codev.Core.Service.Communication
             {
                 List<ServiceLink> serviceLinks = new List<ServiceLink>();
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     serviceLinks = this.GetAll();
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return serviceLinks;
@@ -194,11 +194,11 @@ namespace Codev.Core.Service.Communication
 
                 List<ServiceLink> serviceLinks = new List<ServiceLink>();
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     serviceLinks = this.GetAll(identity);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return serviceLinks;
@@ -233,11 +233,11 @@ namespace Codev.Core.Service.Communication
             {
                 Validation.ValidateParameter<ServiceLink>("serviceLink", serviceLink);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Remove(serviceLink);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -274,11 +274,11 @@ namespace Codev.Core.Service.Communication
                 Validation.ValidateParameter<String>     ("detailTypeName"  , detailTypeName  );
                 Validation.ValidateParameter<String>     ("serializedDetail", serializedDetail);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.Update(serviceLink, detailTypeName, serializedDetail);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)

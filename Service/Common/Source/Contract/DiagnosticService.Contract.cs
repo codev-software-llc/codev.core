@@ -41,7 +41,7 @@ namespace Codev.Core.Service.Common
 
                 tag = Validation.ValidateDefault<String>("tag", tag, String.Empty);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -54,7 +54,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -93,7 +93,7 @@ namespace Codev.Core.Service.Common
 
                 tag = Validation.ValidateDefault<String>("tag", tag, String.Empty);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
@@ -106,7 +106,7 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -146,7 +146,7 @@ namespace Codev.Core.Service.Common
 
                 tag = Validation.ValidateDefault<String>("tag", tag, String.Empty);
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity;
 
@@ -164,7 +164,7 @@ namespace Codev.Core.Service.Common
                         this.LogException(identityEntity, componentType, tag, exception);
                     }
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -194,11 +194,11 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.BeginProfiling();
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -228,11 +228,11 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.EndProfiling();
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
             }
             catch (CoreDataException cde)
@@ -264,11 +264,11 @@ namespace Codev.Core.Service.Common
             {
                 String results = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     results = this.RenderProfileResults();
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return results;
@@ -305,11 +305,11 @@ namespace Codev.Core.Service.Common
 
                 IDbConnection connection = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     connection = this.ProfileConnection(connectionString);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return connection;
@@ -348,11 +348,11 @@ namespace Codev.Core.Service.Common
 
                 DbDataReader profileReader = null;
 
-                using (this.UnitOfWork.Begin())
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     profileReader = this.ProfileReader(connection, reader);
 
-                    this.UnitOfWork.Commit();
+                    work.Commit();
                 }
 
                 return profileReader;
@@ -387,10 +387,10 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (this.UnitOfWork.Begin())
-                {
-                    List<ErrorLog> entries = new List<ErrorLog>();
+                List<ErrorLog> entries = new List<ErrorLog>();
 
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
                     if (identityEntity != null)
@@ -402,10 +402,10 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
-
-                    return entries;
+                    work.Commit();
                 }
+
+                return entries;
             }
             catch (CoreDataException cde)
             {
@@ -437,10 +437,10 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (this.UnitOfWork.Begin())
-                {
-                    List<ErrorLog> entries = new List<ErrorLog>();
+                List<ErrorLog> entries = new List<ErrorLog>();
 
+                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
                     if (identityEntity != null)
@@ -452,10 +452,10 @@ namespace Codev.Core.Service.Common
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
                     }
 
-                    this.UnitOfWork.Commit();
-
-                    return entries;
+                    work.Commit();
                 }
+
+                return entries;
             }
             catch (CoreDataException cde)
             {

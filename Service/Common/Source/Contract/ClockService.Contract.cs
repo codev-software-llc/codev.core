@@ -27,16 +27,7 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                Instant instant;
-
-                using (this.UnitOfWork.Begin())
-                {
-                    instant = this.GetCurrentInstant();
-
-                    this.UnitOfWork.Commit();
-                }
-
-                return instant;
+                return this.GetCurrentInstant();
             }
             catch (CoreDataException cde)
             {
@@ -60,20 +51,11 @@ namespace Codev.Core.Service.Common
         LocalDateTime IClockService.GetLocalDateTime(
             DateTimeZone dtz)
         {
+            Validation.ValidateParameter<DateTimeZone>("dtz", dtz);
+
             try
             {
-                Validation.ValidateParameter<DateTimeZone>("dtz", dtz);
-
-                LocalDateTime localDateTime;
-
-                using (this.UnitOfWork.Begin())
-                {
-                    localDateTime = this.GetLocalDateTime(dtz);
-
-                    this.UnitOfWork.Commit();
-                }
-
-                return localDateTime;
+                return this.GetLocalDateTime(dtz);
             }
             catch (CoreDataException cde)
             {
@@ -102,16 +84,7 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                DateTimeZone dtz;
-
-                using (this.UnitOfWork.Begin())
-                {
-                    dtz = this.GetDefaultTimeZone();
-
-                    this.UnitOfWork.Commit();
-                }
-
-                return dtz;
+                return this.GetDefaultTimeZone();
             }
             catch (CoreDataException cde)
             {
@@ -139,16 +112,11 @@ namespace Codev.Core.Service.Common
         void IClockService.Advance(
             Duration timeAdvance)
         {
+            Validation.ValidateParameter<Duration>("timeAdvance", timeAdvance);
+
             try
             {
-                Validation.ValidateParameter<Duration>("timeAdvance", timeAdvance);
-
-                using (this.UnitOfWork.Begin())
-                {
-                    this.Advance(timeAdvance);
-
-                    this.UnitOfWork.Commit();
-                }
+                this.Advance(timeAdvance);
             }
             catch (CoreDataException cde)
             {
@@ -177,12 +145,7 @@ namespace Codev.Core.Service.Common
         {
             try
             {
-                using (this.UnitOfWork.Begin())
-                {
-                    this.Reset();
-
-                    this.UnitOfWork.Commit();
-                }
+                this.Reset();
             }
             catch (CoreDataException cde)
             {

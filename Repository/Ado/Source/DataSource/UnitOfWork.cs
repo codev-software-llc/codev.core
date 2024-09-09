@@ -9,6 +9,7 @@ namespace Codev.Core.Repository.Ado
     using System.Collections.Generic;
     using System.Data;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Transactions;
     using Codev.Core.Base;
 
@@ -64,65 +65,51 @@ namespace Codev.Core.Repository.Ado
         /// Get or set the SQL connection.
         /// </summary>
         ///--------------------------------------------------------------------
-        public IDbConnection Connection { get; private set; }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get or set whether we have already disposed of the object.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private Boolean IsDisposed { get; set; }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get or set whether we're a nested unit of work.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private Boolean IsNested { get; set; }
+        public IDbConnection Connection { get; set; }
 
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the transaction scope to use.
         /// </summary>
         ///--------------------------------------------------------------------
-        private TransactionScope TransactionScope { get; set; }
+        public TransactionScope TransactionScope { get; set; }
+        
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set whether we have already disposed of the object.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private Boolean IsDisposed { get; set; }
         #endregion
 
         #region Methods
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Begin the unit of work.
+        /// Begin the unit of work.  We return a new object so it can track
+        /// it's own transaction scope and connection.
         /// </summary>
         ///--------------------------------------------------------------------
         public IUnitOfWork Begin()
         {
-            // Put the unit of work into the TLS if it is not already
-            // there.  If there is a global Unit-Of-Work, then we will
-            // add (accumulate) this unit of wor to that.
-            //
-            Stack<IUnitOfWork> unitOfWork = this.GetUnitOfWorkFromThread();
+            IUnitOfWork work = null;
 
-            if (unitOfWork.Count == 0)
+            Stack<IUnitOfWork> stack = this.GetUnitOfWorkFromThread();
+
+            if (stack.Count == 0)
             {
-                // Create a transaction scope on this base work item.
-                //
-                this.TransactionScope = new TransactionScope(TransactionScopeOption.Required);
-                this.Connection       = this.OpenConnection(this.DataSource);
-                this.IsNested         = false;
+                work = new UnitOfWork(this.DataSource);
+
+                ((UnitOfWork)work).TransactionScope = new TransactionScope(TransactionScopeOption.Required);
+                ((UnitOfWork)work).Connection       = this.OpenConnection(this.DataSource);
+
+                stack.Push(work);
             }
             else
             {
-                IUnitOfWork data = unitOfWork.Peek();
-
-                this.Connection = data.Connection;
-                this.IsNested   = true;
+                work = stack.Peek();
             }
 
-            // Push this unit of work onto the thread stack object.
-            //
-            unitOfWork.Push(this);
-
-            return this;
+            return work;
         }
 
         ///--------------------------------------------------------------------
@@ -160,10 +147,7 @@ namespace Codev.Core.Repository.Ado
         ///--------------------------------------------------------------------
         public void Commit()
         {
-            if (this.IsNested == false)
-            {
-                this.CloseConnection(true);
-            }
+            this.CloseConnection(true);
         }
 
         ///--------------------------------------------------------------------
@@ -174,10 +158,7 @@ namespace Codev.Core.Repository.Ado
         ///--------------------------------------------------------------------
         public void Rollback()
         {
-            if (this.IsNested == false)
-            {
-                this.CloseConnection(false);
-            }
+            this.CloseConnection(false);
         }
         #endregion
 
@@ -207,9 +188,7 @@ namespace Codev.Core.Repository.Ado
         private IDbConnection OpenConnection(
             IDataSource dataSource)
         {
-            IDbConnection connection = dataSource.OpenConnection();
-
-            return connection;
+            return dataSource.OpenConnection();
         }
 
         ///--------------------------------------------------------------------
@@ -254,6 +233,41 @@ namespace Codev.Core.Repository.Ado
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// This will handle the disposal of our work.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private void Dispose(
+            Boolean isDisposing)
+        {
+            if (isDisposing && (this.IsDisposed == false))
+            {
+                this.CloseConnection(false);
+
+                Stack<IUnitOfWork> unitOfWork = this.GetUnitOfWorkFromThread();
+
+                // If we have reached the end of the work, then we will want
+                // to free the thread-local storage.
+                //
+                if (unitOfWork.Count > 0)
+                {
+                    IUnitOfWork work = unitOfWork.Pop();
+
+                    if (work == null)
+                    {
+                        Thread.FreeNamedDataSlot(UnitOfWorkName);
+                    }
+                }
+                else
+                {
+                    Thread.FreeNamedDataSlot(UnitOfWorkName);
+                }
+
+                this.IsDisposed = true;
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Get the stack of units of work.
         /// </summary>
         ///--------------------------------------------------------------------
@@ -276,34 +290,6 @@ namespace Codev.Core.Repository.Ado
             }
 
             return stack;
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// This will handle the disposal of our work.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void Dispose(
-            Boolean isDisposing)
-        {
-            if (isDisposing && (this.IsDisposed == false))
-            {
-                this.Rollback();
-
-                Stack<IUnitOfWork> unitOfWork = this.GetUnitOfWorkFromThread();
-
-                // If we have reached the end of the work, then we will want
-                // to free the thread-local storage.
-                //
-                IUnitOfWork work = unitOfWork.Pop();
-
-                if (work == null)
-                {
-                    Thread.FreeNamedDataSlot(UnitOfWorkName);
-                }
-
-                this.IsDisposed = true;
-            }
         }
         #endregion
     }

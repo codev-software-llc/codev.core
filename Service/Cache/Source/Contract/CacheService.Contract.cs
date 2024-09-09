@@ -35,12 +35,7 @@ namespace Codev.Core.Service.Cache
                 Validation.ValidateParameter<T>       ("item"          , item      );
                 Validation.ValidateParameter<Duration>("expirationDate", expiration);
 
-                using (this.UnitOfWork.Begin())
-                {
-                    this.Add<T>(key, item, expiration);
-
-                    this.UnitOfWork.Commit();
-                }
+                this.Add<T>(key, item, expiration);
             }
             catch (CoreDataException cde)
             {
@@ -72,12 +67,7 @@ namespace Codev.Core.Service.Cache
             {
                 Validation.ValidateParameter<String>("key", key);
 
-                using (this.UnitOfWork.Begin())
-                {
-                    this.Delete<T>(key);
-
-                    this.UnitOfWork.Commit();
-                }
+                this.Delete<T>(key);
             }
             catch (CoreDataException cde)
             {
@@ -106,12 +96,7 @@ namespace Codev.Core.Service.Cache
         {
             try
             {
-                using (this.UnitOfWork.Begin())
-                {
-                    this.Flush();
-
-                    this.UnitOfWork.Commit();
-                }
+                this.Flush();
             }
             catch (CoreDataException cde)
             {
@@ -143,16 +128,7 @@ namespace Codev.Core.Service.Cache
             {
                 Validation.ValidateParameter<String>("key", key);
 
-                T value = default(T);
-
-                using (this.UnitOfWork.Begin())
-                {
-                    value = this.Get<T>(key);
-
-                    this.UnitOfWork.Commit();
-                }
-
-                return value;
+                return this.Get<T>(key);
             }
             catch (CoreDataException cde)
             {
@@ -186,12 +162,7 @@ namespace Codev.Core.Service.Cache
                 Validation.ValidateParameter<String>("key" , key );
                 Validation.ValidateParameter<T>     ("item", item);
 
-                using (this.UnitOfWork.Begin())
-                {
-                    this.Update<T>(key, item);
-
-                    this.UnitOfWork.Commit();
-                }
+                this.Update<T>(key, item);
             }
             catch (CoreDataException cde)
             {
