@@ -270,7 +270,23 @@ namespace Codev.Core.Repository.Ado
                     Detail      = reader.GetValue<String>                   ("Detail")
                 };
 
+            this.InitializeLazyLoading(entity);
+
             return entity;
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Initialize the lazy loading of the entity properties.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private void InitializeLazyLoading(
+            ScheduledTaskEntity entity)
+        {
+            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
+                {
+                    return this.IdentityRepository.GetByScheduledTask(entity);
+                });
         }
         #endregion
     }

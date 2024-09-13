@@ -25,6 +25,7 @@ namespace Codev.Core.Model
         public BlobContentEntity(
             Instant instantNow) : base(instantNow)
         {
+            this.Initialize();
         }
 
         ///--------------------------------------------------------------------
@@ -35,6 +36,7 @@ namespace Codev.Core.Model
         public BlobContentEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
+            this.Initialize();
         }
         #endregion
 
@@ -74,7 +76,39 @@ namespace Codev.Core.Model
         /// Get or set the blob reference.
         /// </summary>
         ///--------------------------------------------------------------------
-        public virtual BlobEntity Blob { get; set; }
+        public virtual BlobEntity Blob
+        {
+            get
+            {
+                return this.LazyBlob.Value;
+            }
+
+            set
+            {
+                this.LazyBlob = new Lazy<BlobEntity>(() => value);
+            }
+        }
+        #endregion
+
+        #region Properties (Lazy Loading)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the lazy loading reference for the blob entity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Lazy<BlobEntity> LazyBlob { get; set; }
+        #endregion
+
+        #region Methods (Private)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Initialize the entity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private void Initialize()
+        {
+            this.LazyBlob = new Lazy<BlobEntity>();
+        }
         #endregion
     }
 }

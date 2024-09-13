@@ -371,7 +371,23 @@ namespace Codev.Core.Repository.Ado
                     StackTrace    = reader.GetValue<String>                 ("StackTrace")
                 };
 
+            this.InitializeLazyLoading(entity);
+
             return entity;
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Initialize the lazy loading of the Contact entity properties.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private void InitializeLazyLoading(
+            ErrorLogEntity entity)
+        {
+            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
+                {
+                    return this.IdentityRepository.GetByErrorLog(entity);
+                });
         }
         #endregion
     }

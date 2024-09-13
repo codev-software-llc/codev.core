@@ -141,18 +141,7 @@ namespace Codev.Core.Service.ServiceLink
 
                     if (serviceLinkEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByServiceLink(serviceLinkEntity);
-
-                        if (identityEntity != null)
-                        {
-                            serviceLinkEntity.Identity = identityEntity;
-
-                            serviceLink = serviceLinkEntity.ToModel();
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        serviceLink = serviceLinkEntity.ToModel();
                     }
                     else
                     {
@@ -198,14 +187,7 @@ namespace Codev.Core.Service.ServiceLink
 
                     foreach (ServiceLinkEntity entity in entities)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByServiceLink(entity);
-
-                        if (identityEntity != null)
-                        {
-                            entity.Identity = identityEntity;
-
-                            serviceLinks.Add(entity.ToModel());
-                        }
+                        serviceLinks.Add(entity.ToModel());
                     }
 
                     work.Commit();
@@ -255,8 +237,6 @@ namespace Codev.Core.Service.ServiceLink
 
                         foreach (ServiceLinkEntity entity in entities)
                         {
-                            entity.Identity = identityEntity;
-
                             serviceLinks.Add(entity.ToModel());
                         }
                     }
@@ -356,18 +336,7 @@ namespace Codev.Core.Service.ServiceLink
 
                     if (serviceLinkEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByServiceLink(serviceLinkEntity);
-
-                        if (identityEntity != null)
-                        {
-                            serviceLinkEntity.Identity = identityEntity;
-
-                            this.Update(serviceLinkEntity, detailTypeName, serializedDetail);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        this.Update(serviceLinkEntity, detailTypeName, serializedDetail);
                     }
                     else
                     {

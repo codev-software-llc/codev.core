@@ -43,18 +43,7 @@ namespace Codev.Core.Service.Banking
 
                     if (paymentMethodEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByPaymentMethod(paymentMethodEntity);
-
-                        if (identityEntity != null)
-                        {
-                            paymentMethodEntity.Identity = identityEntity;
-
-                            receipt = this.Charge(paymentMethodEntity, paymentAmount, orderNumber);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        receipt = this.Charge(paymentMethodEntity, paymentAmount, orderNumber);
                     }
                     else
                     {
@@ -108,18 +97,7 @@ namespace Codev.Core.Service.Banking
 
                     if (paymentMethodEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByPaymentMethod(paymentMethodEntity);
-
-                        if (identityEntity != null)
-                        {
-                            paymentMethodEntity.Identity = identityEntity;
-
-                            receipt = this.Refund(paymentMethodEntity, null, paymentAmount);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        receipt = this.Refund(paymentMethodEntity, null, paymentAmount);
                     }
                     else
                     {
@@ -222,18 +200,7 @@ namespace Codev.Core.Service.Banking
 
                     if (paymentMethodEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetById(paymentMethodReference.Id);
-
-                        if (identityEntity != null)
-                        {
-                            paymentMethodEntity.Identity = identityEntity;
-
-                            this.Unregister(paymentMethodEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        this.Unregister(paymentMethodEntity);
                     }
                     else
                     {
@@ -281,18 +248,7 @@ namespace Codev.Core.Service.Banking
 
                     if (paymentMethodEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByPaymentMethod(paymentMethodEntity);
-
-                        if (identityEntity != null)
-                        {
-                            paymentMethodEntity.Identity = identityEntity;
-
-                            paymentMethod = this.GetPaymentMethod(paymentMethodEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        paymentMethod = this.GetPaymentMethod(paymentMethodEntity);
                     }
                     else
                     {
@@ -346,8 +302,6 @@ namespace Codev.Core.Service.Banking
 
                         foreach (PaymentMethodEntity entity in entities)
                         {
-                            entity.Identity = identityEntity;
-
                             paymentMethods.Add(entity.ToModel());
                         }
                     }
@@ -397,18 +351,7 @@ namespace Codev.Core.Service.Banking
 
                     if (paymentMethodEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByPaymentMethod(paymentMethodEntity);
-
-                        if (paymentMethodEntity != null)
-                        {
-                            paymentMethodEntity.Identity = identityEntity;
-
-                            this.SetPrimary(paymentMethodEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        this.SetPrimary(paymentMethodEntity);
                     }
                     else
                     {

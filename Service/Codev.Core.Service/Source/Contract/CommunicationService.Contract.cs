@@ -187,7 +187,6 @@ namespace Codev.Core.Service.Communication
                 throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
             }
         }
-
         #endregion
     }
 }

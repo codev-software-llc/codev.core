@@ -25,6 +25,7 @@ namespace Codev.Core.Model
         public PaymentEntity(
             Instant instantNow) : base(instantNow)
         {
+            this.Initialize();
         }
 
         ///--------------------------------------------------------------------
@@ -35,6 +36,7 @@ namespace Codev.Core.Model
         public PaymentEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
+            this.Initialize();
         }
         #endregion
 
@@ -81,7 +83,39 @@ namespace Codev.Core.Model
         /// Get or set the payment method.
         /// </summary>
         ///--------------------------------------------------------------------
-        public PaymentMethodEntity PaymentMethod {  get; set; }
+        public PaymentMethodEntity PaymentMethod
+        {
+            get
+            {
+                return this.LazyPaymentMethod.Value;
+            }
+
+            set
+            {
+                this.LazyPaymentMethod = new Lazy<PaymentMethodEntity>(() => value);
+            }
+        }
+        #endregion
+
+        #region Properties (Lazy)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the lazy-load property for payment reference.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Lazy<PaymentMethodEntity> LazyPaymentMethod { private get; set; }
+        #endregion
+
+        #region Methods (Private)
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Initialize the entity references.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private void Initialize()
+        {
+            this.LazyPaymentMethod = new Lazy<PaymentMethodEntity>();
+        }
         #endregion
     }
 }

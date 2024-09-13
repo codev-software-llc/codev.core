@@ -139,14 +139,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity != null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            destination = this.ConfirmRequest(destinationEntity);
-                        }
+                        destination = this.ConfirmRequest(destinationEntity);
                     }
                     else
                     {
@@ -200,14 +193,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity != null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            session = this.Confirm(destinationEntity, confirmationSecret, expiration);
-                        }
+                        session = this.Confirm(destinationEntity, confirmationSecret, expiration);
                     }
                     else
                     {
@@ -257,14 +243,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity != null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            destination = this.GetDestination(destinationEntity);
-                        }
+                        destination = this.GetDestination(destinationEntity);
                     }
                     else
                     {
@@ -364,14 +343,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetById(destinationReference.Id);
-
-                        if (identityEntity != null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            destination = this.GetDestination(destinationEntity);
-                        }
+                        destination = this.GetDestination(destinationEntity);
                     }
                     else
                     {
@@ -421,16 +393,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity != null)
-                        {
-                            identity = identityEntity.ToModel();
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                        }
+                        identity = destinationEntity.Identity.ToModel();
                     }
                     else
                     {
@@ -530,16 +493,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (sessionEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetBySession(sessionEntity);
-
-                        if (identityEntity != null)
-                        {
-                            return identityEntity.ToModel();
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                        }
+                        identity = sessionEntity.Identity.ToModel();
                     }
                     else
                     {
@@ -594,18 +548,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity != null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            destination = this.Login(destinationEntity, expiration);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                        }
+                        destination = this.Login(destinationEntity, expiration);
                     }
                     else
                     {
@@ -711,18 +654,7 @@ namespace Codev.Core.Service.Authentication
                     }
                     else
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity == null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            destination = this.Register(destinationEntity, expiration);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                        }
+                        destination = this.Register(destinationEntity, expiration);
                     }
 
                     work.Commit();
@@ -766,18 +698,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity != null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            this.RemoveDestination(destinationEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                        }
+                        this.RemoveDestination(destinationEntity);
                     }
                     else
                     {
@@ -872,14 +793,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
-
-                        if (identityEntity != null)
-                        {
-                            destinationEntity.Identity = identityEntity;
-
-                            this.SetPrimary(destinationEntity);
-                        }
+                        this.SetPrimary(destinationEntity);
                     }
                     else
                     {

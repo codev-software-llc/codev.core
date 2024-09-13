@@ -254,16 +254,7 @@ namespace Codev.Core.Service.Authentication
         {
             EntityCollection<DestinationEntity> entities = this.DestinationRepository.GetAllByIdentity(identityEntity);
 
-            List<Destination> destinations = new List<Destination>();
-
-            foreach (DestinationEntity entity in entities)
-            {
-                entity.Identity = identityEntity;
-
-                destinations.Add(entity.ToModel());
-            }
-
-            return destinations;
+            return entities.Select(x => x.ToModel()).ToList();
         }
 
         ///--------------------------------------------------------------------

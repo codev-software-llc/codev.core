@@ -202,8 +202,6 @@ namespace Codev.Core.Service.Asset
 
                         if (blobEntity != null)
                         {
-                            blobEntity.Identity = identityEntity;
-
                             blob = this.GetByName(blobEntity);
                         }
                         else
@@ -259,18 +257,7 @@ namespace Codev.Core.Service.Asset
 
                     if (blobEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByBlob(blobEntity);
-
-                        if (identityEntity != null)
-                        {
-                            blobEntity.Identity = identityEntity;
-
-                            blobContent = this.MakeDraft(blobEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        blobContent = this.MakeDraft(blobEntity);
                     }
                     else
                     {
@@ -366,28 +353,15 @@ namespace Codev.Core.Service.Asset
 
                     if (blobEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByBlob(blobEntity);
+                        BlobContentEntity blobContentEntity = this.BlobContentRepository.GetCurrent(blobEntity);
 
-                        if (identityEntity != null)
+                        if (blobContentEntity != null)
                         {
-                            BlobContentEntity blobContentEntity = this.BlobContentRepository.GetCurrent(blobEntity);
-
-                            if (blobContentEntity != null)
-                            {
-                                blobEntity.Identity = identityEntity;
-
-                                blobContentEntity.Blob = blobEntity;
-                                
-                                blobContent = this.GetContents(blobContentEntity);
-                            }
-                            else
-                            {
-                                throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob content does not exist");
-                            }
+                            blobContent = this.GetContents(blobContentEntity);
                         }
                         else
                         {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
+                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob content does not exist");
                         }
                     }
                     else
@@ -438,29 +412,7 @@ namespace Codev.Core.Service.Asset
 
                     if (blobContentEntity != null)
                     {
-                        BlobEntity blobEntity = this.BlobRepository.GetByBlobContent(blobContentEntity);
-
-                        if (blobEntity != null)
-                        {
-                            IdentityEntity identityEntity = this.IdentityRepository.GetByBlob(blobEntity);
-
-                            if (identityEntity != null)
-                            {
-                                blobEntity.Identity = identityEntity;
-
-                                blobContentEntity.Blob = blobEntity;
-
-                                blobContent = this.GetContents(blobContentEntity);
-                            }
-                            else
-                            {
-                                throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                            }
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob does not exist");
-                        }
+                        blobContent = this.GetContents(blobContentEntity);
                     }
                     else
                     {
@@ -508,18 +460,7 @@ namespace Codev.Core.Service.Asset
 
                     if (blobContentEntity != null)
                     {
-                        BlobEntity blobEntity = this.BlobRepository.GetByBlobContent(blobContentEntity);
-
-                        if (blobEntity != null)
-                        {
-                            blobContentEntity.Blob = blobEntity;
-
-                            this.SetCurrent(blobContentEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                        }
+                        this.SetCurrent(blobContentEntity);
                     }
                     else
                     {
@@ -567,18 +508,7 @@ namespace Codev.Core.Service.Asset
 
                     if (blobEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByBlob(blobEntity);
-
-                        if (identityEntity != null)
-                        {
-                            blobEntity.Identity = identityEntity;
-
-                            this.Rename(blobEntity, blobName);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        this.Rename(blobEntity, blobName);
                     }
                     else
                     {
@@ -629,29 +559,7 @@ namespace Codev.Core.Service.Asset
 
                     if (blobContentEntity != null)
                     {
-                        BlobEntity blobEntity = this.BlobRepository.GetByBlobContent(blobContentEntity);
-
-                        if (blobEntity != null)
-                        {
-                            IdentityEntity identityEntity = this.IdentityRepository.GetByBlob(blobEntity);
-
-                            if (identityEntity != null)
-                            {
-                                blobEntity.Identity = identityEntity;
-
-                                blobContentEntity.Blob = blobEntity;
-
-                                this.UpdateContents(blobContentEntity, mimeType, content);
-                            }
-                            else
-                            {
-                                throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                            }
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                        }
+                        this.UpdateContents(blobContentEntity, mimeType, content);
                     }
                     else
                     {

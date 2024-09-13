@@ -39,18 +39,7 @@ namespace Codev.Core.Service.ScheduledTask
 
                     if (scheduledTaskEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByScheduledTask(scheduledTaskEntity);
-
-                        if (identityEntity != null)
-                        {
-                            scheduledTaskEntity.Identity = identityEntity;
-
-                            this.Cancel(scheduledTaskEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        this.Cancel(scheduledTaskEntity);
                     }
                     else
                     {
@@ -98,18 +87,7 @@ namespace Codev.Core.Service.ScheduledTask
 
                     if (scheduledTaskEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByScheduledTask(scheduledTaskEntity);
-
-                        if (identityEntity != null)
-                        {
-                            scheduledTaskEntity.Identity = identityEntity;
-
-                            this.Get(scheduledTaskEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        this.Get(scheduledTaskEntity);
                     }
                     else
                     {
@@ -161,8 +139,6 @@ namespace Codev.Core.Service.ScheduledTask
 
                         foreach (ScheduledTaskEntity entity in entities)
                         {
-                            entity.Identity = identityEntity;
-
                             scheduledTasks.Add(entity.ToModel());
                         }
                     }

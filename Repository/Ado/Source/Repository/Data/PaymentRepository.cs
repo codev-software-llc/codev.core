@@ -278,7 +278,23 @@ namespace Codev.Core.Repository.Ado
                     Token         = data
                 };
 
+            this.InitializeLazyLoading(entity);
+
             return entity;
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Initialize the lazy loading of the entity references.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private void InitializeLazyLoading(
+            PaymentEntity entity)
+        {
+            entity.LazyPaymentMethod = new Lazy<PaymentMethodEntity>(() =>
+                {
+                    return this.PaymentMethodRepository.GetByPayment(entity);
+                });
         }
         #endregion
     }

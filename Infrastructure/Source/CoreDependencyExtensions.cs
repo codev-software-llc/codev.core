@@ -55,60 +55,60 @@ namespace Codev.Core.Infrastructure
 
             // Add the unit of work for db transactions.
             //
-            services.AddSingleton<ICoreUnitOfWork, CoreUnitOfWork>();
+            services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
 
             // Add the repositories.
             //
-            services.AddSingleton<IBlobRepository              , BlobRepository>();
-            services.AddSingleton<IBlobContentRepository       , BlobContentRepository>();
-            services.AddSingleton<ICommunicationRepository     , CommunicationRepository>();
-            services.AddSingleton<IDestinationRepository       , DestinationRepository>();
-            services.AddSingleton<IEnumTypeRepository          , EnumTypeRepository>();
-            services.AddSingleton<IErrorLogRepository          , ErrorLogRepository>();
-            services.AddSingleton<IIdentityRepository          , IdentityRepository>();
-            services.AddSingleton<ILicenseRepository           , LicenseRepository>();
-            services.AddSingleton<IPaymentMethodRepository     , PaymentMethodRepository>();
-            services.AddSingleton<IPaymentRepository           , PaymentRepository>();
-            services.AddSingleton<IPaymentTransactionRepository, PaymentTransactionRepository>();
-            services.AddSingleton<IScheduledTaskRepository     , ScheduledTaskRepository>();
-            services.AddSingleton<IServiceLinkRepository       , ServiceLinkRepository>();
-            services.AddSingleton<ISessionRepository           , SessionRepository>();
-            services.AddSingleton<ISettingRepository           , SettingRepository>();
-            services.AddSingleton<ISubscriptionRepository      , SubscriptionRepository>();
+            services.AddScoped<IBlobRepository              , BlobRepository>();
+            services.AddScoped<IBlobContentRepository       , BlobContentRepository>();
+            services.AddScoped<ICommunicationRepository     , CommunicationRepository>();
+            services.AddScoped<IDestinationRepository       , DestinationRepository>();
+            services.AddScoped<IEnumTypeRepository          , EnumTypeRepository>();
+            services.AddScoped<IErrorLogRepository          , ErrorLogRepository>();
+            services.AddScoped<IIdentityRepository          , IdentityRepository>();
+            services.AddScoped<ILicenseRepository           , LicenseRepository>();
+            services.AddScoped<IPaymentMethodRepository     , PaymentMethodRepository>();
+            services.AddScoped<IPaymentRepository           , PaymentRepository>();
+            services.AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>();
+            services.AddScoped<IScheduledTaskRepository     , ScheduledTaskRepository>();
+            services.AddScoped<IServiceLinkRepository       , ServiceLinkRepository>();
+            services.AddScoped<ISessionRepository           , SessionRepository>();
+            services.AddScoped<ISettingRepository           , SettingRepository>();
+            services.AddScoped<ISubscriptionRepository      , SubscriptionRepository>();
 
             // Add default providers.  These can be overridden if the consumer
             // application adds the same provider interface.
             //
-            services.AddSingleton<ICacheProvider               , NoCacheProvider>();
-            services.AddSingleton<ICipherProvider              , DesCipherProvider>();
-            services.AddSingleton<IAuthenticationProvider      , CodevAuthProvider>();
-            services.AddSingleton<IEmailClientProvider         , NoSmtpProvider>();
-            services.AddSingleton<IEmailServerProvider         , NoEmailServerProvider>();
-            services.AddSingleton<ISmsClientProvider           , NoSmsProvider>();
-            services.AddSingleton<IExportProvider              , ExportXmlProvider>();
-            services.AddSingleton<ISecretProvider              , CodevSecretProvider>();
-            services.AddSingleton<ISubscriptionPlanProvider    , MemorySubscriptionPlanProvider>();
-            services.AddSingleton<IPaymentProvider             , MemoryPaymentProvider>();
-            services.AddSingleton<ISubscriptionCustomerProvider, MemorySubscriptionCustomerProvider>();
+            services.AddScoped<ICacheProvider               , NoCacheProvider>();
+            services.AddScoped<ICipherProvider              , DesCipherProvider>();
+            services.AddScoped<IAuthenticationProvider      , CodevAuthProvider>();
+            services.AddScoped<IEmailClientProvider         , NoSmtpProvider>();
+            services.AddScoped<IEmailServerProvider         , NoEmailServerProvider>();
+            services.AddScoped<ISmsClientProvider           , NoSmsProvider>();
+            services.AddScoped<IExportProvider              , ExportXmlProvider>();
+            services.AddScoped<ISecretProvider              , CodevSecretProvider>();
+            services.AddScoped<ISubscriptionPlanProvider    , MemorySubscriptionPlanProvider>();
+            services.AddScoped<IPaymentProvider             , MemoryPaymentProvider>();
+            services.AddScoped<ISubscriptionCustomerProvider, MemorySubscriptionCustomerProvider>();
 
             // Add the services.
             //
-            services.AddSingleton<IAuthenticationService, AuthenticationService>();
-            services.AddSingleton<IAssetService         , AssetService>();
-            services.AddSingleton<ICacheService         , CacheService>();
-            services.AddSingleton<ICipherService        , CipherService>();
-            services.AddSingleton<IClockService         , ClockService>();
-            services.AddSingleton<ICommunicationService , CommunicationService>();
-            services.AddSingleton<IConfigurationService , ConfigurationService>();
-            services.AddSingleton<IDiagnosticService    , DiagnosticService>();
-            services.AddSingleton<IExportService        , ExportService>();
-            services.AddSingleton<ILicenseService       , LicenseService>();
-            services.AddSingleton<INotifyService        , NotifyService>();
-            services.AddSingleton<IPaymentService       , PaymentService>();
-            services.AddSingleton<IScheduledTaskService , ScheduledTaskService>();
-            services.AddSingleton<ISerializerService    , SerializerService>();
-            services.AddSingleton<IServiceLinkService   , ServiceLinkService>();
-            services.AddSingleton<ITokenService         , TokenService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAssetService         , AssetService>();
+            services.AddScoped<ICacheService         , CacheService>();
+            services.AddScoped<ICipherService        , CipherService>();
+            services.AddScoped<IClockService         , ClockService>();
+            services.AddScoped<ICommunicationService , CommunicationService>();
+            services.AddScoped<IConfigurationService , ConfigurationService>();
+            services.AddScoped<IDiagnosticService    , DiagnosticService>();
+            services.AddScoped<IExportService        , ExportService>();
+            services.AddScoped<ILicenseService       , LicenseService>();
+            services.AddScoped<INotifyService        , NotifyService>();
+            services.AddScoped<IPaymentService       , PaymentService>();
+            services.AddScoped<IScheduledTaskService , ScheduledTaskService>();
+            services.AddScoped<ISerializerService    , SerializerService>();
+            services.AddScoped<IServiceLinkService   , ServiceLinkService>();
+            services.AddScoped<ITokenService         , TokenService>();
 
             return services;
         }

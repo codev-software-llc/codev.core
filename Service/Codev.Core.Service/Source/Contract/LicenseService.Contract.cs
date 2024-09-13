@@ -7,8 +7,6 @@ namespace Codev.Core.Service.Licensing
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Design;
-    using System.Linq;
     using Codev.Core.Base;
     using Codev.Core.Model;
     using NodaTime;
@@ -103,19 +101,7 @@ namespace Codev.Core.Service.Licensing
 
                     if (licenseEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByLicense(licenseEntity);
-
-                        if (identityEntity != null)
-                        {
-                            licenseEntity.Identity = identityEntity;
-
-                            this.Delete(licenseEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-
-                        }
+                        this.Delete(licenseEntity);
                     }
                     else
                     {
@@ -163,14 +149,7 @@ namespace Codev.Core.Service.Licensing
 
                     foreach (LicenseEntity entity in entities)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByLicense(entity);
-
-                        if (identityEntity != null)
-                        {
-                            entity.Identity = identityEntity;
-
-                            licenses.Add(entity.ToModel());
-                        }
+                        licenses.Add(entity.ToModel());
                     }
 
                     work.Commit();
@@ -216,18 +195,7 @@ namespace Codev.Core.Service.Licensing
 
                     if (licenseEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByLicense(licenseEntity);
-
-                        if (identityEntity != null)
-                        {
-                            licenseEntity.Identity = identityEntity;
-
-                            license = this.Get(licenseEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        license = this.Get(licenseEntity);
                     }
                     else
                     {
@@ -280,17 +248,7 @@ namespace Codev.Core.Service.Licensing
 
                     if (licenseEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByLicense(licenseEntity);
-
-                        if (identityEntity != null)
-                        {
-                            this.Update(licenseEntity, name, features);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-
-                        }
+                        this.Update(licenseEntity, name, features);
                     }
                     else
                     {
@@ -399,27 +357,9 @@ namespace Codev.Core.Service.Licensing
 
                     if (subscriptionEntity != null)
                     {
-                        LicenseEntity licenseEntity = this.LicenseRepository.GetBySubscription(subscriptionEntity);
-
-                        if (licenseEntity != null)
-                        {
-                            IdentityEntity identityEntity = this.IdentityRepository.GetBySubscription(subscriptionEntity);
-
-                            if (identityEntity != null)
-                            {
-                                subscriptionEntity.License  = licenseEntity;
-                                subscriptionEntity.Identity = identityEntity;
-
-                                this.Unsubscribe(subscriptionEntity);
-                            }
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
-                        }
+                        this.Unsubscribe(subscriptionEntity);
                     }
                     else
-                  
                     {
                         throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.SubscriptionDoesNotExist);
                     }
@@ -469,17 +409,7 @@ namespace Codev.Core.Service.Licensing
 
                         foreach (SubscriptionEntity entity in entities)
                         {
-                            LicenseEntity licenseEntity = this.LicenseRepository.GetBySubscription(entity);
-
-                            if (licenseEntity != null)
-                            {
-                                licenseEntity.Identity = identityEntity;
-
-                                entity.Identity = identityEntity;
-                                entity.License  = licenseEntity;
-
-                                subscriptions.Add(entity.ToModel());
-                            }
+                            subscriptions.Add(entity.ToModel());
                         }
                     }
                     else
@@ -534,17 +464,7 @@ namespace Codev.Core.Service.Licensing
 
                         foreach (SubscriptionEntity entity in entities)
                         {
-                            IdentityEntity identityEntity = this.IdentityRepository.GetBySubscription(entity);
-
-                            if (identityEntity != null)
-                            {
-                                licenseEntity.Identity = identityEntity;
-
-                                entity.License  = licenseEntity;
-                                entity.Identity = identityEntity;
-
-                                subscriptions.Add(entity.ToModel());
-                            }
+                            subscriptions.Add(entity.ToModel());
                         }
                     }
                     else
