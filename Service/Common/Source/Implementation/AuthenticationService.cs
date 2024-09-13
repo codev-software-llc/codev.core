@@ -169,17 +169,6 @@ namespace Codev.Core.Service.Common
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Clear all sessions prior to the instant.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public void ClearSessions(
-            Instant instant)
-        {
-            this.SessionRepository.PurgeAllExpiredSessions(instant);
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
         /// Request a confirmation of the destination.
         /// </summary>
         ///--------------------------------------------------------------------
@@ -190,6 +179,7 @@ namespace Codev.Core.Service.Common
 
             // Update the confirmation code and touch the entity.
             //
+            destinationEntity.DateModified            = instantNow;
             destinationEntity.ConfirmationSecret      = this.GenerateConfirmationCode();
             destinationEntity.DateConfirmationExpires = this.GenerateExpiration(Duration.FromDays(30));
 
@@ -217,6 +207,7 @@ namespace Codev.Core.Service.Common
                 //
                 destinationEntity.Flags |= DestinationFlags.Registered;
 
+                destinationEntity.DateModified            = instantNow;
                 destinationEntity.ConfirmationSecret      = String.Empty;
                 destinationEntity.DateConfirmationExpires = Instant.MaxValue;
 
@@ -247,63 +238,10 @@ namespace Codev.Core.Service.Common
         /// Retrieve the destination.
         /// </summary>
         ///--------------------------------------------------------------------
-        public Destination Get(
-            DestinationEntity destinationEntity)
-        {
-             return destinationEntity.ToModel();
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Retrieve the identity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Identity GetIdentity(
-            IdentityEntity identityEntity)
-        {
-            return identityEntity.ToModel();
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Retrieve the destination.
-        /// </summary>
-        ///--------------------------------------------------------------------
         public Destination GetDestination(
             DestinationEntity destinationEntity)
         {
             return destinationEntity.ToModel();
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Retrieve the identity by the confirmation secret.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Identity GetIdentityByConfirmationSecret(
-            String confirmationSecret)
-        {
-            DestinationEntity destination = this.DestinationRepository.GetByConfirmationSecret(confirmationSecret);
-
-            if (destination != null)
-            {
-                return destination.Identity.ToModel();
-            }
-            else
-            {
-                throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-            }
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Retrieve the identity by the session.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Identity GetIdentityBySessionSecret(
-            SessionEntity sessionEntity)
-        {
-            return sessionEntity.Identity.ToModel();
         }
 
         ///--------------------------------------------------------------------
@@ -314,9 +252,18 @@ namespace Codev.Core.Service.Common
         public List<Destination> GetIdentityDestinations(
             IdentityEntity identityEntity)
         {
-            EntityCollection<DestinationEntity> destinations = this.DestinationRepository.GetAllByIdentity(identityEntity);
+            EntityCollection<DestinationEntity> entities = this.DestinationRepository.GetAllByIdentity(identityEntity);
 
-            return destinations.Select(x => x.ToModel()).ToList();
+            List<Destination> destinations = new List<Destination>();
+
+            foreach (DestinationEntity entity in entities)
+            {
+                entity.Identity = identityEntity;
+
+                destinations.Add(entity.ToModel());
+            }
+
+            return destinations;
         }
 
         ///--------------------------------------------------------------------
@@ -354,7 +301,7 @@ namespace Codev.Core.Service.Common
         ///--------------------------------------------------------------------
         public void Logout(
             SessionEntity sessionEntity,
-            Boolean logoutAll)
+            Boolean       logoutAll)
         {
             if ((sessionEntity.Flags & SessionFlags.Permanent) == 0)
             {
@@ -372,66 +319,61 @@ namespace Codev.Core.Service.Common
             String   emailAddress,
             Duration expiration)
         {
-            // Get the email destination.  If it arleady exsits, then make
-            // sure that it is not in use.
-            //
-            DestinationEntity emailDestinationEntity = this.DestinationRepository.GetByAddress(emailAddress, DestinationType.Email);
-
-            if ((emailDestinationEntity != null) && ((emailDestinationEntity.Flags & DestinationFlags.Registered) != 0))
-            {
-                throw new CoreLogicException(CoreErrorCode.Duplicate, "Email address already exists");
-            }
-
             Instant instantNow = this.ClockService.GetCurrentInstant();
 
-            // If we already have an identity and destination, make sure
-            // it's not registered.  If it's not, then we can reuse the entry.
+            // Add the identity.
             //
-            if (emailDestinationEntity != null)
-            {
-                if ((emailDestinationEntity.Flags & DestinationFlags.Registered) != 0)
+            IdentityEntity identityEntity = new IdentityEntity(instantNow)
                 {
-                    throw new CoreLogicException(CoreErrorCode.Duplicate, "Destination already exists");
-                }
-                else
-                {
-                    emailDestinationEntity.ConfirmationSecret      = this.GenerateConfirmationCode();
-                    emailDestinationEntity.DateConfirmationExpires = this.GenerateExpiration(expiration);
-                    emailDestinationEntity.DateModified            = instantNow;
+                    Flags                = IdentityFlags.None,
+                    ConfirmationAttempts = 0,
+                    TimeZone             = NodaTime.DateTimeZoneProviders.Tzdb.GetSystemDefault()
+                };
 
-                    this.DestinationRepository.Update(emailDestinationEntity);
-                }
+            this.IdentityRepository.Add(identityEntity);
+
+            DestinationEntity destinationEntity = new DestinationEntity(instantNow)
+                {
+                    Identity                = identityEntity,
+                    Flags                   = DestinationFlags.Primary,
+                    Address                 = emailAddress,
+                    DestinationType         = DestinationType.Email,
+                    ConfirmationSecret      = this.GenerateConfirmationCode(),
+                    DateConfirmationExpires = this.GenerateExpiration(expiration)
+                };
+
+            this.DestinationRepository.Add(destinationEntity);
+
+            return destinationEntity.ToModel();
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Register a destination.  We must register an email primarily as
+        /// the main account communication.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Destination Register(
+            DestinationEntity destinationEntity,
+            Duration          expiration)
+        {
+            if ((destinationEntity.Flags & DestinationFlags.Registered) != 0)
+            {
+                throw new CoreLogicException(CoreErrorCode.Duplicate, "Destination already registered");
             }
             else
             {
-                // Add the identity.
-                //
-                IdentityEntity identity = new IdentityEntity(instantNow)
-                    {
-                        Flags                = IdentityFlags.None,
-                        ConfirmationAttempts = 0,
-                        TimeZone             = NodaTime.DateTimeZoneProviders.Tzdb.GetSystemDefault()
-                    };
+                Instant instantNow = this.ClockService.GetCurrentInstant();
 
-                this.IdentityRepository.Add(identity);
+                destinationEntity.DateModified            = instantNow;
+                destinationEntity.Flags                   = DestinationFlags.None;
+                destinationEntity.ConfirmationSecret      = this.GenerateConfirmationCode();
+                destinationEntity.DateConfirmationExpires = this.GenerateExpiration(expiration);
 
-                // Add the destination.  Since this is the first addition,
-                // we will make it primary.
-                //
-                emailDestinationEntity = new DestinationEntity(instantNow)
-                    {
-                        Identity                = identity,
-                        Flags                   = DestinationFlags.Primary,
-                        Address                 = emailAddress,
-                        DestinationType         = DestinationType.Email,
-                        ConfirmationSecret      = this.GenerateConfirmationCode(),
-                        DateConfirmationExpires = this.GenerateExpiration(expiration)
-                    };
+                this.DestinationRepository.Update(destinationEntity);
 
-                this.DestinationRepository.Add(emailDestinationEntity);
+                return destinationEntity.ToModel();
             }
-
-            return emailDestinationEntity.ToModel();
         }
 
         ///--------------------------------------------------------------------
@@ -455,19 +397,6 @@ namespace Codev.Core.Service.Common
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Remove the identity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public void RemoveIdentity(
-            IdentityEntity identityEntity)
-        {
-            // Purge the entity from the system.
-            //
-            this.IdentityRepository.Purge(identityEntity);
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
         /// Set the destination as primary.
         /// </summary>
         ///--------------------------------------------------------------------
@@ -477,11 +406,6 @@ namespace Codev.Core.Service.Common
             // Clear out the primary on all destinations of the type.
             //
             this.ClearPrimaryDestinations(destinationEntity.Identity, destinationEntity.DestinationType);
-
-            // Refetch our entity as it has now been versioned from 
-            // the above call.
-            //
-            destinationEntity = this.DestinationRepository.GetById(destinationEntity.Id);
 
             destinationEntity.Flags |= DestinationFlags.Primary;
 

@@ -29,12 +29,12 @@ namespace Codev.Core.Service.Common
             String              address,
             DestinationType     destinationType,
             Boolean             isPrimary)
-        {
+        {                
+            Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
+            Validation.ValidateParameter<String>             ("address"          , address          );
+
             try
             {
-                Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
-                Validation.ValidateParameter<String>             ("address"          , address          );
-
                 Destination destination = null;
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
@@ -90,13 +90,13 @@ namespace Codev.Core.Service.Common
         void IAuthenticationService.ClearSessions(
             Instant instant)
         {
+            Validation.ValidateParameter<Instant>("instant", instant);
+
             try
             {
-                Validation.ValidateParameter<Instant>("instant", instant);
-
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
-                    this.ClearSessions(instant);
+                    this.SessionRepository.PurgeAllExpiredSessions(instant);
 
                     work.Commit();
                 }
@@ -127,10 +127,10 @@ namespace Codev.Core.Service.Common
         Destination IAuthenticationService.ConfirmRequest(
             Reference<Destination> destinationReference)
         {
+            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
+
             try
             {
-                Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
-
                 Destination destination = null;
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
@@ -139,7 +139,14 @@ namespace Codev.Core.Service.Common
 
                     if (destinationEntity != null)
                     {
-                        destination = this.ConfirmRequest(destinationEntity);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity != null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            destination = this.ConfirmRequest(destinationEntity);
+                        }
                     }
                     else
                     {
@@ -179,12 +186,12 @@ namespace Codev.Core.Service.Common
             String                 confirmationSecret,
             Duration               expiration)
         {
+            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
+            Validation.ValidateParameter<String>                ("confirmationSecret"  , confirmationSecret  );
+            Validation.ValidateParameter<Duration>              ("expiration"          , expiration          );
+
             try
             {
-                Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
-                Validation.ValidateParameter<String>                ("confirmationSecret"  , confirmationSecret  );
-                Validation.ValidateParameter<Duration>              ("expiration"          , expiration          );
-
                 Session session = null;
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
@@ -193,7 +200,14 @@ namespace Codev.Core.Service.Common
 
                     if (destinationEntity != null)
                     {
-                        session = this.Confirm(destinationEntity, confirmationSecret, expiration);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity != null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            session = this.Confirm(destinationEntity, confirmationSecret, expiration);
+                        }
                     }
                     else
                     {
@@ -233,17 +247,24 @@ namespace Codev.Core.Service.Common
         {
             Validation.ValidateParameter<String>("destinationAddress", destinationAddress);
 
-            Destination destination = null;
-
             try
             {
+                Destination destination = null;
+
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(destinationAddress, DestinationType.Any);
 
                     if (destinationEntity != null)
                     {
-                        destination = this.Get(destinationEntity);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity != null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            destination = this.GetDestination(destinationEntity);
+                        }
                     }
                     else
                     {
@@ -252,6 +273,8 @@ namespace Codev.Core.Service.Common
 
                     work.Commit();
                 }
+
+                return destination;
             }
             catch (CoreDataException cde)
             {
@@ -269,8 +292,6 @@ namespace Codev.Core.Service.Common
             {
                 throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
             }
-
-            return destination;
         }
 
         ///--------------------------------------------------------------------
@@ -283,17 +304,17 @@ namespace Codev.Core.Service.Common
         {
             Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
 
-            Identity identity = null;
-
             try
             {
+                Identity identity = null;
+
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
                     if (identityEntity != null)
                     {
-                        identity = this.GetIdentity(identityEntity);
+                        identity = identityEntity.ToModel();
                     }
                     else
                     {
@@ -302,6 +323,8 @@ namespace Codev.Core.Service.Common
 
                     work.Commit();
                 }
+
+                return identity;
             }
             catch (CoreDataException cde)
             {
@@ -319,8 +342,6 @@ namespace Codev.Core.Service.Common
             {
                 throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
             }
-
-            return identity;
         }
 
         ///--------------------------------------------------------------------
@@ -333,17 +354,24 @@ namespace Codev.Core.Service.Common
         {
             Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
 
-            Destination destination = null;
-
             try
             {
+                Destination destination = null;
+
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
                     if (destinationEntity != null)
                     {
-                        destination = this.GetDestination(destinationEntity);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetById(destinationReference.Id);
+
+                        if (identityEntity != null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            destination = this.GetDestination(destinationEntity);
+                        }
                     }
                     else
                     {
@@ -352,6 +380,8 @@ namespace Codev.Core.Service.Common
 
                     work.Commit();
                 }
+
+                return destination;
             }
             catch (CoreDataException cde)
             {
@@ -369,8 +399,6 @@ namespace Codev.Core.Service.Common
             {
                 throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
             }
-
-            return destination;
         }
 
         ///--------------------------------------------------------------------
@@ -381,15 +409,33 @@ namespace Codev.Core.Service.Common
         Identity IAuthenticationService.GetIdentityByConfirmationSecret(
             String confirmationSecret)
         {
+            Validation.ValidateParameter<String>("confirmationSecret", confirmationSecret);
+
             try
             {
-                Validation.ValidateParameter<String>("confirmationSecret", confirmationSecret);
-
                 Identity identity = null;
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
-                    identity = this.GetIdentityByConfirmationSecret(confirmationSecret);
+                    DestinationEntity destinationEntity = this.DestinationRepository.GetByConfirmationSecret(confirmationSecret);
+
+                    if (destinationEntity != null)
+                    {
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity != null)
+                        {
+                            identity = identityEntity.ToModel();
+                        }
+                        else
+                        {
+                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
+                        }
+                    }
+                    else
+                    {
+                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
+                    }
 
                     work.Commit();
                 }
@@ -422,10 +468,10 @@ namespace Codev.Core.Service.Common
         List<Destination> IAuthenticationService.GetIdentityDestinations(
             Reference<Identity> identityReference)
         {
+            Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
+
             try
             {
-                Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
-
                 List<Destination> destinations = new List<Destination>();
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
@@ -472,10 +518,10 @@ namespace Codev.Core.Service.Common
         Identity IAuthenticationService.GetIdentityBySessionSecret(
             String sessionSecret)
         {
+            Validation.ValidateParameter<String>("sessionSecret", sessionSecret);
+
             try
             {
-                Validation.ValidateParameter<String>("sessionSecret", sessionSecret);
-
                 Identity identity = null;
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
@@ -484,7 +530,16 @@ namespace Codev.Core.Service.Common
 
                     if (sessionEntity != null)
                     {
-                        identity = this.GetIdentityBySessionSecret(sessionEntity);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetBySession(sessionEntity);
+
+                        if (identityEntity != null)
+                        {
+                            return identityEntity.ToModel();
+                        }
+                        else
+                        {
+                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
+                        }
                     }
                     else
                     {
@@ -524,13 +579,13 @@ namespace Codev.Core.Service.Common
             DestinationType destinationType,
             String          applicationName,
             Duration        expiration)
-        {
+        {                
+            Validation.ValidateParameter<String>  ("address"        , address        );
+            Validation.ValidateParameter<String>  ("applicationName", applicationName);
+            Validation.ValidateParameter<Duration>("expiration"     , expiration     );
+
             try
             {
-                Validation.ValidateParameter<String>  ("address"        , address        );
-                Validation.ValidateParameter<String>  ("applicationName", applicationName);
-                Validation.ValidateParameter<Duration>("expiration"     , expiration     );
-
                 Destination destination = null;
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
@@ -539,7 +594,18 @@ namespace Codev.Core.Service.Common
 
                     if (destinationEntity != null)
                     {
-                        destination = this.Login(destinationEntity, expiration);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity != null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            destination = this.Login(destinationEntity, expiration);
+                        }
+                        else
+                        {
+                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
+                        }
                     }
                     else
                     {
@@ -578,10 +644,10 @@ namespace Codev.Core.Service.Common
             String  sessionSecret,
             Boolean logoutAll)
         {
+            Validation.ValidateParameter<String>("sessionSecret", sessionSecret);
+
             try
             {
-                Validation.ValidateParameter<String>("sessionSecret", sessionSecret);
-
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     SessionEntity sessionEntity = this.SessionRepository.GetBySessionSecret(sessionSecret);
@@ -589,6 +655,13 @@ namespace Codev.Core.Service.Common
                     if (sessionEntity != null)
                     {
                         this.Logout(sessionEntity, logoutAll);
+                    }
+                    else
+                    {
+                        //
+                        // Don't throw any exceptions.  Assume we are logged
+                        // out.
+                        //
                     }
 
                     work.Commit();
@@ -621,17 +694,37 @@ namespace Codev.Core.Service.Common
             String   emailAddress,
             Duration expiration)
         {
+            Validation.ValidateParameter<String>  ("emailAddress", emailAddress);
+            Validation.ValidateParameter<Duration>("expiration"  , expiration  );
+
             try
             {
-                Validation.ValidateParameter<String>  ("emailAddress", emailAddress);
-                Validation.ValidateParameter<Duration>("expiration"  , expiration  );
-
                 Destination destination = null;
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
-                    destination = this.Register(emailAddress, expiration);
+                    DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(emailAddress, DestinationType.Email);
 
+                    if (destinationEntity == null)
+                    {
+                        destination = this.Register(emailAddress, expiration);
+                    }
+                    else
+                    {
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity == null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            destination = this.Register(destinationEntity, expiration);
+                        }
+                        else
+                        {
+                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
+                        }
+                    }
+ 
                     work.Commit();
                 }
 
@@ -663,17 +756,28 @@ namespace Codev.Core.Service.Common
         void IAuthenticationService.RemoveDestination(
             Reference<Destination> destinationReference)
         {
+            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
+
             try
             {
-                Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
-
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
                     if (destinationEntity != null)
                     {
-                        this.RemoveDestination(destinationEntity);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity != null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            this.RemoveDestination(destinationEntity);
+                        }
+                        else
+                        {
+                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
+                        }
                     }
                     else
                     {
@@ -709,17 +813,17 @@ namespace Codev.Core.Service.Common
         void IAuthenticationService.RemoveIdentity(
             Reference<Identity> identityReference)
         {
+            Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
+
             try
             {
-                Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
-
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
                     if (identityEntity != null)
                     {
-                        this.RemoveIdentity(identityEntity);
+                        this.IdentityRepository.Purge(identityEntity);
                     }
                     else
                     {
@@ -758,17 +862,24 @@ namespace Codev.Core.Service.Common
         void IAuthenticationService.SetPrimary(
             Reference<Destination> destinationReference)
         {
+            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
+
             try
             {
-                Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
-
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
                     if (destinationEntity != null)
                     {
-                        this.SetPrimary(destinationEntity);
+                        IdentityEntity identityEntity = this.IdentityRepository.GetByDestination(destinationEntity);
+
+                        if (identityEntity != null)
+                        {
+                            destinationEntity.Identity = identityEntity;
+
+                            this.SetPrimary(destinationEntity);
+                        }
                     }
                     else
                     {
@@ -805,11 +916,11 @@ namespace Codev.Core.Service.Common
             Reference<Identity> identityReference,
             DateTimeZone        timeZone)
         {
+            Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
+            Validation.ValidateParameter<DateTimeZone>       ("timeZone"         , timeZone         );
+
             try
             {
-                Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
-                Validation.ValidateParameter<DateTimeZone>       ("timeZone"         , timeZone         );
-
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);

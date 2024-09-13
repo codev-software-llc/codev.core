@@ -25,7 +25,6 @@ namespace Codev.Core.Model
         public PaymentMethodEntity(
             Instant instantNow) : base(instantNow)
         {
-            this.Initialize();
         }
 
         ///--------------------------------------------------------------------
@@ -36,11 +35,10 @@ namespace Codev.Core.Model
         public PaymentMethodEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
-            this.Initialize();
         }
         #endregion
 
-        #region Properties (Base)
+        #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the entity flags.
@@ -76,39 +74,7 @@ namespace Codev.Core.Model
         /// Get or set the identity reference.
         /// </summary>
         ///--------------------------------------------------------------------
-        public IdentityEntity Identity
-        {
-            get
-            {
-                return this.LazyIdentity.Value;
-            }
-
-            set
-            {
-                this.LazyIdentity = new Lazy<IdentityEntity>(() => value);
-            }
-        }
-        #endregion
-
-        #region Properties (Lazy)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get or set the lazy-load property for the identity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Lazy<IdentityEntity> LazyIdentity { get; set; }
-        #endregion
-
-        #region Methods (Private)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the entity references.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void Initialize()
-        {
-            this.LazyIdentity = new Lazy<IdentityEntity>();
-        }
+        public IdentityEntity Identity { get; set; }
         #endregion
     }
 }

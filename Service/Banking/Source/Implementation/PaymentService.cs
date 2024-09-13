@@ -11,7 +11,7 @@ namespace Codev.Core.Service.Banking
     using Codev.Core.Base;
     using Codev.Core.Interface;
     using Codev.Core.Model;
-    using Codev.Core.Service.Common;
+    using Codev.Core.Service.Clock;
     using NodaTime;
 
     ///------------------------------------------------------------------------

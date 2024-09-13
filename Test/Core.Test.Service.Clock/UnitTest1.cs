@@ -1,9 +1,6 @@
 namespace Core.Test.Service.Clock
 {
-    using Codev.Core.Base;
-    using Codev.Core.Interface;
-    using Codev.Core.Repository.Ado;
-    using Codev.Core.Service.Common;
+    using Codev.Core.Service.Clock;
     using Microsoft.Extensions.Caching.Memory;
     using NodaTime;
 

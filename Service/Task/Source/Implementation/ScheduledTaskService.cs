@@ -11,7 +11,6 @@ namespace Codev.Core.Service.Task
     using Codev.Core.Base;
     using Codev.Core.Interface;
     using Codev.Core.Model;
-    using Codev.Core.Service.Common;
     using NodaTime;
 
     ///------------------------------------------------------------------------

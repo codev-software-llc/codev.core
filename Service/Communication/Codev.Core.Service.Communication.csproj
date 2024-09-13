@@ -38,7 +38,6 @@
     <ProjectReference Include="..\..\Common\Model\Codev.Core.Model.csproj" />
     <ProjectReference Include="..\..\Provider\Communication\Codev.Core.Provider.Communication.csproj" />
     <ProjectReference Include="..\..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
-    <ProjectReference Include="..\Common\Codev.Core.Service.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -20,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Service\Cipher\Codev.Core.Service.Cipher.csproj" />
+    <ProjectReference Include="..\..\Provider\Cipher\Codev.Core.Provider.Cipher.csproj" />
+    <ProjectReference Include="..\..\Service\Codev.Core.Service\Codev.Core.Service.csproj" />
   </ItemGroup>
 
 </Project>

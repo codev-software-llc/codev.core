@@ -313,23 +313,7 @@ namespace Codev.Core.Repository.Ado
                     Content  = reader.GetValue<Byte[]>          ("Content")
                 };
 
-            this.InitializeLazyLoading(entity);
-
             return entity;
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the lazy loading of the entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void InitializeLazyLoading(
-            BlobContentEntity entity)
-        {
-            entity.LazyBlob = new Lazy<BlobEntity>(() =>
-                {
-                    return this.BlobRepository.GetByBlobContent(entity);
-                });
         }
         #endregion
     }

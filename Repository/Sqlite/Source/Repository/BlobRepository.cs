@@ -367,23 +367,7 @@ namespace Codev.Core.Repository.Sqlite
                         Size     = reader.GetValue<Int64>    ("Size")
                     };
 
-            this.InitializeLazyLoading(entity);
-
             return entity;
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the lazy loading of the entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void InitializeLazyLoading(
-            BlobEntity entity)
-        {
-            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
-                {
-                    return this.IdentityRepository.GetByBlob(entity);
-                });
         }
         #endregion
     }

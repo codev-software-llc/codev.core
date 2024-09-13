@@ -25,7 +25,6 @@ namespace Codev.Core.Model
         public SessionEntity(
             Instant instantNow) : base(instantNow)
         {
-            this.Initialize();
         }
 
         ///--------------------------------------------------------------------
@@ -36,11 +35,10 @@ namespace Codev.Core.Model
         public SessionEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
-            this.Initialize();
         }
         #endregion
 
-        #region Properties (Base)
+        #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the entity flags.
@@ -69,40 +67,7 @@ namespace Codev.Core.Model
         /// Foreign key references initialized by the lazy-loading process.
         /// </summary>
         ///--------------------------------------------------------------------
-        public virtual IdentityEntity Identity 
-        {
-            get
-            { 
-                return this.LazyIdentity.Value; 
-            }
-            
-            set
-            {
-                this.LazyIdentity = new Lazy<IdentityEntity>(() => value);
-            }        
-        }
-        #endregion
-
-        #region Properties (Lazy Loading)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Lazy load properties to support the Foreign and Collection 
-        /// properties.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Lazy<IdentityEntity> LazyIdentity { get; set; }
-        #endregion
-
-        #region Methods (Private)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void Initialize()
-        {
-            this.LazyIdentity = new Lazy<IdentityEntity>();
-        }
+        public virtual IdentityEntity Identity { get; set; }
         #endregion
     }
 }

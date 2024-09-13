@@ -311,23 +311,7 @@ namespace Codev.Core.Repository.Ado
                     Secret         = reader.GetValue<String>      ("Secret")
                 };
 
-            this.InitializeLazyLoading(entity);
-
             return entity;
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the entity lazy loading properties.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void InitializeLazyLoading(
-            SessionEntity entity)
-        {
-            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
-                {
-                    return this.IdentityRepository.GetBySession(entity);
-                });
         }
         #endregion
     }

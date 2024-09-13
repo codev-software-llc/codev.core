@@ -10,7 +10,9 @@ namespace Codev.Core.Repository.Ado
     using System.Data;
     using System.Data.Common;
     using System.Data.SqlClient;
+    using System.Net.NetworkInformation;
     using System.Threading;
+    using System.Transactions;
     using Codev.Core.Base;
 
     ///------------------------------------------------------------------------
@@ -22,6 +24,15 @@ namespace Codev.Core.Repository.Ado
     ///------------------------------------------------------------------------
     public static class AdoAccess
     {
+        #region Constants
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Name of the thread local storage slot.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private const String UnitOfWorkFormat = "UnitOfWork_{0}";
+        #endregion
+
         #region Constructors
         ///--------------------------------------------------------------------
         /// <summary>
@@ -45,6 +56,91 @@ namespace Codev.Core.Repository.Ado
         /// </summary>
         ///--------------------------------------------------------------------
         private static Dictionary<Int32, CoreErrorCode> Errors { get; set; }
+        #endregion
+
+        #region Methods
+        public static void PopUnitOfWork()
+        {
+            String slotName = GetSlotName();
+
+            LocalDataStoreSlot slot = Thread.GetNamedDataSlot(slotName);
+
+            if (slot != null)
+            {
+                Stack<IUnitOfWork> stack = (Stack<IUnitOfWork>)Thread.GetData(slot);
+
+                if ((stack != null) && (stack.Count > 0))
+                {
+                    stack.Pop();
+
+                    if (stack.Count == 0)
+                    {
+                        Thread.FreeNamedDataSlot(slotName);
+                    }
+                }
+                else
+                {
+                    Thread.FreeNamedDataSlot(slotName);
+                }
+            }
+        }
+
+        private static String GetSlotName()
+        {
+            return String.Format(UnitOfWorkFormat, Environment.CurrentManagedThreadId);
+        }
+
+        public static void AddUnitOfWorkToThread(
+            IUnitOfWork unitOfWork)
+        {
+            String slotName = GetSlotName();
+
+            LocalDataStoreSlot slot = Thread.GetNamedDataSlot(slotName);
+
+            if (slot == null)
+            {
+                slot = Thread.AllocateNamedDataSlot(slotName);
+            }
+
+            Stack<IUnitOfWork> stack = (Stack<IUnitOfWork>)Thread.GetData(slot);
+
+            if (stack == null)
+            {
+                stack = new Stack<IUnitOfWork>();
+
+                Thread.SetData(slot, stack);
+            }
+
+            stack.Push(unitOfWork);
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get the stack of units of work.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public static IUnitOfWork GetUnitOfWorkFromThread()
+        {
+            String slotName = GetSlotName();
+
+            LocalDataStoreSlot slot = Thread.GetNamedDataSlot(slotName);
+
+            if (slot == null)
+            {
+                slot = Thread.AllocateNamedDataSlot(slotName);
+            }
+
+            Stack<IUnitOfWork> stack = (Stack<IUnitOfWork>)Thread.GetData(slot);
+
+            if (stack == null)
+            {
+                stack = new Stack<IUnitOfWork>();
+
+                Thread.SetData(slot, stack);
+            }
+
+            return stack.Count > 0 ? stack.Peek() : null;
+        }
         #endregion
 
         #region Methods (Procedures)
@@ -197,34 +293,41 @@ namespace Codev.Core.Repository.Ado
             Action<IDbCommand> setupCallback,
             Action<IDbCommand> workerCallback)
         {
+            procedureName = String.Format("[{0}].[{1}]", dataSource.SchemaName, procedureName);
+
             // Pull the unit of work collection from the thread local
             // storage.  We will work of the current unit-of-work from
             // this stack.
             //
-            Stack<IUnitOfWork> stack = GetUnitOfWorkFromThread();
-
-            // If we don't have a unit of work in the stack, then 
-            // create a local scope unit of work that we will use for
-            // the call.
-            //
-            IUnitOfWork unitOfWork = (stack.Count > 0 ? stack.Peek() : null);
-
-            procedureName = String.Format("[{0}].[{1}]", dataSource.SchemaName, procedureName);
+            IUnitOfWork unitOfWork = GetUnitOfWorkFromThread();
 
             if (unitOfWork != null)
             {
-                AdoAccess.DoProcedureCall(unitOfWork, procedureName, setupCallback, workerCallback);
+                using (IDbCommand command = unitOfWork.CreateCommand())
+                {
+                    AdoAccess.CallCommand(command, procedureName, setupCallback, workerCallback);
+                }
             }
             else
             {
-                using (IUnitOfWork localWork = new UnitOfWork(dataSource))
-                {
-                    using (IUnitOfWork work = localWork.Begin())
-                    {
-                        AdoAccess.DoProcedureCall(work, procedureName, setupCallback, workerCallback);
+                TransactionManager.ImplicitDistributedTransactions = true;
 
-                        work.Commit();
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress))
+                {
+                    using (IDbConnection connection = dataSource.OpenConnection())
+                    {
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
+
+                        using (IDbCommand command = connection.CreateCommand())
+                        {
+                            AdoAccess.CallCommand(command, procedureName, setupCallback, workerCallback);
+                        }
                     }
+
+                    scope.Complete();
                 }
             }
         }
@@ -234,32 +337,29 @@ namespace Codev.Core.Repository.Ado
         /// Make the call using the unit of work.
         /// </summary>
         ///--------------------------------------------------------------------
-        private static void DoProcedureCall(
-            IUnitOfWork        work,
+        private static void CallCommand(
+            IDbCommand         command,
             String             procedureName,
             Action<IDbCommand> setupCallback,
             Action<IDbCommand> workerCallback)
         {
             try
             {
-                using (IDbCommand command = work.CreateCommand())
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = procedureName;
+
+                // This will make a callback to the caller so that they
+                // may initialize the command with parameters.
+                //
+                if (setupCallback != null)
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = procedureName;
-
-                    // This will make a callback to the caller so that they
-                    // may initialize the command with parameters.
-                    //
-                    if (setupCallback != null)
-                    {
-                        setupCallback(command);
-                    }
-
-                    // Open the connection and perform the callback to do
-                    // the actual ADO call.
-                    //
-                    workerCallback(command);
+                    setupCallback(command);
                 }
+
+                // Open the connection and perform the callback to do
+                // the actual ADO call.
+                //
+                workerCallback(command);
             }
             catch (SqlException se)
             {
@@ -291,17 +391,11 @@ namespace Codev.Core.Repository.Ado
             // storage.  We will work of the current unit-of-work from
             // this stack.
             //
-            Stack<IUnitOfWork> unitOfWork = GetUnitOfWorkFromThread();
+            IUnitOfWork unitOfWork = GetUnitOfWorkFromThread();
 
-            // If we don't have a unit of work in the stack, then 
-            // create a local scope unit of work that we will use for
-            // the call.
-            //
-            IUnitOfWork work = (unitOfWork.Count > 0 ? unitOfWork.Peek() : null);
-
-            if (work != null)
+            if (unitOfWork != null)
             {
-                using (IDbCommand command = work.CreateCommand())
+                using (IDbCommand command = unitOfWork.CreateCommand())
                 {
                     command.CommandType    = CommandType.StoredProcedure;
                     command.CommandText    = String.Format("[{0}].[{1}]", dataSource.SchemaName, procedureName);
@@ -322,23 +416,6 @@ namespace Codev.Core.Repository.Ado
             {
                 throw new NotSupportedException("Command is not in a transaction scope");
             }
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get the stack of units of work.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private static Stack<IUnitOfWork> GetUnitOfWorkFromThread()
-        {
-            LocalDataStoreSlot slot = Thread.GetNamedDataSlot("UnitOfWork");
-
-            if (slot == null)
-            {
-                slot = Thread.AllocateNamedDataSlot("UnitOfWork");
-            }
-
-            return (Stack<IUnitOfWork>)Thread.GetData(slot);
         }
 
         ///--------------------------------------------------------------------

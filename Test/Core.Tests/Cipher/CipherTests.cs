@@ -1,12 +1,21 @@
-using System;
-using Codev.Core.Interface;
-using Codev.Core.Provider;
-using Codev.Core.Repository.Ado;
-using Codev.Core.Service.Cipher;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+//-----------------------------------------------------------------------------
+// <copyright file="CipherTests.cs" company="Codev Software, LLC">
+// Copyright © 2024
+// </copyright>
+//-----------------------------------------------------------------------------
 namespace Core.Tests
 {
+    using System;
+    using Codev.Core.Interface;
+    using Codev.Core.Provider.Cipher;
+    using Codev.Core.Service.Cipher;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    ///------------------------------------------------------------------------
+    /// <summary>
+    /// This tests the cipher service.
+    /// </summary>
+    ///------------------------------------------------------------------------
     [TestClass]
     public class CipherTests
     {

@@ -42,7 +42,7 @@
     <ProjectReference Include="..\..\Provider\Banking\Stripe\Codev.Core.Provider.Banking.Stripe.csproj" />
     <ProjectReference Include="..\..\Provider\Banking\Stub\Codev.Core.Provider.Banking.Stub.csproj" />
     <ProjectReference Include="..\..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
-    <ProjectReference Include="..\Common\Codev.Core.Service.Common.csproj" />
+    <ProjectReference Include="..\Codev.Core.Service\Codev.Core.Service.csproj" />
   </ItemGroup>
 
 </Project>

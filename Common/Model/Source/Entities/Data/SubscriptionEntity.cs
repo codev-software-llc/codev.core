@@ -25,7 +25,6 @@ namespace Codev.Core.Model
         public SubscriptionEntity(
             Instant instantNow) : base(instantNow)
         {
-            this.Initialize();
         }
 
         ///--------------------------------------------------------------------
@@ -36,11 +35,10 @@ namespace Codev.Core.Model
         public SubscriptionEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
-            this.Initialize();
         }
         #endregion
 
-        #region Properties (Base)
+        #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the flags for the entity.
@@ -69,65 +67,14 @@ namespace Codev.Core.Model
         /// Get or set the license.
         /// </summary>
         ///--------------------------------------------------------------------
-        public virtual LicenseEntity License
-        {
-            get
-            {
-                return this.LazyLicense.Value;
-            }
-
-            set
-            {
-                this.LazyLicense = new Lazy<LicenseEntity>(() => value);
-            }
-        }
+        public virtual LicenseEntity License { get; set; }
 
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the identity.
         /// </summary>
         ///--------------------------------------------------------------------
-        public virtual IdentityEntity Identity
-        {
-            get
-            {
-                return this.LazyIdentity.Value;
-            }
-
-            set
-            {
-                this.LazyIdentity = new Lazy<IdentityEntity>(() => value);
-            }
-        }
-        #endregion
-
-        #region Properties (Lazy Loading)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get or set the lazy loading reference for the license entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Lazy<LicenseEntity> LazyLicense { get; set; }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get or set the lazy loading reference for the identity entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Lazy<IdentityEntity> LazyIdentity { get; set; }
-        #endregion
-
-        #region Methods (Private)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void Initialize()
-        {
-            this.LazyLicense  = new Lazy<LicenseEntity>();
-            this.LazyIdentity = new Lazy<IdentityEntity>();
-        }
+        public virtual IdentityEntity Identity { get; set; }
         #endregion
     }
 }

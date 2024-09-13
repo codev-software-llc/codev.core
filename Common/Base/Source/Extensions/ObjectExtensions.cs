@@ -41,17 +41,6 @@ namespace Codev.Core.Base
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Convert the entity to a reference.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public static Reference<T> AsReference<T>(
-            this BaseModel model)
-        {
-            return new Reference<T>(model.Id);
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
         /// This will deep clone an object.
         /// </summary>
         ///--------------------------------------------------------------------

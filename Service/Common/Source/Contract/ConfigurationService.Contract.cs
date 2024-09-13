@@ -65,11 +65,11 @@ namespace Codev.Core.Service.Common
             String settingName,
             T      settingValue)
         {
+            Validation.ValidateParameter<T>     ("settingValue", settingValue);
+            Validation.ValidateParameter<String>("settingName" , settingName );
+
             try
             {
-                Validation.ValidateParameter<String>("settingName" , settingName );
-                Validation.ValidateParameter<T>     ("settingValue", settingValue);
-
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
                 {
                     this.SetValue<T>(settingName, settingValue);
@@ -103,10 +103,10 @@ namespace Codev.Core.Service.Common
         T IConfigurationService.GetValue<T>(
             String settingName)
         {
+            Validation.ValidateParameter<String>("settingName", settingName);
+
             try
             {
-                Validation.ValidateParameter<String>("settingName", settingName);
-
                 T settingValue = default(T);
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())
@@ -144,10 +144,10 @@ namespace Codev.Core.Service.Common
         List<EnumType> IConfigurationService.GetAllEnumTypes(
             String applicationName)
         {
+            Validation.ValidateParameter<String>("applicationName", applicationName);
+
             try
             {
-                Validation.ValidateParameter<String>("applicationName", applicationName);
-
                 List<EnumType> enumTypes = new List<EnumType>();
 
                 using (IUnitOfWork work = this.UnitOfWork.Begin())

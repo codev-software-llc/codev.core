@@ -300,23 +300,7 @@ namespace Codev.Core.Repository.Ado
                     Token            = data
                 };
 
-            this.InitializeLazyLoading(entity);
-
             return entity;
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the lazy loading of the Contact entity properties.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void InitializeLazyLoading(
-            PaymentMethodEntity entity)
-        {
-            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
-                {
-                    return this.IdentityRepository.GetByPaymentMethod(entity);
-                });
         }
         #endregion
     }

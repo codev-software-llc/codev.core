@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Source\Interface\" />
-    <Folder Include="Source\Contract\" />
-    <Folder Include="Source\Implementation\" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+    <PackageReference Include="NodaTime" Version="3.1.12" />
+    <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>

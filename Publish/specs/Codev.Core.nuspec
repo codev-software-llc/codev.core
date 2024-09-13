@@ -19,7 +19,7 @@
   <files>
     <file src="..\docs\readme.md" target="docs\" />
     <file src="..\images\Codev_Logo.png" target="images\" />
-    <file src="..\bin\Infrastructure\live\net8.0\*.dll" target="lib\net8.0" />
-    <file src="..\bin\Infrastructure\live\net8.0\*.pdb" target="lib\net8.0\symbols" />
+    <file src="..\bin\Infrastructure\dev\net8.0\*.dll" target="lib\net8.0" />
+    <file src="..\bin\Infrastructure\dev\net8.0\*.pdb" target="lib\net8.0\symbols" />
   </files>
 </package>

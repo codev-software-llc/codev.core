@@ -126,7 +126,7 @@ namespace Codev.Core.Repository.Ado
                     MaxPoolSize            = poolSize,
                     Encrypt                = doEncrypt,
                     TrustServerCertificate = trustCertificate,
-                    IntegratedSecurity     = false,
+                    IntegratedSecurity     = false
                 };
 
             this.ConnectionString = scsb.ToString();

@@ -20,16 +20,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Provider\Banking\Fake\Codev.Core.Provider.Banking.Fake.csproj" />
+    <ProjectReference Include="..\Provider\Banking\Memory\Codev.Core.Provider.Banking.Memory.csproj" />
+    <ProjectReference Include="..\Provider\Banking\PayPal\Codev.Core.Provider.Banking.PayPal.csproj" />
+    <ProjectReference Include="..\Provider\Banking\Stripe\Codev.Core.Provider.Banking.Stripe.csproj" />
+    <ProjectReference Include="..\Provider\Banking\Stub\Codev.Core.Provider.Banking.Stub.csproj" />
+    <ProjectReference Include="..\Provider\Cache\Codev.Core.Provider.Cache.csproj" />
+    <ProjectReference Include="..\Provider\Cipher\Codev.Core.Provider.Cipher.csproj" />
+    <ProjectReference Include="..\Provider\Common\Codev.Core.Provider.Authentication.csproj" />
+    <ProjectReference Include="..\Provider\Communication\Codev.Core.Provider.Communication.csproj" />
+    <ProjectReference Include="..\Provider\Export\Codev.Core.Provider.Export.csproj" />
     <ProjectReference Include="..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
-    <ProjectReference Include="..\Service\Asset\Codev.Core.Service.Asset.csproj" />
-    <ProjectReference Include="..\Service\Banking\Codev.Core.Service.Banking.csproj" />
-    <ProjectReference Include="..\Service\Cache\Codev.Core.Service.Cache.csproj" />
-    <ProjectReference Include="..\Service\Cipher\Codev.Core.Service.Cipher.csproj" />
-    <ProjectReference Include="..\Service\Common\Codev.Core.Service.Common.csproj" />
-    <ProjectReference Include="..\Service\Communication\Codev.Core.Service.Communication.csproj" />
-    <ProjectReference Include="..\Service\Export\Codev.Core.Service.Export.csproj" />
-    <ProjectReference Include="..\Service\Licensing\Codev.Core.Service.Licensing.csproj" />
-    <ProjectReference Include="..\Service\Task\Codev.Core.Service.Task.csproj" />
+    <ProjectReference Include="..\Service\Codev.Core.Service\Codev.Core.Service.csproj" />
   </ItemGroup>
 
 </Project>

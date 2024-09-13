@@ -3,7 +3,7 @@
 // Copyright © 2024
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Codev.Core.Provider
+namespace Codev.Core.Provider.Communication
 {
     using System;
     using System.Collections.Generic;

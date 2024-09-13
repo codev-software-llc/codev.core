@@ -328,7 +328,7 @@ namespace Codev.Core.Repository.Ado
                     ConfirmationSecret      = reader.GetValue<String>          ("ConfirmationSecret")
                 };
 
-            this.InitializeLazyLoading(entity);
+            //this.InitializeLazyLoading(entity);
 
             return entity;
         }
@@ -341,10 +341,12 @@ namespace Codev.Core.Repository.Ado
         private void InitializeLazyLoading(
             DestinationEntity entity)
         {
-            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
-                {
-                    return this.IdentityRepository.GetByDestination(entity);
-                });
+            entity.Identity = this.IdentityRepository.GetByDestination(entity);
+
+            //entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
+            //    {
+            //        return this.IdentityRepository.GetByDestination(entity);
+            //    });
         }
         #endregion
     }

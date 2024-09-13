@@ -3,7 +3,7 @@
 // Copyright © 2024
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Codev.Core.Provider
+namespace Codev.Core.Provider.Export
 {
     using System;
     using System.Data;

@@ -235,23 +235,7 @@ namespace Codev.Core.Repository.Ado
                     PaymentAmount   = new PaymentAmount(currencyCode, amount)
                 };
 
-            this.InitializeLazyLoading(entity);
-
             return entity;
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the lazy loading of the entity references.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void InitializeLazyLoading(
-            PaymentTransactionEntity entity)
-        {
-            entity.LazyPayment = new Lazy<PaymentEntity>(() =>
-                {
-                    return this.PaymentRepository.GetByPaymentTransaction(entity);
-                });
         }
         #endregion
     }

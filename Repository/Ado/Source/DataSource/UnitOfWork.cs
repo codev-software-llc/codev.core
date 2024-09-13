@@ -6,10 +6,7 @@
 namespace Codev.Core.Repository.Ado
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Transactions;
     using Codev.Core.Base;
 
@@ -20,15 +17,6 @@ namespace Codev.Core.Repository.Ado
     ///------------------------------------------------------------------------
     public class UnitOfWork : IUnitOfWork
     {
-        #region Constants
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Name of the thread local storage slot.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private const String UnitOfWorkName = "UnitOfWork";
-        #endregion
-
         #region Constructors
         ///--------------------------------------------------------------------
         /// <summary>
@@ -91,25 +79,19 @@ namespace Codev.Core.Repository.Ado
         ///--------------------------------------------------------------------
         public IUnitOfWork Begin()
         {
-            IUnitOfWork work = null;
+            IUnitOfWork unitOfWork = AdoAccess.GetUnitOfWorkFromThread();
 
-            Stack<IUnitOfWork> stack = this.GetUnitOfWorkFromThread();
-
-            if (stack.Count == 0)
+            if (unitOfWork == null)
             {
-                work = new UnitOfWork(this.DataSource);
+                unitOfWork = new UnitOfWork(this.DataSource);
 
-                ((UnitOfWork)work).TransactionScope = new TransactionScope(TransactionScopeOption.Required);
-                ((UnitOfWork)work).Connection       = this.OpenConnection(this.DataSource);
+                ((UnitOfWork)unitOfWork).TransactionScope = new TransactionScope(TransactionScopeOption.Required);
+                ((UnitOfWork)unitOfWork).Connection       = this.OpenConnection(this.DataSource);
 
-                stack.Push(work);
-            }
-            else
-            {
-                work = stack.Peek();
+                AdoAccess.AddUnitOfWorkToThread(unitOfWork);
             }
 
-            return work;
+            return unitOfWork;
         }
 
         ///--------------------------------------------------------------------
@@ -243,53 +225,10 @@ namespace Codev.Core.Repository.Ado
             {
                 this.CloseConnection(false);
 
-                Stack<IUnitOfWork> unitOfWork = this.GetUnitOfWorkFromThread();
-
-                // If we have reached the end of the work, then we will want
-                // to free the thread-local storage.
-                //
-                if (unitOfWork.Count > 0)
-                {
-                    IUnitOfWork work = unitOfWork.Pop();
-
-                    if (work == null)
-                    {
-                        Thread.FreeNamedDataSlot(UnitOfWorkName);
-                    }
-                }
-                else
-                {
-                    Thread.FreeNamedDataSlot(UnitOfWorkName);
-                }
+                AdoAccess.PopUnitOfWork();
 
                 this.IsDisposed = true;
             }
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get the stack of units of work.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private Stack<IUnitOfWork> GetUnitOfWorkFromThread()
-        {
-            LocalDataStoreSlot slot = Thread.GetNamedDataSlot(UnitOfWorkName);
-
-            if (slot == null)
-            {
-                slot = Thread.AllocateNamedDataSlot(UnitOfWorkName);
-            }
-
-            Stack<IUnitOfWork> stack = (Stack<IUnitOfWork>)Thread.GetData(slot);
-
-            if (stack == null)
-            {
-                stack = new Stack<IUnitOfWork>();
-
-                Thread.SetData(slot, stack);
-            }
-
-            return stack;
         }
         #endregion
     }

@@ -25,7 +25,6 @@ namespace Codev.Core.Model
         public ErrorLogEntity(
             Instant instantNow) : base(instantNow)
         {
-            this.Initialize();
         }
 
         ///--------------------------------------------------------------------
@@ -36,11 +35,10 @@ namespace Codev.Core.Model
         public ErrorLogEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
-            this.Initialize();
         }
         #endregion
 
-        #region Properties (Base)
+        #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the entity flags.
@@ -97,39 +95,7 @@ namespace Codev.Core.Model
         /// Get or set the identity.
         /// </summary>
         ///--------------------------------------------------------------------
-        public virtual IdentityEntity Identity
-        {
-            get
-            {
-                return this.LazyIdentity.Value;
-            }
-
-            set
-            {
-                this.LazyIdentity = new Lazy<IdentityEntity>(() => value);
-            }
-        }
-        #endregion
-
-        #region Properties (Lazy Loading)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get or set the lazy loading reference for the identity entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Lazy<IdentityEntity> LazyIdentity { get; set; }
-        #endregion
-
-        #region Methods (Private)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the entity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void Initialize()
-        {
-            this.LazyIdentity = new Lazy<IdentityEntity>();
-        }
+        public virtual IdentityEntity Identity { get; set; }
         #endregion
     }
 }

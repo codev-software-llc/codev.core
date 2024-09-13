@@ -38,7 +38,7 @@ namespace Codev.Core.Model
         }       
         #endregion
 
-        #region Properties (Base)
+        #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the entity flags.

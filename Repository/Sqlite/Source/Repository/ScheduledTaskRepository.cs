@@ -281,10 +281,10 @@ namespace Codev.Core.Repository.Sqlite
         private void InitializeLazyLoading(
             ScheduledTaskEntity entity)
         {
-            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
-                {
-                    return this.IdentityRepository.GetByScheduledTask(entity);
-                });
+            //entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
+            //    {
+            //        return this.IdentityRepository.GetByScheduledTask(entity);
+            //    });
         }
         #endregion
     }

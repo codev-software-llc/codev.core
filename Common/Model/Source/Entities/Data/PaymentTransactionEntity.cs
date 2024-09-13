@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Model
 {
-    using System;
     using Codev.Core.Base;
     using NodaTime;
 
@@ -25,7 +24,6 @@ namespace Codev.Core.Model
         public PaymentTransactionEntity(
             Instant instantNow) : base(instantNow)
         {
-            this.Initialize();
         }
 
         ///--------------------------------------------------------------------
@@ -36,11 +34,10 @@ namespace Codev.Core.Model
         public PaymentTransactionEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
-            this.Initialize();
         }
         #endregion
 
-        #region Properties (Base)
+        #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the flags for the entity.
@@ -69,39 +66,7 @@ namespace Codev.Core.Model
         /// Get or set the payment reference.
         /// </summary>
         ///--------------------------------------------------------------------
-        public PaymentEntity Payment
-        {
-            get
-            {
-                return this.LazyPayment.Value;
-            }
-
-            set
-            {
-                this.LazyPayment = new Lazy<PaymentEntity>(() => value);
-            }
-        }
-        #endregion
-
-        #region Properties (Lazy)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Get or set the lazy-load property for the payment association.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public Lazy<PaymentEntity> LazyPayment { get; set; }
-        #endregion
-
-        #region Methods (Private)
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the entity references.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private void Initialize()
-        {
-            this.LazyPayment = new Lazy<PaymentEntity>();
-        }
+        public PaymentEntity Payment { get; set; }
         #endregion
     }
 }

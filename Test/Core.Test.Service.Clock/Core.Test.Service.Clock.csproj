@@ -29,7 +29,7 @@
     <ProjectReference Include="..\..\Common\Interface\Codev.Core.Interface.csproj" />
     <ProjectReference Include="..\..\Common\Model\Codev.Core.Model.csproj" />
     <ProjectReference Include="..\..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
-    <ProjectReference Include="..\..\Service\Common\Codev.Core.Service.Common.csproj" />
+    <ProjectReference Include="..\..\Service\Codev.Core.Service\Codev.Core.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

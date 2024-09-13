@@ -324,10 +324,10 @@ namespace Codev.Core.Repository.Sqlite
         private void InitializeLazyLoading(
             ServiceLinkEntity entity)
         {
-            entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
-                {
-                    return this.IdentityRepository.GetByServiceLink(entity);
-                });
+            ///entity.LazyIdentity = new Lazy<IdentityEntity>(() =>
+            ///    {
+            ///        return this.IdentityRepository.GetByServiceLink(entity);
+            ///    });
         }
         #endregion
     }
