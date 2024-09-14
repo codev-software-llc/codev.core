@@ -12,7 +12,9 @@ namespace Codev.Core.Service.Clock
 
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This is the contract layer for the Clock Service.
+    /// This is the contract layer for the Clock Service.  This service does
+    /// not have any repository dependencies so can be called from any
+    /// call stack outside of a transaction-scope.
     /// </summary>
     ///------------------------------------------------------------------------
     public sealed partial class ClockService : IClockService
