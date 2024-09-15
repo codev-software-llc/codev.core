@@ -30,18 +30,16 @@ namespace Codev.Core.Service.Diagnostic
         /// </summary>
         /// -------------------------------------------------------------------
         public DiagnosticService(
-            ICoreUnitOfWork     unitOfWork,
+            ICoreDataSource     dataSource,
+            IClockService       clockService,
             IIdentityRepository identityRepository,
-            IErrorLogRepository errorLogRepository,
-            IClockService       clockService) : base(unitOfWork)
+            IErrorLogRepository errorLogRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<IIdentityRepository>("identityRepository", identityRepository);
             Validation.ValidateParameter<IErrorLogRepository>("errorLogRepository", errorLogRepository);
-            Validation.ValidateParameter<IClockService>      ("clockService"      , clockService      );
 
             this.IdentityRepository = identityRepository;
             this.ErrorLogRepository = errorLogRepository;
-            this.ClockService       = clockService;
         }
         #endregion
 
@@ -59,13 +57,6 @@ namespace Codev.Core.Service.Diagnostic
         /// </summary>
         /// -------------------------------------------------------------------
         private IErrorLogRepository ErrorLogRepository { get; set; }
-
-        /// -------------------------------------------------------------------
-        /// <summary>
-        /// Get or set the clock service.
-        /// </summary>
-        /// -------------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods

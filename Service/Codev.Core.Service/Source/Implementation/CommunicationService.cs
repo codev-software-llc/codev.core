@@ -29,15 +29,13 @@ namespace Codev.Core.Service.Communication
         /// </summary>
         ///--------------------------------------------------------------------
         public CommunicationService(
-            ICoreUnitOfWork          unitOfWork,
-            ICommunicationRepository communicationRepository,
-            IClockService            clockService) : base(unitOfWork)
+            ICoreDataSource          dataSource,
+            IClockService            clockService,
+            ICommunicationRepository communicationRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<ICommunicationRepository>("communicationRepository", communicationRepository);
-            Validation.ValidateParameter<IClockService>           ("clockService"           , clockService           );
 
             this.CommunicationRepository = communicationRepository;
-            this.ClockService            = clockService;
         }
         #endregion
 
@@ -48,13 +46,6 @@ namespace Codev.Core.Service.Communication
         /// </summary>
         ///--------------------------------------------------------------------
         private ICommunicationRepository CommunicationRepository { get; set; }
-
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Get or set the clock service.
-        /// </summary>
-        ///---------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods

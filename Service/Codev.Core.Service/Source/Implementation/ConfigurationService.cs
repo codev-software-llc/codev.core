@@ -28,18 +28,16 @@ namespace Codev.Core.Service.Configuration
         /// </summary>
         ///---------------------------------------------------------------
         public ConfigurationService(
-            ICoreUnitOfWork     unitOfWork,
+            ICoreDataSource     dataSource,
+            IClockService       clockService,
             ISettingRepository  settingRepository,
-            IEnumTypeRepository enumTypeRepository,
-            IClockService       clockService) : base(unitOfWork)
+            IEnumTypeRepository enumTypeRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<ISettingRepository> ("settingRepository" , settingRepository );
             Validation.ValidateParameter<IEnumTypeRepository>("enumTypeRepository", enumTypeRepository);
-            Validation.ValidateParameter<IClockService>      ("clockService"      , clockService      );
 
             this.SettingRepository  = settingRepository;
             this.EnumTypeRepository = enumTypeRepository;
-            this.ClockService       = clockService;
         }
         #endregion
 
@@ -57,13 +55,6 @@ namespace Codev.Core.Service.Configuration
         /// </summary>
         ///--------------------------------------------------------------------
         private IEnumTypeRepository EnumTypeRepository { get; set; }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the service for clock.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods

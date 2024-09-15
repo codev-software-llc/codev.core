@@ -37,25 +37,16 @@ namespace Codev.Core.Service.ServiceLink
 
             try
             {
-                ServiceJob serviceLink = null;
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identity.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identity.Id);
-
-                    if (identityEntity != null)
-                    {
-                        serviceLink = this.Add(identityEntity, detailTypeName, serializedDetail);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.Add(identityEntity, detailTypeName, serializedDetail);
                 }
-
-                return serviceLink;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -87,20 +78,15 @@ namespace Codev.Core.Service.ServiceLink
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identity.Id);
+
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identity.Id);
-
-                    if (identityEntity != null)
-                    {
-                        this.DeleteAll(identityEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.DeleteAll(identityEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -133,24 +119,16 @@ namespace Codev.Core.Service.ServiceLink
 
             try
             {
-                ServiceJob serviceLink = null;
+                ServiceLinkEntity serviceLinkEntity = this.ServiceLinkRepository.GetByTinyUrl(tinyUrl);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (serviceLinkEntity != null)
                 {
-                    ServiceLinkEntity serviceLinkEntity = this.ServiceLinkRepository.GetByTinyUrl(tinyUrl);
-
-                    if (serviceLinkEntity != null)
-                    {
-                        serviceLink = serviceLinkEntity.ToModel();
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ServiceLinkDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return serviceLinkEntity.ToModel();
                 }
-                return serviceLink;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ServiceLinkDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -179,21 +157,9 @@ namespace Codev.Core.Service.ServiceLink
         {
             try
             {
-                List<ServiceJob> serviceLinks = new List<ServiceJob>();
+                EntityCollection<ServiceLinkEntity> entities = this.ServiceLinkRepository.GetAll();
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    EntityCollection<ServiceLinkEntity> entities = this.ServiceLinkRepository.GetAll();
-
-                    foreach (ServiceLinkEntity entity in entities)
-                    {
-                        serviceLinks.Add(entity.ToModel());
-                    }
-
-                    work.Commit();
-                }
-
-                return serviceLinks;
+                return entities.Select(x => x.ToModel()).ToList();
             }
             catch (CoreDataException cde)
             {
@@ -225,30 +191,18 @@ namespace Codev.Core.Service.ServiceLink
 
             try
             {
-                List<ServiceJob> serviceLinks = new List<ServiceJob>();
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identity.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identity.Id);
+                    EntityCollection<ServiceLinkEntity> entities = this.ServiceLinkRepository.GetAllByIdentity(identityEntity);
 
-                    if (identityEntity != null)
-                    {
-                        EntityCollection<ServiceLinkEntity> entities = this.ServiceLinkRepository.GetAllByIdentity(identityEntity);
-
-                        foreach (ServiceLinkEntity entity in entities)
-                        {
-                            serviceLinks.Add(entity.ToModel());
-                        }
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return entities.Select(x =>x.ToModel()).ToList();
                 }
-
-                return serviceLinks;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -280,20 +234,15 @@ namespace Codev.Core.Service.ServiceLink
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                ServiceLinkEntity serviceLinkEntity = this.ServiceLinkRepository.GetById(serviceLink.Id);
+
+                if (serviceLinkEntity != null)
                 {
-                    ServiceLinkEntity serviceLinkEntity = this.ServiceLinkRepository.GetById(serviceLink.Id);
-
-                    if (serviceLinkEntity != null)
-                    {
-                        this.Remove(serviceLinkEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ServiceLinkDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.Remove(serviceLinkEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ServiceLinkDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -330,20 +279,15 @@ namespace Codev.Core.Service.ServiceLink
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                ServiceLinkEntity serviceLinkEntity = this.ServiceLinkRepository.GetById(serviceLink.Id);
+
+                if (serviceLinkEntity != null)
                 {
-                    ServiceLinkEntity serviceLinkEntity = this.ServiceLinkRepository.GetById(serviceLink.Id);
-
-                    if (serviceLinkEntity != null)
-                    {
-                        this.Update(serviceLinkEntity, detailTypeName, serializedDetail);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ServiceLinkDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.Update(serviceLinkEntity, detailTypeName, serializedDetail);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ServiceLinkDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)

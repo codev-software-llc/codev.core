@@ -7,6 +7,7 @@ namespace Codev.Core.Service.ScheduledTask
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Codev.Core.Base;
     using Codev.Core.Model;
     using NodaTime;
@@ -33,20 +34,15 @@ namespace Codev.Core.Service.ScheduledTask
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                ScheduledTaskEntity scheduledTaskEntity = this.TaskRepository.GetById(scheduledTaskReference.Id);
+
+                if (scheduledTaskEntity != null)
                 {
-                    ScheduledTaskEntity scheduledTaskEntity = this.TaskRepository.GetById(scheduledTaskReference.Id);
-
-                    if (scheduledTaskEntity != null)
-                    {
-                        this.Cancel(scheduledTaskEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ScheduledTaskDoesNotExist);
-                    }
-
-                    work.Commit();
+                    this.Cancel(scheduledTaskEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ScheduledTaskDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -79,23 +75,16 @@ namespace Codev.Core.Service.ScheduledTask
 
             try
             {
-                TaskJob scheduledTask = null;
+                ScheduledTaskEntity scheduledTaskEntity = this.TaskRepository.GetById(scheduledTaskReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (scheduledTaskEntity != null)
                 {
-                    ScheduledTaskEntity scheduledTaskEntity = this.TaskRepository.GetById(scheduledTaskReference.Id);
-
-                    if (scheduledTaskEntity != null)
-                    {
-                        this.Get(scheduledTaskEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ScheduledTaskDoesNotExist);
-                    }
+                    return this.Get(scheduledTaskEntity);
                 }
-
-                return scheduledTask;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.ScheduledTaskDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -127,30 +116,18 @@ namespace Codev.Core.Service.ScheduledTask
 
             try
             {
-                List<TaskJob> scheduledTasks = new List<TaskJob>();
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                    EntityCollection<ScheduledTaskEntity> entities = this.TaskRepository.GetAllByIdentity(identityEntity);
 
-                    if (identityEntity != null)
-                    {
-                        EntityCollection<ScheduledTaskEntity> entities = this.TaskRepository.GetAllByIdentity(identityEntity);
-
-                        foreach (ScheduledTaskEntity entity in entities)
-                        {
-                            scheduledTasks.Add(entity.ToModel());
-                        }
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return entities.Select(x => x.ToModel()).ToList();
                 }
-
-                return scheduledTasks;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -191,20 +168,15 @@ namespace Codev.Core.Service.ScheduledTask
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        this.Schedule(identityEntity, nextAttentionAt, priority, category, detailTypeName, serializedDetail);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.Schedule(identityEntity, nextAttentionAt, priority, category, detailTypeName, serializedDetail);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -239,12 +211,7 @@ namespace Codev.Core.Service.ScheduledTask
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.Run(priority, clientWorker);
-
-                    work.Commit();
-                }
+                this.Run(priority, clientWorker);
             }
             catch (CoreDataException cde)
             {
@@ -280,12 +247,7 @@ namespace Codev.Core.Service.ScheduledTask
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.Run(category, priority, clientWorker);
-
-                    work.Commit();
-                }
+                this.Run(category, priority, clientWorker);
             }
             catch (CoreDataException cde)
             {
@@ -314,12 +276,7 @@ namespace Codev.Core.Service.ScheduledTask
         {
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.GarbageCollect();
-
-                    work.Commit();
-                }
+                this.GarbageCollect();
             }
             catch (CoreDataException cde)
             {

@@ -27,24 +27,22 @@ namespace Codev.Core.Service.Banking
         /// </summary>
         ///---------------------------------------------------------------
         public PaymentService(
-            ICoreUnitOfWork               unitOfWork,
+            ICoreDataSource               dataSource,
+            IClockService                 clockService,
             IIdentityRepository           identityRepository,
             IPaymentMethodRepository      paymentMethodRepository,
             IPaymentProvider              paymentProvider,
-            ISubscriptionCustomerProvider customerProvider,
-            IClockService                 clockService) : base(unitOfWork)
+            ISubscriptionCustomerProvider customerProvider) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<IIdentityRepository>          ("identityRepository"     , identityRepository     );
             Validation.ValidateParameter<IPaymentMethodRepository>     ("paymentMethodRepository", paymentMethodRepository);
             Validation.ValidateParameter<IPaymentProvider>             ("paymentProvider"        , paymentProvider        );
             Validation.ValidateParameter<ISubscriptionCustomerProvider>("customerProvider"       , customerProvider       );
-            Validation.ValidateParameter<IClockService>                ("clockService"           , clockService           );
 
             this.IdentityRepository      = identityRepository;
             this.PaymentMethodRepository = paymentMethodRepository;
             this.PaymentProvider         = paymentProvider;
             this.CustomerProvider        = customerProvider;
-            this.ClockService            = clockService;
 
             // Initialize our supported cards from a business standpoint.
             //
@@ -89,13 +87,6 @@ namespace Codev.Core.Service.Banking
         /// </summary>
         ///--------------------------------------------------------------------
         private HashSet<CreditCardType> SupportedCreditCards { get; set; }
-
-        ///--------------------------------------------------------------------      
-        /// <summary>
-        /// Gets or sets the clock service.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods

@@ -19,8 +19,8 @@ namespace Codev.Core.Model
         /// These are the error messages attached to exceptions.
         /// </summary>
         ///--------------------------------------------------------------------
-        public const String IdentityDoesNotExistMessage = "Identity does not exist";
-        public const String IdentityAlreadyExistMessage = "Identity already exists";
+        public const String IdentityDoesNotExist = "Identity does not exist";
+        public const String IdentityAlreadyExist = "Identity already exists";
 
         public const String DestinationDoesNotExistMessage = "Address does not exist.  Registration is required before signing in.";
         public const String DestinationAlreadyExistMessage = "Address already exists";

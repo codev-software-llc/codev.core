@@ -28,18 +28,16 @@ namespace Codev.Core.Service.ScheduledTask
         /// </summary>
         ///---------------------------------------------------------------
         public ScheduledTaskService(
-            ICoreUnitOfWork          unitOfWork,
+            ICoreDataSource          dataSource,
+            IClockService            clockService,
             IIdentityRepository      identityRepository,
-            IScheduledTaskRepository taskRepository,
-            IClockService            clockService) : base(unitOfWork)
+            IScheduledTaskRepository taskRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<IIdentityRepository>     ("identityRepository", identityRepository);
             Validation.ValidateParameter<IScheduledTaskRepository>("taskRepository"    , taskRepository    );
-            Validation.ValidateParameter<IClockService>           ("clockService"      , clockService      );
 
             this.IdentityRepository = identityRepository;
             this.TaskRepository     = taskRepository;
-            this.ClockService       = clockService;
         }
         #endregion
 
@@ -57,13 +55,6 @@ namespace Codev.Core.Service.ScheduledTask
         /// </summary>
         ///--------------------------------------------------------------------
         private IScheduledTaskRepository TaskRepository { get; set; }
-
-        ///--------------------------------------------------------------------      
-        /// <summary>
-        /// Gets or sets the service for a clock.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods

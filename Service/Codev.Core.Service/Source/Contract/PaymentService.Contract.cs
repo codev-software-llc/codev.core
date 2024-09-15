@@ -7,6 +7,7 @@ namespace Codev.Core.Service.Banking
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Codev.Core.Base;
     using Codev.Core.Model;
 
@@ -35,25 +36,16 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                Payment receipt = null;
+                PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (paymentMethodEntity != null)
                 {
-                    PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
-
-                    if (paymentMethodEntity != null)
-                    {
-                        receipt = this.Charge(paymentMethodEntity, paymentAmount, orderNumber);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.Charge(paymentMethodEntity, paymentAmount, orderNumber);
                 }
-
-                return receipt;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -89,25 +81,16 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                Payment receipt = null;
+                PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (paymentMethodEntity != null)
                 {
-                    PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
-
-                    if (paymentMethodEntity != null)
-                    {
-                        receipt = this.Refund(paymentMethodEntity, null, paymentAmount);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.Refund(paymentMethodEntity, null, paymentAmount);
                 }
-
-                return receipt;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
+                };
             }
             catch (CoreDataException cde)
             {
@@ -142,25 +125,16 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                PaymentMethod paymentMethod = null;
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        paymentMethod = this.Register(identityEntity, creditCard, isPrimary);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.Register(identityEntity, creditCard, isPrimary);
                 }
-
-                return paymentMethod;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -194,20 +168,15 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
+
+                if (paymentMethodEntity != null)
                 {
-                    PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
-
-                    if (paymentMethodEntity != null)
-                    {
-                        this.Unregister(paymentMethodEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.Unregister(paymentMethodEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -240,25 +209,16 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                PaymentMethod paymentMethod = null;
+                PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (paymentMethodEntity != null)
                 {
-                    PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
-
-                    if (paymentMethodEntity != null)
-                    {
-                        paymentMethod = this.GetPaymentMethod(paymentMethodEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.GetPaymentMethod(paymentMethodEntity);
                 }
-
-                return paymentMethod;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -290,30 +250,18 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                    EntityCollection<PaymentMethodEntity> entities = this.PaymentMethodRepository.GetAllByIdentity(identityEntity);
 
-                    if (identityEntity != null)
-                    {
-                        EntityCollection<PaymentMethodEntity> entities = this.PaymentMethodRepository.GetAllByIdentity(identityEntity);
-
-                        foreach (PaymentMethodEntity entity in entities)
-                        {
-                            paymentMethods.Add(entity.ToModel());
-                        }
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return entities.Select(x => x.ToModel()).ToList();
                 }
-
-                return paymentMethods;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -345,20 +293,15 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
+
+                if (paymentMethodEntity != null)
                 {
-                    PaymentMethodEntity paymentMethodEntity = this.PaymentMethodRepository.GetById(paymentMethodReference.Id);
-
-                    if (paymentMethodEntity != null)
-                    {
-                        this.SetPrimary(paymentMethodEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.SetPrimary(paymentMethodEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.PaymentMethodDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -394,25 +337,16 @@ namespace Codev.Core.Service.Banking
 
             try
             {
-                Boolean isValid = false;
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        isValid = this.Validate(identityEntity, creditCard);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.Validate(identityEntity, creditCard);
                 }
-
-                return isValid;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {

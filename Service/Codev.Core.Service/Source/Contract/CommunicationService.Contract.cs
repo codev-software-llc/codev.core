@@ -27,16 +27,7 @@ namespace Codev.Core.Service.Communication
         {
             try
             {
-                List<String> types = new List<String>();
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    types = this.GetCommunicationTypes();
-
-                    work.Commit();
-                }
-
-                return types;
+                return this.GetCommunicationTypes();
             }
             catch (CoreDataException cde)
             {
@@ -65,16 +56,7 @@ namespace Codev.Core.Service.Communication
         {
             try
             {
-                List<Message> communications = new List<Message>();
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    communications = this.GetUnprocessed();
-
-                    work.Commit();
-                }
-
-                return communications;
+                return this.GetUnprocessed();
             }
             catch (CoreDataException cde)
             {
@@ -111,18 +93,13 @@ namespace Codev.Core.Service.Communication
             Validation.ValidateParameter<String>("category"    , category    );
             Validation.ValidateParameter<String>("emailAddress", emailAddress);
 
+            subcategory = Validation.ValidateDefault<String>("subcategory", subcategory, String.Empty);
+            name        = Validation.ValidateDefault<String>("name"       , name       , String.Empty);
+            comments    = Validation.ValidateDefault<String>("comments"   , comments   , String.Empty);
+
             try
             {
-                subcategory = Validation.ValidateDefault<String>("subcategory", subcategory, String.Empty);
-                name        = Validation.ValidateDefault<String>("name"       , name       , String.Empty);
-                comments    = Validation.ValidateDefault<String>("comments"   , comments   , String.Empty);
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.Receive(application, category, subcategory, name, emailAddress, comments);
-
-                    work.Commit();
-                }
+                this.Receive(application, category, subcategory, name, emailAddress, comments);
             }
             catch (CoreDataException cde)
             {
@@ -150,24 +127,19 @@ namespace Codev.Core.Service.Communication
         void ICommunicationService.SetProcessed(
             Message message)
         {
+            Validation.ValidateParameter<Message>("communication", message);
+
             try
             {
-                Validation.ValidateParameter<Message>("communication", message);
+                CommunicationEntity communicationEntity = this.CommunicationRepository.GetById(message.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (communicationEntity != null)
                 {
-                    CommunicationEntity communicationEntity = this.CommunicationRepository.GetById(message.Id);
-
-                    if (communicationEntity != null)
-                    {
-                        this.SetProcessed(communicationEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Communication does not exist");
-                    }
-
-                    work.Commit();
+                    this.SetProcessed(communicationEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Communication entity does not exist");
                 }
             }
             catch (CoreDataException cde)

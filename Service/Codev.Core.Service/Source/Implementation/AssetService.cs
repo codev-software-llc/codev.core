@@ -26,21 +26,19 @@ namespace Codev.Core.Service.Asset
         /// </summary>
         ///---------------------------------------------------------------
         public AssetService(
-            ICoreUnitOfWork        unitOfWork,
+            ICoreDataSource        dataSource,
+            IClockService          clockService,
             IIdentityRepository    identityRepository,
             IBlobRepository        blobRepository,
-            IBlobContentRepository blobContentRepository,
-            IClockService          clockService) : base(unitOfWork)
+            IBlobContentRepository blobContentRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<IIdentityRepository>   ("identityRepository", identityRepository   );
             Validation.ValidateParameter<IBlobRepository>       ("blobRepository"    , blobRepository       );
             Validation.ValidateParameter<IBlobContentRepository>("blobRepository"    , blobContentRepository);
-            Validation.ValidateParameter<IClockService>         ("clockService"      , clockService         );
 
             this.IdentityRepository    = identityRepository;
             this.BlobRepository        = blobRepository;
             this.BlobContentRepository = blobContentRepository;
-            this.ClockService          = clockService;
         }
         #endregion
 
@@ -65,13 +63,6 @@ namespace Codev.Core.Service.Asset
         /// </summary>
         ///---------------------------------------------------------------
         private IBlobContentRepository BlobContentRepository { get; set; }
-
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Get or set the clock service.
-        /// </summary>
-        ///---------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods

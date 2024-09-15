@@ -7,6 +7,7 @@ namespace Codev.Core.Service.Licensing
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Codev.Core.Base;
     using Codev.Core.Model;
     using NodaTime;
@@ -45,25 +46,16 @@ namespace Codev.Core.Service.Licensing
             {
                 features = Validation.ValidateDefault<List<LicenseFeature>>("features", features, new List<LicenseFeature>());
 
-                License license = null;
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        license = this.Create(identityEntity, applicationName, name, cost, interval, intervalCount, trialDays, features);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.Create(identityEntity, applicationName, name, cost, interval, intervalCount, trialDays, features);
                 }
-
-                return license;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -95,20 +87,15 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
+
+                if (licenseEntity != null)
                 {
-                    LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
-
-                    if (licenseEntity != null)
-                    {
-                        this.Delete(licenseEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.Delete(licenseEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -141,21 +128,9 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                List<License> licenses = new List<License>();
+                EntityCollection<LicenseEntity> entities = this.LicenseRepository.GetAllByApplication(applicationName);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    EntityCollection<LicenseEntity> entities = this.LicenseRepository.GetAllByApplication(applicationName);
-
-                    foreach (LicenseEntity entity in entities)
-                    {
-                        licenses.Add(entity.ToModel());
-                    }
-
-                    work.Commit();
-                }
-
-                return licenses;
+                return entities.Select(x => x.ToModel()).ToList();
             }
             catch (CoreDataException cde)
             {
@@ -187,25 +162,16 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                License license = null;
+                LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (licenseEntity != null)
                 {
-                    LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
-
-                    if (licenseEntity != null)
-                    {
-                        license = this.Get(licenseEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.Get(licenseEntity);
                 }
-
-                return license;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -242,20 +208,15 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
+
+                if (licenseEntity != null)
                 {
-                    LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
-
-                    if (licenseEntity != null)
-                    {
-                        this.Update(licenseEntity, name, features);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.Update(licenseEntity, name, features);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -292,34 +253,25 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                Subscription subscription = null;
+                LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (licenseEntity != null)
                 {
-                    LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
+                    IdentityEntity identityEntity = this.IdentityRepository.GetByLicense(licenseEntity);
 
-                    if (licenseEntity != null)
+                    if (identityEntity != null)
                     {
-                        IdentityEntity identityEntity = this.IdentityRepository.GetByLicense(licenseEntity);
-
-                        if (identityEntity != null)
-                        {
-                            subscription = this.Subscribe(licenseEntity, identityEntity, dateExpiration);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                        }
+                        return this.Subscribe(licenseEntity, identityEntity, dateExpiration);
                     }
                     else
                     {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
+                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                     }
-
-                    work.Commit();
                 }
-
-                return subscription;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -351,20 +303,15 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                SubscriptionEntity subscriptionEntity = this.SubscriptionRepository.GetById(subscriptionReference.Id);
+
+                if (subscriptionEntity != null)
                 {
-                    SubscriptionEntity subscriptionEntity = this.SubscriptionRepository.GetById(subscriptionReference.Id);
-
-                    if (subscriptionEntity != null)
-                    {
-                        this.Unsubscribe(subscriptionEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.SubscriptionDoesNotExist);
-                    }
-
-                    work.Commit();
+                    this.Unsubscribe(subscriptionEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.SubscriptionDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -397,30 +344,18 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                List<Subscription> subscriptions = new List<Subscription>();
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                    EntityCollection<SubscriptionEntity> entities = this.SubscriptionRepository.GetAllByIdentity(identityEntity);
 
-                    if (identityEntity != null)
-                    {
-                        EntityCollection<SubscriptionEntity> entities = this.SubscriptionRepository.GetAllByIdentity(identityEntity);
-
-                        foreach (SubscriptionEntity entity in entities)
-                        {
-                            subscriptions.Add(entity.ToModel());
-                        }
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return entities.Select(x => x.ToModel()).ToList();
                 }
-
-                return subscriptions;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -452,30 +387,18 @@ namespace Codev.Core.Service.Licensing
 
             try
             {
-                List<Subscription> subscriptions = new List<Subscription>();
+                LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (licenseEntity != null)
                 {
-                    LicenseEntity licenseEntity = this.LicenseRepository.GetById(licenseReference.Id);
+                    EntityCollection<SubscriptionEntity> entities = this.SubscriptionRepository.GetAllByLicense(licenseEntity);
 
-                    if (licenseEntity != null)
-                    {
-                        EntityCollection<SubscriptionEntity> entities = this.SubscriptionRepository.GetAllByLicense(licenseEntity);
-
-                        foreach (SubscriptionEntity entity in entities)
-                        {
-                            subscriptions.Add(entity.ToModel());
-                        }
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return entities.Select(x => x.ToModel()).ToList();
                 }
-
-                return subscriptions;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.LicenseDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {

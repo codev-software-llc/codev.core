@@ -59,24 +59,22 @@ namespace Codev.Core.Service.Authentication
         /// </summary>
         ///---------------------------------------------------------------
         public AuthenticationService(
-            ICoreUnitOfWork        unitOfWork,
+            ICoreDataSource        dataSource,
+            IClockService          clockService,
             ISecretProvider        secretProvider,
             IIdentityRepository    identityRepository,
             IDestinationRepository destinationRepository,
-            ISessionRepository     sessionRepository,
-            IClockService          clockService) : base(unitOfWork)
+            ISessionRepository     sessionRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<ISecretProvider>       ("secretProvider"       , secretProvider       );
             Validation.ValidateParameter<IIdentityRepository>   ("identityRepository"   , identityRepository   );
             Validation.ValidateParameter<IDestinationRepository>("destinationRepository", destinationRepository);
             Validation.ValidateParameter<ISessionRepository>    ("sessionRepository"    , sessionRepository    );
-            Validation.ValidateParameter<IClockService>         ("clockService"         , clockService         );
 
             this.SecretProvider        = secretProvider;
             this.IdentityRepository    = identityRepository;
             this.DestinationRepository = destinationRepository;
             this.SessionRepository     = sessionRepository;
-            this.ClockService          = clockService;
         }
         #endregion
 
@@ -109,13 +107,6 @@ namespace Codev.Core.Service.Authentication
         /// </summary>
         ///---------------------------------------------------------------
         private ISecretProvider SecretProvider { get; set; }
-
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Get or set the clock service.
-        /// </summary>
-        ///---------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods
@@ -205,7 +196,7 @@ namespace Codev.Core.Service.Authentication
 
                 // Tag the destination as registered.
                 //
-                destinationEntity.Flags |= DestinationFlags.Registered;
+                destinationEntity.Flags |= DestinationFlags.Confirmed;
 
                 destinationEntity.DateModified            = instantNow;
                 destinationEntity.ConfirmationSecret      = String.Empty;
@@ -270,6 +261,8 @@ namespace Codev.Core.Service.Authentication
             {
                 Instant instantNow = this.ClockService.GetCurrentInstant();
 
+                destinationEntity.Flags &= ~DestinationFlags.Confirmed;
+
                 destinationEntity.DateModified            = instantNow;
                 destinationEntity.ConfirmationSecret      = this.GenerateConfirmationCode();
                 destinationEntity.DateConfirmationExpires = this.GenerateExpiration(expiration);
@@ -280,7 +273,7 @@ namespace Codev.Core.Service.Authentication
             }
             else
             {
-                throw new CoreLogicException(CoreErrorCode.InvalidOperation, "Destination is not confirmed");
+                throw new CoreLogicException(CoreErrorCode.InvalidOperation, "Destination is not registered");
             }
         }
 
@@ -326,7 +319,7 @@ namespace Codev.Core.Service.Authentication
             DestinationEntity destinationEntity = new DestinationEntity(instantNow)
                 {
                     Identity                = identityEntity,
-                    Flags                   = DestinationFlags.Primary,
+                    Flags                   = DestinationFlags.Primary | DestinationFlags.Registered,
                     Address                 = emailAddress,
                     DestinationType         = DestinationType.Email,
                     ConfirmationSecret      = this.GenerateConfirmationCode(),
@@ -350,7 +343,7 @@ namespace Codev.Core.Service.Authentication
         {
             if ((destinationEntity.Flags & DestinationFlags.Registered) != 0)
             {
-                throw new CoreLogicException(CoreErrorCode.Duplicate, "Destination already registered");
+                throw new CoreLogicException(CoreErrorCode.Duplicate, ExceptionMessage.DestinationAlreadyExistMessage);
             }
             else
             {

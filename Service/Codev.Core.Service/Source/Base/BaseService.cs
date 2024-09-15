@@ -6,6 +6,8 @@
 namespace Codev.Core.Service
 {
     using Codev.Core.Base;
+    using Codev.Core.Interface;
+    using Codev.Core.Service.Clock;
 
     ///------------------------------------------------------------------------
     /// <summary>
@@ -21,13 +23,22 @@ namespace Codev.Core.Service
         /// </summary>
         ///--------------------------------------------------------------------
         protected BaseService(
-            IDataSource dataSource)
+            ICoreDataSource dataSource,
+            IClockService   clockService)
         {
-            this.DataSource = dataSource;
+            this.DataSource   = dataSource;
+            this.ClockService = clockService;;
         }
         #endregion
 
         #region Properties
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the clock service.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        protected IClockService ClockService { get; private set; }
+
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the data source for the service.

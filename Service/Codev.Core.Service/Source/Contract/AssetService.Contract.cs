@@ -33,38 +33,29 @@ namespace Codev.Core.Service.Asset
             Validation.ValidateParameter<String>             ("blobName"         , blobName         );
             Validation.ValidateParameter<String>             ("mimeType"         , mimeType         );
 
+            content = Validation.ValidateDefault<Byte[]>("content", content, new Byte[] { });
+
             try
             {
-                content = Validation.ValidateDefault<Byte[]>("content", content, new Byte[] { });
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                Blob blob = null;
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                    BlobEntity blobEntity = this.BlobRepository.GetByName(blobName);
 
-                    if (identityEntity != null)
+                    if (blobEntity == null)
                     {
-                        BlobEntity blobEntity = this.BlobRepository.GetByName(blobName);
-
-                        if (blobEntity == null)
-                        {
-                            blob = this.Create(identityEntity, blobName, mimeType, content, isTemporary);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.Duplicate, ExceptionMessage.BlobAlreadyExistMessage);
-                        }
+                        return this.Create(identityEntity, blobName, mimeType, content, isTemporary);
                     }
                     else
                     {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
+                        throw new CoreLogicException(CoreErrorCode.Duplicate, ExceptionMessage.BlobAlreadyExistMessage);
                     }
-
-                    work.Commit();
                 }
-
-                return blob;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -96,20 +87,15 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
+
+                if (blobEntity != null)
                 {
-                    BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
-
-                    if (blobEntity != null)
-                    {
-                        this.BlobRepository.Purge(blobEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.BlobRepository.Purge(blobEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -142,20 +128,15 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        this.BlobRepository.PurgeAllByIdentity(identityEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.BlobRepository.PurgeAllByIdentity(identityEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -190,34 +171,25 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                Blob blob = null;
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                    BlobEntity blobEntity = this.BlobRepository.GetByName(blobName);
 
-                    if (identityEntity != null)
+                    if (blobEntity != null)
                     {
-                        BlobEntity blobEntity = this.BlobRepository.GetByName(blobName);
-
-                        if (blobEntity != null)
-                        {
-                            blob = this.GetByName(blobEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                        }
+                        return this.GetByName(blobEntity);
                     }
                     else
                     {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
+                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                     }
-
-                    work.Commit();
                 }
-
-                return blob;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -249,25 +221,16 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                BlobContent blobContent = null;
+                BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (blobEntity != null)
                 {
-                    BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
-
-                    if (blobEntity != null)
-                    {
-                        blobContent = this.MakeDraft(blobEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.MakeDraft(blobEntity);
                 }
-
-                return blobContent;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -299,20 +262,15 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
+
+                if (blobEntity != null)
                 {
-                    BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
-
-                    if (blobEntity != null)
-                    {
-                        this.BlobRepository.CancelDrafts(blobEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.BlobRepository.CancelDrafts(blobEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -345,34 +303,25 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                BlobContent blobContent = null;
+                BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (blobEntity != null)
                 {
-                    BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
+                    BlobContentEntity blobContentEntity = this.BlobContentRepository.GetCurrent(blobEntity);
 
-                    if (blobEntity != null)
+                    if (blobContentEntity != null)
                     {
-                        BlobContentEntity blobContentEntity = this.BlobContentRepository.GetCurrent(blobEntity);
-
-                        if (blobContentEntity != null)
-                        {
-                            blobContent = this.GetContents(blobContentEntity);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob content does not exist");
-                        }
+                        return this.GetContents(blobContentEntity);
                     }
                     else
                     {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
+                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob content does not exist");
                     }
-
-                    work.Commit();
                 }
-
-                return blobContent;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -404,25 +353,16 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                BlobContent blobContent = null;
+                BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (blobContentEntity != null)
                 {
-                    BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
-
-                    if (blobContentEntity != null)
-                    {
-                        blobContent = this.GetContents(blobContentEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob Content does not exist");
-                    }
-
-                    work.Commit();
+                    return this.GetContents(blobContentEntity);
                 }
-
-                return blobContent;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob Content does not exist");
+                }
             }
             catch (CoreDataException cde)
             {
@@ -454,20 +394,15 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
+
+                if (blobContentEntity != null)
                 {
-                    BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
-
-                    if (blobContentEntity != null)
-                    {
-                        this.SetCurrent(blobContentEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.SetCurrent(blobContentEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -502,20 +437,16 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+
+                BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
+
+                if (blobEntity != null)
                 {
-                    BlobEntity blobEntity = this.BlobRepository.GetById(blobReference.Id);
-
-                    if (blobEntity != null)
-                    {
-                        this.Rename(blobEntity, blobName);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.Rename(blobEntity, blobName);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.BlobDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -553,20 +484,15 @@ namespace Codev.Core.Service.Asset
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
+
+                if (blobContentEntity != null)
                 {
-                    BlobContentEntity blobContentEntity = this.BlobContentRepository.GetById(blobContentReference.Id);
-
-                    if (blobContentEntity != null)
-                    {
-                        this.UpdateContents(blobContentEntity, mimeType, content);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob content does not exist");
-                    }
-
-                    work.Commit();
+                    this.UpdateContents(blobContentEntity, mimeType, content);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Blob content does not exist");
                 }
             }
             catch (CoreDataException cde)

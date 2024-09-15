@@ -27,16 +27,7 @@ namespace Codev.Core.Service.Configuration
         {
             try
             {
-                String version = String.Empty;
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    version = this.GetVersion();
-
-                    work.Commit();
-                }
-
-                return version;
+                return this.GetVersion();
             }
             catch (CoreDataException cde)
             {
@@ -70,12 +61,7 @@ namespace Codev.Core.Service.Configuration
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.SetValue<T>(settingName, settingValue);
-
-                    work.Commit();
-                }
+                this.SetValue<T>(settingName, settingValue);
             }
             catch (CoreDataException cde)
             {
@@ -107,16 +93,7 @@ namespace Codev.Core.Service.Configuration
 
             try
             {
-                T settingValue = default(T);
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    settingValue = this.GetValue<T>(settingName);
-
-                    work.Commit();
-                }
-
-                return settingValue;
+                return this.GetValue<T>(settingName);
             }
             catch (CoreDataException cde)
             {
@@ -148,16 +125,7 @@ namespace Codev.Core.Service.Configuration
 
             try
             {
-                List<EnumType> enumTypes = new List<EnumType>();
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    enumTypes = this.GetAllEnumTypes(applicationName);
-
-                    work.Commit();
-                }
-
-                return enumTypes;
+                return this.GetAllEnumTypes(applicationName);
             }
             catch (CoreDataException cde)
             {

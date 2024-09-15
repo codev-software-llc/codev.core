@@ -41,20 +41,15 @@ namespace Codev.Core.Service.Diagnostic
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        this.LogInformation(identityEntity, componentType, tag, formatMessage, arguments);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.LogInformation(identityEntity, componentType, tag, formatMessage, arguments);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -93,20 +88,15 @@ namespace Codev.Core.Service.Diagnostic
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        this.LogError(identityEntity, componentType, tag, formatMessage, arguments);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    this.LogError(identityEntity, componentType, tag, formatMessage, arguments);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -146,25 +136,20 @@ namespace Codev.Core.Service.Diagnostic
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity;
+
+                if (identityReference != null)
                 {
-                    IdentityEntity identityEntity;
+                    identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                }
+                else
+                {
+                    identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                }
 
-                    if (identityReference != null)
-                    {
-                        identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-                    }
-                    else
-                    {
-                        identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-                    }
-
-                    if (identityEntity != null)
-                    {
-                        this.LogException(identityEntity, componentType, tag, exception);
-                    }
-
-                    work.Commit();
+                if (identityEntity != null)
+                {
+                    this.LogException(identityEntity, componentType, tag, exception);
                 }
             }
             catch (CoreDataException cde)
@@ -194,12 +179,7 @@ namespace Codev.Core.Service.Diagnostic
         {
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.BeginProfiling();
-
-                    work.Commit();
-                }
+                this.BeginProfiling();
             }
             catch (CoreDataException cde)
             {
@@ -228,12 +208,7 @@ namespace Codev.Core.Service.Diagnostic
         {
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.EndProfiling();
-
-                    work.Commit();
-                }
+                this.EndProfiling();
             }
             catch (CoreDataException cde)
             {
@@ -262,16 +237,7 @@ namespace Codev.Core.Service.Diagnostic
         {
             try
             {
-                String results = null;
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    results = this.RenderProfileResults();
-
-                    work.Commit();
-                }
-
-                return results;
+                return this.RenderProfileResults();
             }
             catch (CoreDataException cde)
             {
@@ -303,16 +269,8 @@ namespace Codev.Core.Service.Diagnostic
             {
                 Validation.ValidateParameter<String>("connectionString", connectionString);
 
-                IDbConnection connection = null;
+                return this.ProfileConnection(connectionString);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    connection = this.ProfileConnection(connectionString);
-
-                    work.Commit();
-                }
-
-                return connection;
             }
             catch (CoreDataException cde)
             {
@@ -346,16 +304,7 @@ namespace Codev.Core.Service.Diagnostic
 
             try
             {
-                DbDataReader profileReader = null;
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    profileReader = this.ProfileReader(connection, reader);
-
-                    work.Commit();
-                }
-
-                return profileReader;
+                return this.ProfileReader(connection, reader);
             }
             catch (CoreDataException cde)
             {
@@ -387,25 +336,16 @@ namespace Codev.Core.Service.Diagnostic
         {
             try
             {
-                List<ErrorLog> entries = new List<ErrorLog>();
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        entries = this.GetErrorsByDateRange(identityEntity, dateStart, dateEnd);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.GetErrorsByDateRange(identityEntity, dateStart, dateEnd);
                 }
-
-                return entries;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -437,25 +377,16 @@ namespace Codev.Core.Service.Diagnostic
         {
             try
             {
-                List<ErrorLog> entries = new List<ErrorLog>();
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        entries = this.GetStatistics(identityEntity, dateStart, dateEnd);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExistMessage);
-                    }
-
-                    work.Commit();
+                    return this.GetStatistics(identityEntity, dateStart, dateEnd);
                 }
-
-                return entries;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {

@@ -45,6 +45,13 @@ namespace Codev.Core.Service
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Get or set whether the destination is registered.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Boolean IsRegistered { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Get or set whether the destination can be deleted.
         /// </summary>
         ///--------------------------------------------------------------------

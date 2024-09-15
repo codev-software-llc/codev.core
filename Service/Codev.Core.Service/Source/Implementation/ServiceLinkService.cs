@@ -26,18 +26,16 @@ namespace Codev.Core.Service.ServiceLink
         /// </summary>
         ///---------------------------------------------------------------
         public ServiceLinkService(
-            ICoreUnitOfWork        unitOfWork,
+            ICoreDataSource        dataSource,
+            IClockService          clockService,
             IIdentityRepository    identityRepository,
-            IServiceLinkRepository serviceLinkRepository,
-            IClockService          clockService) : base(unitOfWork)
+            IServiceLinkRepository serviceLinkRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<IIdentityRepository>   ("identityRepository"   , identityRepository   );
             Validation.ValidateParameter<IServiceLinkRepository>("serviceLinkRepository", serviceLinkRepository);
-            Validation.ValidateParameter<IClockService>         ("clockService"         , clockService         );
 
             this.IdentityRepository    = identityRepository;
             this.ServiceLinkRepository = serviceLinkRepository;
-            this.ClockService          = clockService;
         }
         #endregion
 
@@ -55,13 +53,6 @@ namespace Codev.Core.Service.ServiceLink
         /// </summary>
         ///--------------------------------------------------------------------
         private IServiceLinkRepository ServiceLinkRepository { get; set; }
-
-        ///--------------------------------------------------------------------      
-        /// <summary>
-        /// Gets or sets the service for a clock.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods

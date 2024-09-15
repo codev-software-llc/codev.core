@@ -310,8 +310,6 @@ namespace Codev.Core.Repository.Ado
             }
             else
             {
-                TransactionManager.ImplicitDistributedTransactions = true;
-
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress))
                 {
                     using (IDbConnection connection = dataSource.OpenConnection())

@@ -35,34 +35,25 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Destination destination = null;
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+                    DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(address, destinationType);
 
-                    if (identityEntity != null)
+                    if (destinationEntity == null)
                     {
-                        DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(address, destinationType);
-
-                        if (destinationEntity == null)
-                        {
-                            destination = this.AddDestination(identityEntity, address, destinationType, isPrimary);
-                        }
-                        else
-                        {
-                            throw new CoreLogicException(CoreErrorCode.Duplicate, "Destination already exists");
-                        }
+                        return this.AddDestination(identityEntity, address, destinationType, isPrimary);
                     }
                     else
                     {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
+                        throw new CoreLogicException(CoreErrorCode.Duplicate, "Destination already exists");
                     }
-
-                    work.Commit();
                 }
-
-                return destination;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
+                }
             }
             catch (CoreDataException cde)
             {
@@ -94,12 +85,7 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
-                {
-                    this.SessionRepository.PurgeAllExpiredSessions(instant);
-
-                    work.Commit();
-                }
+                this.SessionRepository.PurgeAllExpiredSessions(instant);
             }
             catch (CoreDataException cde)
             {
@@ -131,25 +117,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Destination destination = null;
+                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
-
-                    if (destinationEntity != null)
-                    {
-                        destination = this.ConfirmRequest(destinationEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-                    }
-
-                    work.Commit();
+                    return this.ConfirmRequest(destinationEntity);
                 }
-
-                return destination;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -185,25 +162,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Session session = null;
+                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
-
-                    if (destinationEntity != null)
-                    {
-                        session = this.Confirm(destinationEntity, confirmationSecret, expiration);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-                    }
-
-                    work.Commit();
+                    return this.Confirm(destinationEntity, confirmationSecret, expiration);
                 }
-
-                return session;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -235,25 +203,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Destination destination = null;
+                DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(destinationAddress, DestinationType.Any);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(destinationAddress, DestinationType.Any);
-
-                    if (destinationEntity != null)
-                    {
-                        destination = this.GetDestination(destinationEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-                    }
-
-                    work.Commit();
+                    return this.GetDestination(destinationEntity);
                 }
-
-                return destination;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -285,25 +244,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Identity identity = null;
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        identity = identityEntity.ToModel();
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                    }
-
-                    work.Commit();
+                    return identityEntity.ToModel();
                 }
-
-                return identity;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -335,25 +285,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Destination destination = null;
+                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
-
-                    if (destinationEntity != null)
-                    {
-                        destination = this.GetDestination(destinationEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-                    }
-
-                    work.Commit();
+                    return this.GetDestination(destinationEntity);
                 }
-
-                return destination;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -385,25 +326,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Identity identity = null;
+                DestinationEntity destinationEntity = this.DestinationRepository.GetByConfirmationSecret(confirmationSecret);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetByConfirmationSecret(confirmationSecret);
-
-                    if (destinationEntity != null)
-                    {
-                        identity = destinationEntity.Identity.ToModel();
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-                    }
-
-                    work.Commit();
+                    return destinationEntity.Identity.ToModel();
                 }
-
-                return identity;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -435,25 +367,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                List<Destination> destinations = new List<Destination>();
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        destinations = this.GetIdentityDestinations(identityEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                    }
-
-                    work.Commit();
+                    return this.GetIdentityDestinations(identityEntity);
                 }
-
-                return destinations;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -485,25 +408,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Identity identity = null;
-
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                SessionEntity sessionEntity = this.SessionRepository.GetBySessionSecret(sessionSecret);
+                
+                if (sessionEntity != null)
                 {
-                    SessionEntity sessionEntity = this.SessionRepository.GetBySessionSecret(sessionSecret);
-
-                    if (sessionEntity != null)
-                    {
-                        identity = sessionEntity.Identity.ToModel();
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Session does not exist");
-                    }
-
-                    work.Commit();
+                    return sessionEntity.Identity.ToModel();
                 }
-
-                return identity;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.SessionDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -540,25 +454,16 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Destination destination = null;
+                DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(address, destinationType);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(address, destinationType);
-
-                    if (destinationEntity != null)
-                    {
-                        destination = this.Login(destinationEntity, expiration);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-                    }
-
-                    work.Commit();
+                    return this.Login(destinationEntity, expiration);
                 }
-
-                return destination;
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
+                }
             }
             catch (CoreDataException cde)
             {
@@ -591,23 +496,18 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                SessionEntity sessionEntity = this.SessionRepository.GetBySessionSecret(sessionSecret);
+
+                if (sessionEntity != null)
                 {
-                    SessionEntity sessionEntity = this.SessionRepository.GetBySessionSecret(sessionSecret);
-
-                    if (sessionEntity != null)
-                    {
-                        this.Logout(sessionEntity, logoutAll);
-                    }
-                    else
-                    {
-                        //
-                        // Don't throw any exceptions.  Assume we are logged
-                        // out.
-                        //
-                    }
-
-                    work.Commit();
+                    this.Logout(sessionEntity, logoutAll);
+                }
+                else
+                {
+                    //
+                    // Don't throw any exceptions.  Assume we are logged
+                    // out.
+                    //
                 }
             }
             catch (CoreDataException cde)
@@ -642,25 +542,14 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                Destination destination = null;
+                DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(emailAddress, DestinationType.Email);
 
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                if (destinationEntity == null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(emailAddress, DestinationType.Email);
-
-                    if (destinationEntity == null)
-                    {
-                        destination = this.Register(emailAddress, expiration);
-                    }
-                    else
-                    {
-                        destination = this.Register(destinationEntity, expiration);
-                    }
-
-                    work.Commit();
+                    return this.Register(emailAddress, expiration);
                 }
 
-                return destination;
+                return this.Register(destinationEntity, expiration);
             }
             catch (CoreDataException cde)
             {
@@ -692,20 +581,15 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
+
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
-
-                    if (destinationEntity != null)
-                    {
-                        this.RemoveDestination(destinationEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Destination does not exist");
-                    }
-
-                    work.Commit();
+                    this.RemoveDestination(destinationEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
                 }
             }
             catch (CoreDataException cde)
@@ -738,23 +622,18 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        this.IdentityRepository.Purge(identityEntity);
-                    }
-                    else
-                    {
-                        //
-                        // Do not throw the exception, as we will treat a non-
-                        // existent entity as being removed.
-                        //
-                    }
-
-                    work.Commit();
+                    this.IdentityRepository.Purge(identityEntity);
+                }
+                else
+                {
+                    //
+                    // Do not throw the exception, as we will treat a non-
+                    // existent entity as being removed.
+                    //
                 }
             }
             catch (CoreDataException cde)
@@ -787,20 +666,15 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
+
+                if (destinationEntity != null)
                 {
-                    DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
-
-                    if (destinationEntity != null)
-                    {
-                        this.SetPrimary(destinationEntity);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                    }
-
-                    work.Commit();
+                    this.SetPrimary(destinationEntity);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                 }
             }
             catch (CoreDataException cde)
@@ -835,20 +709,15 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                using (IUnitOfWork work = this.UnitOfWork.Begin())
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+
+                if (identityEntity != null)
                 {
-                    IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
-
-                    if (identityEntity != null)
-                    {
-                        this.SetTimeZone(identityEntity, timeZone);
-                    }
-                    else
-                    {
-                        throw new CoreLogicException(CoreErrorCode.DoesNotExist, "Identity does not exist");
-                    }
-
-                    work.Commit();
+                    this.SetTimeZone(identityEntity, timeZone);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
                 }
             }
             catch (CoreDataException cde)

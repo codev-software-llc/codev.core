@@ -29,24 +29,22 @@ namespace Codev.Core.Service.Licensing
         /// </summary>
         ///---------------------------------------------------------------
         public LicenseService(
-            ICoreUnitOfWork           unitOfWork,
+            ICoreDataSource           dataSource,
+            IClockService             clockService,
             IIdentityRepository       identityRepository,
             ILicenseRepository        licenseRepository,
             ISubscriptionRepository   subscriptionRepository,
-            ISubscriptionPlanProvider subscriptionPlanProvider,
-            IClockService             clockService) : base(unitOfWork)
+            ISubscriptionPlanProvider subscriptionPlanProvider) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<IIdentityRepository>      ("identityRepository"    , identityRepository      );
             Validation.ValidateParameter<ILicenseRepository>       ("licenseRepository"     , licenseRepository       );
             Validation.ValidateParameter<ISubscriptionRepository>  ("subscriptionRepository", subscriptionRepository  );
             Validation.ValidateParameter<ISubscriptionPlanProvider>("clockService"          , subscriptionPlanProvider);
-            Validation.ValidateParameter<IClockService>            ("clockService"          , clockService            );
 
             this.IdentityRepository       = identityRepository;
             this.LicenseRepository        = licenseRepository;
             this.SubscriptionRepository   = subscriptionRepository;
             this.SubscriptionPlanProvider = subscriptionPlanProvider;
-            this.ClockService             = clockService;
         }
         #endregion
 
@@ -79,13 +77,6 @@ namespace Codev.Core.Service.Licensing
         /// </summary>
         ///---------------------------------------------------------------
         private ISubscriptionPlanProvider SubscriptionPlanProvider { get; set; }
-
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Get or set the clock service.
-        /// </summary>
-        ///---------------------------------------------------------------
-        private IClockService ClockService { get; set; }
         #endregion
 
         #region Methods
