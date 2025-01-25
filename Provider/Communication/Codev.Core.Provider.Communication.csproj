@@ -9,7 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Twilio.AspNet.Core" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
+    <PackageReference Include="NodaTime" Version="3.2.1" />
+    <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="Twilio.AspNet.Core" Version="8.1.1" />
   </ItemGroup>
 
   <ItemGroup>

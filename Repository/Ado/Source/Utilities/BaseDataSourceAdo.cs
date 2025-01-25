@@ -7,7 +7,7 @@ namespace Codev.Core.Repository.Ado
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
+    using Microsoft.Data.SqlClient;
 
     ///------------------------------------------------------------------------
     /// <summary>

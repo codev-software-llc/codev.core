@@ -9,11 +9,10 @@ namespace Codev.Core.Repository.Ado
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
-    using System.Data.SqlClient;
-    using System.Net.NetworkInformation;
     using System.Threading;
     using System.Transactions;
     using Codev.Core.Base;
+    using Microsoft.Data.SqlClient;
 
     ///------------------------------------------------------------------------
     /// <summary>

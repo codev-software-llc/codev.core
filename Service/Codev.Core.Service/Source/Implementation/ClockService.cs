@@ -63,7 +63,7 @@ namespace Codev.Core.Service.Clock
             //
             Duration duration = this.Cache.Get<Duration>(CacheName);
 
-            if (duration != null)
+            if (duration != default)
             {
                 duration = duration.Plus(timeAdvance);
 
@@ -88,7 +88,7 @@ namespace Codev.Core.Service.Clock
             //
             Duration duration = this.Cache.Get<Duration>(CacheName);
 
-            if (duration != null)
+            if (duration != default)
             {
                 instantNow = instantNow.Plus(duration);
             }
@@ -123,7 +123,7 @@ namespace Codev.Core.Service.Clock
             //
             Duration duration = this.Cache.Get<Duration>(CacheName);
 
-            if (duration != null)
+            if (duration != default)
             {
                 instantNow = instantNow.Plus(duration);
             }
