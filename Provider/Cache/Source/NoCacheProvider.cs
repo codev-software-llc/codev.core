@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------------
 // <copyright file="NoCacheProvider.cs" company="Codev Software, LLC">
-// Copyright © 2024
+// Copyright © 2025
 // </copyright>
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Provider.Cache
