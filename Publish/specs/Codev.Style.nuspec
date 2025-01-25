@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>Codev.Core.Styles</id>
-    <version>8.0.0</version>
+    <version>9.0.0</version>
     <authors>Codev Software, LLC</authors>
     <owners>Codev Software, LLC</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This contains the Codev Software development guidlines and styles</description>
     <releaseNotes>This contains the Codev Software development guidlines and styles</releaseNotes>
-    <copyright>Copyright 2024</copyright>
+    <copyright>Copyright 2025</copyright>
   </metadata>
   <files>
     <file src="..\Documentation\Settings.StyleCop" target="doc" />
