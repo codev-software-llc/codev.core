@@ -7,7 +7,7 @@ pushd %~dp0%
 
 
 @rem ----------------------------------------------------------------
-@rem First clean all the targets.
+@rem Clean all the targets.
 @rem ----------------------------------------------------------------
 call Clean.bat
 
