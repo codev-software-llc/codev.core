@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// <copyright file="TestSecretProvider.cs" company="Codev Software, LLC">
+// <copyright file="PrivateSecretProvider.cs" company="Codev Software, LLC">
 // Copyright © 2025
 // </copyright>
 //-----------------------------------------------------------------------------
@@ -10,10 +10,10 @@ namespace Codev.Core.Provider.Authentication
 
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This implements the secret provider for testing.
+    /// This implements the secret provider for cashen/williams usage.
     /// </summary>
     ///------------------------------------------------------------------------
-    public sealed class TestSecretProvider : ISecretProvider
+    public sealed class PrivateSecretProvider : ISecretProvider
     {
         #region Constructors
         /// -------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace Codev.Core.Provider.Authentication
         /// Construct the provider.
         /// </summary>
         /// -------------------------------------------------------------------
-        public TestSecretProvider()
+        public PrivateSecretProvider()
         {
         }
         #endregion
@@ -34,7 +34,7 @@ namespace Codev.Core.Provider.Authentication
         ///--------------------------------------------------------------------
         public String GenerateSecret()
         {
-            return "xxxx";
+            return "sccw";
         }
         #endregion
     }

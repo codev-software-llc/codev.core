@@ -43,7 +43,8 @@ namespace Codev.Core.Repository.Ado
         {
             Errors = new()
                 {
-                    { 2601, CoreErrorCode.Duplicate}
+                    { 2601, CoreErrorCode.Duplicate},
+                    { 2627, CoreErrorCode.Duplicate}
                 };
         }
         #endregion
