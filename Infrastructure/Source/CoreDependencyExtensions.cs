@@ -91,6 +91,15 @@ namespace Codev.Core.Infrastructure
             services.AddScoped<IPaymentProvider             , MemoryPaymentProvider>();
             services.AddScoped<ISubscriptionCustomerProvider, MemorySubscriptionCustomerProvider>();
 
+            // Add the full contingincy of export providers. Althought the
+            // default becomes XML (added last), the other would be nice
+            // to be installed as an enumeration of providers.
+            //
+            services.AddScoped<IExportProvider, ExportCsvProvider>();
+            services.AddScoped<IExportProvider, ExportHtmProvider>();
+            services.AddScoped<IExportProvider, ExportPdfProvider>();
+            services.AddScoped<IExportProvider, ExportXmlProvider>();
+
             // Add the services.
             //
             services.AddScoped<IAuthenticationService, AuthenticationService>();
