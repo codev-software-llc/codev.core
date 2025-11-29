@@ -22,6 +22,13 @@ namespace Codev.Core.Base
         ///--------------------------------------------------------------------
         public VersionInfo()
         {
+            this.Name           = String.Empty;
+            this.ApplicationKey = String.Empty;
+            this.CompanyName    = String.Empty;
+            this.Version        = String.Empty;
+            this.RevisionDate   = String.Empty;
+            this.Copyright      = String.Empty;
+            this.Configuration  = String.Empty;
         }
         #endregion
 
@@ -53,6 +60,13 @@ namespace Codev.Core.Base
         /// </summary>
         ///--------------------------------------------------------------------
         public String Version { get; set; }
+
+        ///-------------------------------------------------------------------- 
+        /// <summary>
+        /// Get or set the date (as a string) of the revision.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public String RevisionDate { get; set; }
 
         ///-------------------------------------------------------------------- 
         /// <summary>
