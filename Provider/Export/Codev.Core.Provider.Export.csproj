@@ -29,10 +29,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\WkHtmlToPdf\Windows\help-wkhtmltoimage.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Resources\WkHtmlToPdf\Windows\help-wkhtmltopdf.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Resources\WkHtmlToPdf\Windows\wkhtmltoimage.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /icerky $(ProjectDir)bin\$(Configuration)\net9.0\Resources $(SolutionDir)Publish\bin\Export\$(Configuration)\net9.0\Resources" />
+    <Exec Command="xcopy /icerky $(ProjectDir)bin\$(Configuration)\net9.0\Resources $(SolutionDir)Publish\bin\Export\$(Configuration)\net9.0\Resources&#xD;&#xA;rd /s /q $(SolutionDir)\Publish\bin\Export" />
   </Target>
 
 </Project>
