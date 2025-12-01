@@ -22,16 +22,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\WkHtmlToPdf\help-wkhtmltoimage.txt">
+    <None Update="Resources\WkHtmlToPdf\Linux\wkhtmltoimage">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\help-wkhtmltopdf.txt">
+    <None Update="Resources\WkHtmlToPdf\Linux\wkhtmltopdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\wkhtmltoimage.exe">
+    <None Update="Resources\WkHtmlToPdf\Windows\help-wkhtmltoimage.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\wkhtmltopdf.exe">
+    <None Update="Resources\WkHtmlToPdf\Windows\help-wkhtmltopdf.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\WkHtmlToPdf\Windows\wkhtmltoimage.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\WkHtmlToPdf\Windows\wkhtmltopdf.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
