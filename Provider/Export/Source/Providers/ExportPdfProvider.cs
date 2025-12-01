@@ -10,7 +10,9 @@ namespace Codev.Core.Provider.Export
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using System.Text;
+    using System.Xml.Linq;
     using Codev.Core.Interface;
 
     ///------------------------------------------------------------------------
@@ -20,22 +22,6 @@ namespace Codev.Core.Provider.Export
     ///------------------------------------------------------------------------
     public sealed class ExportPdfProvider : IExportProvider
     {
-        #region Constants
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// This is the name of the directory containing the resources.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private const String ResourceDirectoryName = "wwwroot\\resources";
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// This is the executable that converts html to pdf.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        private const String ExecutableName = "wkhtmltopdf.exe";
-        #endregion
-
         #region Constructors
         ///---------------------------------------------------------------
         /// <summary>
@@ -82,11 +68,7 @@ namespace Codev.Core.Provider.Export
 
             if (idx >= 0)
             {
-                path = path.Substring(0, idx);
-
-                String fullPath = Path.Combine(path, ResourceDirectoryName, "WkHtmlToPdf");
-
-                return this.ConvertHtml(fullPath, html, styleSheet);
+                return this.ConvertHtml(html, styleSheet);
             }
 
             return new Byte[] { };
@@ -112,10 +94,11 @@ namespace Codev.Core.Provider.Export
         /// </summary>
         ///--------------------------------------------------------------------
         private Byte[] ConvertHtml(
-            String wkhtmlPath,
             String html,
             String styleSheet)
         {
+            String fullPath = this.GetExecutable();
+
             // Switches:
             //   "-q"  - silent output, only errors - no progress messages.
             //   " -"  - switch output to stdout.
@@ -134,16 +117,16 @@ namespace Codev.Core.Provider.Export
             Process proc = new Process
                 {
                     StartInfo = new ProcessStartInfo
-                    {
-                        FileName               = Path.Combine(wkhtmlPath, ExecutableName),
-                        Arguments              = switches,
-                        UseShellExecute        = false,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError  = true,
-                        RedirectStandardInput  = true,
-                        WorkingDirectory       = wkhtmlPath,
-                        CreateNoWindow         = true
-                    }
+                        {
+                            FileName               = fullPath,
+                            Arguments              = switches,
+                            UseShellExecute        = false,
+                            RedirectStandardOutput = true,
+                            RedirectStandardError  = true,
+                            RedirectStandardInput  = true,
+                            //WorkingDirectory       = fullPath,
+                            CreateNoWindow         = true
+                        }
                 };
 
             proc.Start();
@@ -214,6 +197,23 @@ namespace Codev.Core.Provider.Export
             }
 
             return result.ToString();
+        }
+
+        ///---------------------------------------------------------------
+        /// <summary>
+        /// Get the executable based on the OS platform.
+        /// </summary>
+        ///---------------------------------------------------------------
+        private String GetExecutable()
+        {
+            String exeName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "wkhtmltopdf.exe" : "wkhtmltopdf";
+
+            return Path.Combine(
+                AppContext.BaseDirectory,
+                "runtimes",
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "win-x64" : "linux-x64",
+                "native",
+                exeName);
         }
         #endregion
     }

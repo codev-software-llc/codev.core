@@ -22,28 +22,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\WkHtmlToPdf\Linux\wkhtmltoimage">
+    <None Update="runtimes\linux-x64\native\wkhtmltoimage">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\Linux\wkhtmltopdf">
+    <None Update="runtimes\linux-x64\native\wkhtmltopdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\Windows\help-wkhtmltoimage.txt">
+    <None Update="runtimes\win-x64\native\help-wkhtmltoimage.txt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\Windows\help-wkhtmltopdf.txt">
+    <None Update="runtimes\win-x64\native\help-wkhtmltopdf.txt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\Windows\wkhtmltoimage.exe">
+    <None Update="runtimes\win-x64\native\wkhtmltoimage.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\WkHtmlToPdf\Windows\wkhtmltopdf.exe">
+    <None Update="runtimes\win-x64\native\wkhtmltopdf.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /icerky $(ProjectDir)bin\$(Configuration)\net9.0\Resources $(SolutionDir)Publish\bin\Export\$(Configuration)\net9.0\Resources&#xD;&#xA;rd /s /q $(SolutionDir)\Publish\bin\Export" />
+    <Exec Command="xcopy /icerky $(ProjectDir)bin\$(Configuration)\net9.0\runtimes\ $(SolutionDir)Publish\bin\Export\$(Configuration)\net9.0\runtimes&#xD;&#xA;rd /s /q $(SolutionDir)\Publish\bin\Export" />
   </Target>
 
 </Project>

@@ -86,6 +86,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{AB29
 		Bld\Clean.bat = Bld\Clean.bat
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test.Provider.Export", "Test\Core.Test.Provider.Export\Core.Test.Provider.Export.csproj", "{15B8C313-314A-26B5-BEA1-068B99AB5AED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Dev|Any CPU = Dev|Any CPU
@@ -184,6 +186,10 @@ Global
 		{1612827F-EF1A-461A-B95D-C3E5C389B387}.Dev|Any CPU.Build.0 = Dev|Any CPU
 		{1612827F-EF1A-461A-B95D-C3E5C389B387}.Live|Any CPU.ActiveCfg = Live|Any CPU
 		{1612827F-EF1A-461A-B95D-C3E5C389B387}.Live|Any CPU.Build.0 = Live|Any CPU
+		{15B8C313-314A-26B5-BEA1-068B99AB5AED}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
+		{15B8C313-314A-26B5-BEA1-068B99AB5AED}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{15B8C313-314A-26B5-BEA1-068B99AB5AED}.Live|Any CPU.ActiveCfg = Live|Any CPU
+		{15B8C313-314A-26B5-BEA1-068B99AB5AED}.Live|Any CPU.Build.0 = Live|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,6 +226,7 @@ Global
 		{6A9BB754-2907-438F-9CCB-EA1D992377F4} = {EA64948B-2579-417B-8C5C-F12D01D1FB3D}
 		{1612827F-EF1A-461A-B95D-C3E5C389B387} = {B5C9C95A-6613-4416-AD2B-D2DE263D2D25}
 		{AB29C55A-0A70-4042-8662-11FD05193988} = {00D1AA80-DE79-4B2A-8E0A-182DC08782CD}
+		{15B8C313-314A-26B5-BEA1-068B99AB5AED} = {B5C9C95A-6613-4416-AD2B-D2DE263D2D25}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5167CFC-6137-48BB-A6E6-2582271994D3}
