@@ -6,6 +6,7 @@
 namespace Codev.Core.Base
 {
     using System;
+    using System.Text.Json.Serialization;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -40,6 +41,7 @@ namespace Codev.Core.Base
         /// Construct the base entity.
         /// </summary>
         ///--------------------------------------------------------------------
+        [JsonConstructor]
         public BaseEntity(
             BaseEntity baseEntity)
         {
@@ -67,14 +69,14 @@ namespace Codev.Core.Base
         /// This represents the RowId of the entity.
         /// </summary>
         ///--------------------------------------------------------------------
-        public Int32 Id { get; private set; }
+        public Int32 Id { get; set; }
 
         ///--------------------------------------------------------------------
         /// <summary>
         /// This represents the RowVersion of the entity.
         /// </summary>
         ///--------------------------------------------------------------------
-        public Byte[] Version { get; private set; }
+        public Byte[] Version { get; set; }
 
         ///--------------------------------------------------------------------
         /// <summary>
@@ -83,14 +85,14 @@ namespace Codev.Core.Base
         /// all entities.
         /// </summary>
         ///--------------------------------------------------------------------
-        public Boolean IsActive { get; private set; }
+        public Boolean IsActive { get; set; }
 
         ///--------------------------------------------------------------------
         /// <summary>
         /// Get or set the creation date of the blob.
         /// </summary>
         ///--------------------------------------------------------------------
-        public Instant DateCreated { get; private set; }
+        public Instant DateCreated { get; set; }
 
         ///--------------------------------------------------------------------
         /// <summary>
