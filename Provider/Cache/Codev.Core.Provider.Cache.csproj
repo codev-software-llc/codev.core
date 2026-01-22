@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Configurations>Dev;Live</Configurations>
     <AssemblyName>Codev.Core.Provider.Cache</AssemblyName>
     <RootNamespace>Codev.Core.Provider.Cache</RootNamespace>
