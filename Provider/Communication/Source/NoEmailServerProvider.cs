@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------------
 // <copyright file="NoEmailSererProvider.cs" company="Codev Software, LLC">
-// Copyright © 2025
+// Copyright © 2026
 // </copyright>
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Provider.Communication

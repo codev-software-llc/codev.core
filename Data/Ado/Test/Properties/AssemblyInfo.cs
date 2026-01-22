@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------------
 // <copyright file="AssemblyInfo.cs" company="Codev Software, LLC">
-// Copyright © 2025
+// Copyright © 2026
 // </copyright>
 //-----------------------------------------------------------------------------
 using System.Reflection;

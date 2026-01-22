@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------------
 // <copyright file="ISmsClientProvider.cs" company="Codev Software, LLC">
-// Copyright © 2025
+// Copyright © 2026
 // </copyright>
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Interface
