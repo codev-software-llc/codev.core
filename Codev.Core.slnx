@@ -1,0 +1,68 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Dev" />
+    <BuildType Name="Live" />
+  </Configurations>
+  <Folder Name="/Common/">
+    <Project Path="Common/Base/Codev.Core.Base.csproj" />
+    <Project Path="Common/Interface/Codev.Core.Interface.csproj" />
+    <Project Path="Common/Model/Codev.Core.Model.csproj" />
+  </Folder>
+  <Folder Name="/Data/">
+    <Project Path="Data/Ado/Core/Core.Data.sqlproj" Id="bc482886-14c9-4040-b301-55ae9a26b578">
+      <Build />
+      <Deploy />
+    </Project>
+    <Project Path="Data/Ado/Test/Core.Test.sqlproj" Id="a7e13183-48cf-44a0-b870-570d5794939e">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infrastructure/Codev.Core.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Provider/" />
+  <Folder Name="/Provider/Authentication/">
+    <Project Path="Provider/Common/Codev.Core.Provider.Authentication.csproj" />
+  </Folder>
+  <Folder Name="/Provider/Banking/">
+    <Project Path="Provider/Banking/Fake/Codev.Core.Provider.Banking.Fake.csproj" />
+    <Project Path="Provider/Banking/Memory/Codev.Core.Provider.Banking.Memory.csproj" />
+    <Project Path="Provider/Banking/PayPal/Codev.Core.Provider.Banking.PayPal.csproj" />
+    <Project Path="Provider/Banking/Stripe/Codev.Core.Provider.Banking.Stripe.csproj" />
+    <Project Path="Provider/Banking/Stub/Codev.Core.Provider.Banking.Stub.csproj" />
+  </Folder>
+  <Folder Name="/Provider/Cache/">
+    <Project Path="Provider/Cache/Codev.Core.Provider.Cache.csproj" />
+  </Folder>
+  <Folder Name="/Provider/Cipher/">
+    <Project Path="Provider/Cipher/Codev.Core.Provider.Cipher.csproj" />
+  </Folder>
+  <Folder Name="/Provider/Communication/">
+    <Project Path="Provider/Communication/Codev.Core.Provider.Communication.csproj" />
+  </Folder>
+  <Folder Name="/Provider/Export/">
+    <Project Path="Provider/Export/Codev.Core.Provider.Export.csproj" />
+  </Folder>
+  <Folder Name="/Repository/">
+    <Project Path="Repository/Ado/Codev.Core.Repository.Ado.csproj" />
+    <Project Path="Repository/Sqlite/Codev.Core.Repository.Sqlite.csproj" />
+  </Folder>
+  <Folder Name="/Service/">
+    <Project Path="Service/Codev.Core.Service/Codev.Core.Service.csproj" />
+  </Folder>
+  <Folder Name="/Solution Files/" />
+  <Folder Name="/Solution Files/Scripts/">
+    <File Path="Bld/Build.bat" />
+    <File Path="Bld/BuildEnums.bat" />
+    <File Path="Bld/Clean.bat" />
+  </Folder>
+  <Folder Name="/Test/">
+    <Project Path="Test/Core.Test.Common.Base/Core.Test.Common.Base.csproj" />
+    <Project Path="Test/Core.Test.Provider.Cipher/Core.Test.Provider.Cipher.csproj" />
+    <Project Path="Test/Core.Test.Provider.Export/Core.Test.Provider.Export.csproj" />
+    <Project Path="Test/Core.Test.Provider.SmsTwilio/Core.Test.Provider.SmsTwilio.csproj" />
+    <Project Path="Test/Core.Test.Service.Clock/Core.Test.Service.Clock.csproj" />
+    <Project Path="Test/Core.Tests/Core.Tests.csproj" />
+  </Folder>
+</Solution>
