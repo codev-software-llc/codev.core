@@ -18,7 +18,7 @@ namespace Codev.Core.Base
         #region Constructors
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Instantiate the access.
+        /// Instantiate the object.
         /// </summary>
         ///--------------------------------------------------------------------
         protected BaseRepository(

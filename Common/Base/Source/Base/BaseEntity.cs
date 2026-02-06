@@ -38,7 +38,8 @@ namespace Codev.Core.Base
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Construct the base entity.
+        /// Construct the base entity.  This is the constructor used for
+        /// deserialization and is required to be public.
         /// </summary>
         ///--------------------------------------------------------------------
         [JsonConstructor]

@@ -22,6 +22,7 @@ namespace Codev.Core.Base
         ///--------------------------------------------------------------------
         public BasePayment()
         {
+            this.Name = String.Empty;
         }
         #endregion
 

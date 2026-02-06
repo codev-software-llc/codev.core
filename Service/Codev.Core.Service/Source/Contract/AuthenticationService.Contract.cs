@@ -535,10 +535,13 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         Destination IAuthenticationService.Register(
             String   emailAddress,
-            Duration expiration)
+            Duration expiration,
+            String   serializedData)
         {
             Validation.ValidateParameter<String>  ("emailAddress", emailAddress);
             Validation.ValidateParameter<Duration>("expiration"  , expiration  );
+
+            serializedData = Validation.ValidateDefault<String>("serializedData", serializedData, String.Empty);
 
             try
             {
@@ -546,7 +549,7 @@ namespace Codev.Core.Service.Authentication
 
                 if (destinationEntity == null)
                 {
-                    return this.Register(emailAddress, expiration);
+                    return this.Register(emailAddress, expiration, serializedData);
                 }
 
                 return this.Register(destinationEntity, expiration);
@@ -714,6 +717,51 @@ namespace Codev.Core.Service.Authentication
                 if (identityEntity != null)
                 {
                     this.SetTimeZone(identityEntity, timeZone);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
+            }
+            catch (CoreDataException cde)
+            {
+                throw new CoreServiceException(cde.ErrorCode, cde);
+            }
+            catch (CoreProviderException cpe)
+            {
+                throw new CoreServiceException(cpe.ErrorCode, cpe);
+            }
+            catch (CoreLogicException cle)
+            {
+                throw new CoreServiceException(cle.ErrorCode, cle);
+            }
+            catch (Exception e)
+            {
+                throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Update the serialized data for the identity.  This is application
+        /// defined.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        void IAuthenticationService.UpdateSerializedData(
+            Reference<Identity> identityReference,
+            String              serializedData)
+        {
+            Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
+
+            serializedData = Validation.ValidateDefault<String>("serializedData", serializedData, String.Empty);
+
+            try
+            {
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identityReference.Id);
+
+                if (identityEntity != null)
+                {
+                    this.UpdateSerializedData(identityEntity, serializedData);
                 }
                 else
                 {

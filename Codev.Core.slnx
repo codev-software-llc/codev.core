@@ -10,11 +10,9 @@
   </Folder>
   <Folder Name="/Data/">
     <Project Path="Data/Ado/Core/Core.Data.sqlproj" Id="bc482886-14c9-4040-b301-55ae9a26b578">
-      <Build />
       <Deploy />
     </Project>
     <Project Path="Data/Ado/Test/Core.Test.sqlproj" Id="a7e13183-48cf-44a0-b870-570d5794939e">
-      <Build />
       <Deploy />
     </Project>
   </Folder>

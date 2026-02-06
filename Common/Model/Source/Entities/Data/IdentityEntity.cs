@@ -25,6 +25,7 @@ namespace Codev.Core.Model
         public IdentityEntity(
             Instant instantNow) : base(instantNow)
         {
+            this.SerializedData = String.Empty;
         }
 
         ///--------------------------------------------------------------------
@@ -35,6 +36,7 @@ namespace Codev.Core.Model
         public IdentityEntity(
             BaseEntity baseEntity) : base(baseEntity)
         {
+            this.SerializedData = String.Empty;
         }       
         #endregion
 
@@ -59,6 +61,14 @@ namespace Codev.Core.Model
         /// </summary>
         ///--------------------------------------------------------------------
         public DateTimeZone TimeZone { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the serialized data that is specific to the application
+        /// that consumes this entity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public String SerializedData { get; set; }
         #endregion
     }
 }

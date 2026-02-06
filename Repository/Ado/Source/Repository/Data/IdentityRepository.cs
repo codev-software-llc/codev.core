@@ -52,7 +52,7 @@ namespace Codev.Core.Repository.Ado
                         command.AddInputParameter<Instant>      ("DateModified"        , entity.DateModified        );
                         command.AddInputParameter<Int32>        ("ConfirmationAttempts", entity.ConfirmationAttempts);
                         command.AddInputParameter<String>       ("DateTimeZoneId"      , entity.TimeZone.Id         );
-                        command.AddInputParameter<String>       ("SerializedData"      , String.Empty               );
+                        command.AddInputParameter<String>       ("SerializedData"      , entity.SerializedData      );
                     },
                 (command, reader) =>
                     {
@@ -191,7 +191,7 @@ namespace Codev.Core.Repository.Ado
                         command.AddInputParameter<Instant>      ("DateModified"        , entity.DateModified        );
                         command.AddInputParameter<Int32>        ("ConfirmationAttempts", entity.ConfirmationAttempts);
                         command.AddInputParameter<String>       ("DateTimeZoneId"      , entity.TimeZone.Id         );
-                        command.AddInputParameter<String>       ("SerializedData"      , String.Empty               );
+                        command.AddInputParameter<String>       ("SerializedData"      , entity.SerializedData      );
                     },
                 (command, reader) =>
                     {

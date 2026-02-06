@@ -301,7 +301,8 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         public Destination Register(
             String   emailAddress,
-            Duration expiration)
+            Duration expiration,
+            String   serializedData)
         {
             Instant instantNow = this.ClockService.GetCurrentInstant();
 
@@ -311,7 +312,8 @@ namespace Codev.Core.Service.Authentication
                 {
                     Flags                = IdentityFlags.None,
                     ConfirmationAttempts = 0,
-                    TimeZone             = NodaTime.DateTimeZoneProviders.Tzdb.GetSystemDefault()
+                    TimeZone             = DateTimeZoneProviders.Tzdb.GetSystemDefault(),
+                    SerializedData       = serializedData
                 };
 
             this.IdentityRepository.Add(identityEntity);
@@ -412,6 +414,21 @@ namespace Codev.Core.Service.Authentication
         {
             identityEntity.TimeZone     = timeZone;
             identityEntity.DateModified = this.ClockService.GetCurrentInstant();
+
+            this.IdentityRepository.Update(identityEntity);
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Update the serialized data for the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public void UpdateSerializedData(
+            IdentityEntity identityEntity,
+            String         serializeData)
+        {
+            identityEntity.DateModified   = this.ClockService.GetCurrentInstant();
+            identityEntity.SerializedData = serializeData;
 
             this.IdentityRepository.Update(identityEntity);
         }

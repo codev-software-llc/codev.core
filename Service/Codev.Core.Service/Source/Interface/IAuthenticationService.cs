@@ -134,7 +134,8 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         Destination Register(
             String   emailAddress,
-            Duration expiration);
+            Duration expiration,
+            String   serializedData);
 
         ///--------------------------------------------------------------------
         /// <summary>
@@ -168,6 +169,15 @@ namespace Codev.Core.Service.Authentication
         void SetTimeZone(
             Reference<Identity> identityReference,
             DateTimeZone timeZone);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Update application data.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        void UpdateSerializedData(
+            Reference<Identity> identityReference,
+            String              serializedData);
         #endregion
     }
 }
