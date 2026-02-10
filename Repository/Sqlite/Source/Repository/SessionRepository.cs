@@ -54,7 +54,7 @@ namespace Codev.Core.Repository.Sqlite
             ValidateRepository<SessionEntity>.Add(entity);
 
             SqliteAccess.CallStatement(
-                "INSERT INTO [Sessions] ([IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [Secret]) VALUES (1, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO [Sessions] ([IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [SessionId], [Secret]) VALUES (1, ?, ?, ?, ?, ?, ?, ?)",
                 this.DataSource,
                 (command) =>
                     {                    
@@ -63,6 +63,7 @@ namespace Codev.Core.Repository.Sqlite
                         command.AddInputParameter<Instant>     ("DateModified"  , entity.DateModified  );
                         command.AddInputParameter<Int32>       ("IdentityId"    , entity.Identity.Id   );
                         command.AddInputParameter<Instant>     ("DateExpiration", entity.DateExpiration);
+                        command.AddInputParameter<Guid>        ("SessionId"     , entity.SessionId     );
                         command.AddInputParameter<String>      ("Secret"        , entity.Secret        );
                     },
                 (command) =>
@@ -130,7 +131,7 @@ namespace Codev.Core.Repository.Sqlite
             EntityCollection<SessionEntity> entities = new EntityCollection<SessionEntity>();
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [Secret] FROM [Sessions]",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [SessionId], [Secret] FROM [Sessions]",
                 this.DataSource,
                 (command) =>
                     {
@@ -161,7 +162,7 @@ namespace Codev.Core.Repository.Sqlite
             SessionEntity entity = null;
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [Secret] FROM [Sessions] WHERE [RowId] = ?",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [SessionId], [Secret] FROM [Sessions] WHERE [RowId] = ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -189,7 +190,7 @@ namespace Codev.Core.Repository.Sqlite
             ValidateRepository<SessionEntity>.Update(entity);
 
             SqliteAccess.CallStatement(
-                "UPDATE [Sessions] SET [Flags] = ?, [DateCreated] = ?, [DateModified] = ?, [IdentityId] = ?, [DateExpiration] = ?, [Secret] = ? WHERE [RowId] = ?",
+                "UPDATE [Sessions] SET [Flags] = ?, [DateCreated] = ?, [DateModified] = ?, [IdentityId] = ?, [DateExpiration] = ?, [SessionId] = ?, [Secret] = ? WHERE [RowId] = ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -198,6 +199,7 @@ namespace Codev.Core.Repository.Sqlite
                         command.AddInputParameter<Instant>     ("DateModified"  , entity.DateModified  );
                         command.AddInputParameter<Int32>       ("IdentityId"    , entity.Identity.Id   );
                         command.AddInputParameter<Instant>     ("DateExpiration", entity.DateExpiration);
+                        command.AddInputParameter<Guid>        ("SessionId"     , entity.SessionId     );
                         command.AddInputParameter<String>      ("Secret"        , entity.Secret        );
                         command.AddInputParameter<Int32>       ("RowId"         , entity.Id            );
                     },
@@ -223,7 +225,7 @@ namespace Codev.Core.Repository.Sqlite
             EntityCollection<SessionEntity> entities = new EntityCollection<SessionEntity>();
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [Secret] FROM [Sessions] WHERE [IdentityId] = ?",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [SessionId], [Secret] FROM [Sessions] WHERE [IdentityId] = ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -244,6 +246,34 @@ namespace Codev.Core.Repository.Sqlite
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Return the session using the unique identifier.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public SessionEntity GetBySessionId(
+            Guid sessionId)
+        {
+            SessionEntity entity = null;
+
+            SqliteAccess.CallStatement(
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [SessionId], [Secret] FROM [Sessions] WHERE [SessionId] = ?",
+                this.DataSource,
+                (command) =>
+                {
+                    command.AddInputParameter<Guid>("SessionId", sessionId);
+                },
+                (command, reader) =>
+                {
+                    while (reader.Read())
+                    {
+                        entity = this.LoadEntity(reader);
+                    }
+                });
+
+            return entity;
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Return the session using the secret.
         /// </summary>
         ///--------------------------------------------------------------------
@@ -253,7 +283,7 @@ namespace Codev.Core.Repository.Sqlite
             SessionEntity entity = null;
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [Secret] FROM [Sessions] WHERE [Secret] = ?",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [DateExpiration], [SessionId], [Secret] FROM [Sessions] WHERE [Secret] = ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -306,6 +336,7 @@ namespace Codev.Core.Repository.Sqlite
                     {
                         Flags          = reader.GetValue<SessionFlags>("Flags")         ,
                         DateExpiration = reader.GetValue<Instant>     ("DateExpiration"),
+                        SessionId      = reader.GetValue<Guid>        ("SessionId")     ,
                         Secret         = reader.GetValue<String>      ("Secret")
                     };
 

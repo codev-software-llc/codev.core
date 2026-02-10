@@ -1,9 +1,9 @@
 ﻿-------------------------------------------------------------------------------
--- Return the entity using its unique identifier.
+-- Return the all entities that share the key.
 -------------------------------------------------------------------------------
-CREATE PROCEDURE [core].[Session_GetById]
+CREATE PROCEDURE [core].[Session_GetAllBySessionId]
 (
-    @RowId INT
+    @SessionId UNIQUEIDENTIFIER
 )
 AS
 BEGIN
@@ -24,6 +24,6 @@ BEGIN
         e.[SessionId]      as 'SessionId'     ,
         e.[Secret]         as 'Secret'
      FROM [core].[Sessions] e
-     WHERE (e.[RowId] = @RowId) AND (e.[IsActive] = 1)
+     WHERE (e.[SessionId] = @SessionId) AND (e.[IsActive] = 1)
 
 END

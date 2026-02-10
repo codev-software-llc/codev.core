@@ -29,6 +29,14 @@ namespace Codev.Core.Interface
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Retrieve the session by the session identifier.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        SessionEntity GetBySessionId(
+            Guid sessionId);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Retrieve the session by the session secret.
         /// </summary>
         ///--------------------------------------------------------------------

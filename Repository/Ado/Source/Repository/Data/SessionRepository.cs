@@ -247,6 +247,34 @@ namespace Codev.Core.Repository.Ado
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Return the entity by the unique identifier.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public SessionEntity GetBySessionId(
+            Guid sessionId)
+        {
+            SessionEntity entity = null;
+
+            AdoAccess.CallProcedure(
+                "Session_GetBySessionId",
+                this.DataSource,
+                (command) =>
+                    {
+                        command.AddInputParameter<Guid>("SessionId", sessionId);
+                    },
+                (command, reader) =>
+                    {
+                        while (reader.Read())
+                        {
+                            entity = this.LoadEntity(reader);
+                        }
+                    });
+
+            return entity;
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Return the entity by the secret.
         /// </summary>
         ///--------------------------------------------------------------------
@@ -308,6 +336,7 @@ namespace Codev.Core.Repository.Ado
                 {
                     Flags          = reader.GetValue<SessionFlags>("Flags")         ,
                     DateExpiration = reader.GetValue<Instant>     ("DateExpiration"),
+                    SessionId      = reader.GetValue<Guid>        ("SessionId")     ,
                     Secret         = reader.GetValue<String>      ("Secret")
                 };
 

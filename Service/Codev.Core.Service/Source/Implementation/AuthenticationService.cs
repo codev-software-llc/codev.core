@@ -211,6 +211,7 @@ namespace Codev.Core.Service.Authentication
                         Identity       = destinationEntity.Identity,
                         Flags          = SessionFlags.None,
                         Secret         = this.GenerationSessionSecret(),
+                        SessionId      = Guid.NewGuid(),
                         DateExpiration = this.GenerateExpiration(expiratrion)
                     };
 

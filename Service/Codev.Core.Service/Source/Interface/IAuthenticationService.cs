@@ -109,6 +109,14 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Retrieve the session by it's unique identifier.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        Session GetSession(
+            Guid sessionId);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Login the destination.
         /// </summary>
         ///--------------------------------------------------------------------

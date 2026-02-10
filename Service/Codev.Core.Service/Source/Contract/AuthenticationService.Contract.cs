@@ -357,6 +357,45 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Retrieve the sesssion by the unique identifier.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        Session IAuthenticationService.GetSession(
+            Guid sessionId)
+        {
+            try
+            {
+                SessionEntity sessionEntity = this.SessionRepository.GetBySessionId(sessionId);
+
+                if (sessionEntity != null)
+                {
+                    return sessionEntity.ToModel();
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.SessionDoesNotExistMessage);
+                }
+            }
+            catch (CoreDataException cde)
+            {
+                throw new CoreServiceException(cde.ErrorCode, cde);
+            }
+            catch (CoreProviderException cpe)
+            {
+                throw new CoreServiceException(cpe.ErrorCode, cpe);
+            }
+            catch (CoreLogicException cle)
+            {
+                throw new CoreServiceException(cle.ErrorCode, cle);
+            }
+            catch (Exception e)
+            {
+                throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Retrieve all destinations for the identity.
         /// </summary>
         ///--------------------------------------------------------------------

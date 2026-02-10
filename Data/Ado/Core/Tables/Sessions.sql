@@ -11,6 +11,7 @@ CREATE TABLE [core].[Sessions]
     [DateModified]   DATETIME            NOT NULL,
     [IdentityId]     INT                 NOT NULL,
     [DateExpiration] DATETIME            NOT NULL,
+    [SessionId]      UNIQUEIDENTIFIER    NOT NULL,
     [Secret]         NVARCHAR(64)        NOT NULL
 )                                       
 GO

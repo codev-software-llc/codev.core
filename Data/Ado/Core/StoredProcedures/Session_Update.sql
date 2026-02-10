@@ -10,6 +10,7 @@ CREATE PROCEDURE [core].[Session_Update]
     @DateCreated    DATETIME        ,
     @DateModified   DATETIME        ,
     @DateExpiration DATETIME        ,
+    @SessionId      UNIQUEIDENTIFIER,
     @Secret         NVARCHAR(64)
 )
 AS
@@ -23,6 +24,7 @@ BEGIN
         [DateCreated]    = @DateCreated   ,
         [DateModified]   = @DateModified  ,
         [DateExpiration] = @DateExpiration,
+        [SessionId]      = @SessionId     ,
         [Secret]         = @Secret
     WHERE ([RowId] = @RowId) AND ([RowVersion] = @RowVersion)
 

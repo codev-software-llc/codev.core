@@ -30,6 +30,7 @@ namespace Codev.Core.Service
                     DateCreated    = entity.DateCreated.ToLocalDateTime(entity.Identity.TimeZone),
                     DateExpiration = entity.DateExpiration.ToLocalDateTime(entity.Identity.TimeZone),
                     Identity       = entity.Identity.ToModel(),
+                    SessionId      = entity.SessionId,
                     Secret         = entity.Secret
                 };
         }

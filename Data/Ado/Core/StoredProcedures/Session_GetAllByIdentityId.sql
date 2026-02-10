@@ -21,6 +21,7 @@ BEGIN
         e.[DateCreated]    as 'DateCreated'   ,
         e.[DateModified]   as 'DateModified'  ,
         e.[DateExpiration] as 'DateExpiration',
+        e.[SessionId]      as 'SessionId'     ,
         e.[Secret]         as 'Secret'
      FROM [core].[Sessions] e
      WHERE (e.[IdentityId] = @IdentityId) AND (e.[IsActive] = 1)

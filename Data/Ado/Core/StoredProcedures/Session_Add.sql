@@ -3,11 +3,12 @@
 -------------------------------------------------------------------------------
 CREATE PROCEDURE [core].[Session_Add]
 (
-    @IdentityId     INT     ,
-    @Flags          BIGINT  ,
-    @DateCreated    DATETIME,
-    @DateModified   DATETIME,
-    @DateExpiration DATETIME,
+    @IdentityId     INT             ,
+    @Flags          BIGINT          ,
+    @DateCreated    DATETIME        ,
+    @DateModified   DATETIME        ,
+    @DateExpiration DATETIME        ,
+    @SessionId      UNIQUEIDENTIFIER,
     @Secret         NVARCHAR(64)
 )
 AS
@@ -23,6 +24,7 @@ BEGIN
             [DateCreated]   ,
             [DateModified]  ,
             [DateExpiration],
+            [SessionId]     ,
             [Secret]
         ) 
     VALUES
@@ -33,6 +35,7 @@ BEGIN
             @DateCreated   ,
             @DateModified  ,
             @DateExpiration,
+            @SessionId     ,
             @Secret
         )
 
