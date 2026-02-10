@@ -50,13 +50,13 @@
     <Project Path="Service/Codev.Core.Service/Codev.Core.Service.csproj" />
   </Folder>
   <Folder Name="/Solution Files/" />
+  <Folder Name="/Solution Files/Config/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Folder Name="/Solution Files/Scripts/">
     <File Path="Bld/Build.bat" />
     <File Path="Bld/BuildEnums.bat" />
     <File Path="Bld/Clean.bat" />
-  </Folder>
-  <Folder Name="/Solution Items/">
-    <File Path=".editorconfig" />
   </Folder>
   <Folder Name="/Test/">
     <Project Path="Test/Core.Test.Common.Base/Core.Test.Common.Base.csproj" />

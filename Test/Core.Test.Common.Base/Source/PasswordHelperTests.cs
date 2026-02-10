@@ -3,7 +3,7 @@
 // Copyright © 2026
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Core.Test.Provider.Cipher
+namespace Core.Test.Common.Cipher
 {
     using System;
     using Codev.Core.Base;
@@ -28,7 +28,7 @@ namespace Core.Test.Provider.Cipher
         {
             Byte[] salt = PasswordHelper.GenerateRandomSalt(10);
 
-            Byte[] interationArray = { 0, 0, 0, 0 };
+            Byte[] interationArray = [ 0, 0, 0, 0 ];
 
             Buffer.BlockCopy(salt, 0, interationArray, 0, 4);
 

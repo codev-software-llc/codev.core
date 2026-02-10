@@ -3,10 +3,9 @@
 // Copyright © 2026
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Core.Test.Provider.Base
+namespace Core.Test.Common.Base
 {
     using System;
-    using System.Text.Json.Serialization;
     using NodaTime;
 
     ///------------------------------------------------------------------------

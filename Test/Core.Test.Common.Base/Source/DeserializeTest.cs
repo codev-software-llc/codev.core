@@ -3,7 +3,7 @@
 // Copyright © 2026
 // </copyright>
 //-----------------------------------------------------------------------------
-namespace Core.Test.Provider.Base
+namespace Core.Test.Common.Base
 {
     using System;
     using System.Text.Json;
@@ -31,7 +31,7 @@ namespace Core.Test.Provider.Base
         {
             Byte[] salt = PasswordHelper.GenerateRandomSalt(10);
 
-            Byte[] interationArray = { 0, 0, 0, 0 };
+            Byte[] interationArray = [0, 0, 0, 0];
 
             Buffer.BlockCopy(salt, 0, interationArray, 0, 4);
 
