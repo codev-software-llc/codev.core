@@ -8,10 +8,12 @@ namespace Codev.Core.Service.Authentication
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using Codev.Core.Base;
     using Codev.Core.Interface;
     using Codev.Core.Model;
     using Codev.Core.Service.Clock;
+    using Microsoft.IdentityModel.Tokens;
     using NodaTime;
 
     ///------------------------------------------------------------------------
@@ -64,13 +66,15 @@ namespace Codev.Core.Service.Authentication
             ISecretProvider        secretProvider,
             IIdentityRepository    identityRepository,
             IDestinationRepository destinationRepository,
-            ISessionRepository     sessionRepository) : base(dataSource, clockService)
+            ISessionRepository     sessionRepository,
+            ISecurityTokenInfo     securityTokenInfo) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<ISecretProvider>       ("secretProvider"       , secretProvider       );
             Validation.ValidateParameter<IIdentityRepository>   ("identityRepository"   , identityRepository   );
             Validation.ValidateParameter<IDestinationRepository>("destinationRepository", destinationRepository);
             Validation.ValidateParameter<ISessionRepository>    ("sessionRepository"    , sessionRepository    );
 
+            this.SecurityTokenInfo     = securityTokenInfo;
             this.SecretProvider        = secretProvider;
             this.IdentityRepository    = identityRepository;
             this.DestinationRepository = destinationRepository;
@@ -79,6 +83,13 @@ namespace Codev.Core.Service.Authentication
         #endregion
 
         #region Properties
+        ///---------------------------------------------------------------
+        /// <summary>
+        /// Get or set the repository for the identities.
+        /// </summary>
+        ///---------------------------------------------------------------
+        private ISecurityTokenInfo SecurityTokenInfo { get; set; }
+
         ///---------------------------------------------------------------
         /// <summary>
         /// Get or set the repository for the identities.
@@ -218,6 +229,61 @@ namespace Codev.Core.Service.Authentication
                 this.SessionRepository.Add(entity);
 
                 return entity.ToModel();
+            }
+            else
+            {
+                throw new CoreLogicException(CoreErrorCode.AccessDenied, "Invalid confirmation code");
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Confirm the identity and return the session that is 
+        /// established.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public SessionJWT Confirm(
+            DestinationEntity destinationEntity,
+            String            confirmationSecret)
+        {
+            if (String.Compare(confirmationSecret, destinationEntity.ConfirmationSecret, StringComparison.InvariantCultureIgnoreCase) == 0)
+            {
+                Instant instantNow = this.ClockService.GetCurrentInstant();
+
+                // Tag the destination as registered.
+                //
+                destinationEntity.Flags |= DestinationFlags.Confirmed;
+
+                destinationEntity.DateModified            = instantNow;
+                destinationEntity.ConfirmationSecret      = String.Empty;
+                destinationEntity.DateConfirmationExpires = Instant.MaxValue;
+
+                this.DestinationRepository.Update(destinationEntity);
+
+                // Create a session.
+                //
+                SessionEntity entity = new SessionEntity(instantNow)
+                    {
+                        Identity       = destinationEntity.Identity,
+                        Flags          = SessionFlags.None,
+                        Secret         = this.GenerationSessionSecret(),
+                        SessionId      = Guid.NewGuid(),
+                        DateExpiration = this.GenerateExpiration(Duration.FromDays(90))
+                    };
+
+                this.SessionRepository.Add(entity);
+
+                // Build the signing key.
+                //
+                SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.SecurityTokenInfo.SigningKey.ToString()));
+
+                SessionJWT token = new SessionJWT()
+                    {
+                        SessionToken = JWTHelper.CreateJWT(signingKey, entity.Identity.Id.ToString(), destinationEntity.Address, entity.SessionId.ToString(), this.SecurityTokenInfo.Issuer, this.SecurityTokenInfo.Audience),
+                        RefreshToken = entity.Secret
+                    };
+
+                return token;
             }
             else
             {

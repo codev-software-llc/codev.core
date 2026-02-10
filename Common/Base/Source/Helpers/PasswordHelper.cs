@@ -63,10 +63,9 @@ namespace Codev.Core.Base
 
             Byte[] saltBytes = iterationsAndSalt.Skip(4).ToArray();
 
-            using (Rfc2898DeriveBytes pbkdf2 = new(passwordTextBytes, saltBytes, iterations, HashAlgorithmName.SHA1))
-            {
-                return pbkdf2.GetBytes(64);  // storing 64-byte hashes
-            }
+            Byte[] encoder = Rfc2898DeriveBytes.Pbkdf2(passwordTextBytes, saltBytes, iterations, HashAlgorithmName.SHA256, 64);
+
+            return encoder;
         }
 
         ///--------------------------------------------------------------------

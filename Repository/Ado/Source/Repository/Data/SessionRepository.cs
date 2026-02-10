@@ -63,6 +63,7 @@ namespace Codev.Core.Repository.Ado
                         command.AddInputParameter<Instant>     ("DateCreated"   , entity.DateCreated   );
                         command.AddInputParameter<Instant>     ("DateModified"  , entity.DateModified  );
                         command.AddInputParameter<Instant>     ("DateExpiration", entity.DateExpiration);
+                        command.AddInputParameter<Guid>        ("SessionId"     , entity.SessionId     );
                         command.AddInputParameter<String>      ("Secret"        , entity.Secret        );
                     },
                 (command, reader) =>
@@ -202,6 +203,7 @@ namespace Codev.Core.Repository.Ado
                         command.AddInputParameter<Instant>     ("DateCreated"   , entity.DateCreated   );
                         command.AddInputParameter<Instant>     ("DateModified"  , entity.DateModified  );
                         command.AddInputParameter<Instant>     ("DateExpiration", entity.DateExpiration);
+                        command.AddInputParameter<Guid>        ("SessionId"     , entity.SessionId     );
                         command.AddInputParameter<String>      ("Secret"        , entity.Secret        );
                     },
                 (command, reader) =>

@@ -73,7 +73,7 @@ namespace Core.Test.Provider.Cipher
             }
             catch (CoreProviderException e)
             {
-                Assert.AreEqual(e.ErrorCode, CoreErrorCode.InternalFailure);
+                Assert.AreEqual(CoreErrorCode.InternalFailure, e.ErrorCode);
             }
         }
 
@@ -173,7 +173,7 @@ namespace Core.Test.Provider.Cipher
             }
             catch (CoreProviderException e)
             {
-                Assert.AreEqual(e.ErrorCode, CoreErrorCode.InternalFailure);
+                Assert.AreEqual(CoreErrorCode.InternalFailure, e.ErrorCode);
             }
         }
 
@@ -195,7 +195,7 @@ namespace Core.Test.Provider.Cipher
             }
             catch (CoreProviderException e)
             {
-                Assert.AreEqual(e.ErrorCode, CoreErrorCode.InternalFailure);
+                Assert.AreEqual(CoreErrorCode.InternalFailure, e.ErrorCode);
             }
         }
         #endregion

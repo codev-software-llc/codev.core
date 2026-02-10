@@ -34,8 +34,8 @@ namespace Core.Test.Provider.Cipher
 
             Int32 iterations = BitConverter.ToInt32(interationArray);
 
-            Assert.AreEqual(salt.Length, 36);
-            Assert.AreEqual(iterations, 10);
+            Assert.HasCount(36, salt);
+            Assert.AreEqual(10, iterations);
         }
 
         /// -------------------------------------------------------------------
@@ -50,7 +50,7 @@ namespace Core.Test.Provider.Cipher
 
             Byte[] pw = PasswordHelper.GenerateSaltedPasswordHash("test", salt);
 
-            Assert.AreEqual(salt.Length, 36);
+            Assert.HasCount(36, salt);
         }
 
         #endregion

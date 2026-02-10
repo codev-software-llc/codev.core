@@ -37,8 +37,8 @@ namespace Core.Test.Provider.Base
 
             Int32 iterations = BitConverter.ToInt32(interationArray);
 
-            Assert.AreEqual(salt.Length, 36);
-            Assert.AreEqual(iterations, 10);
+            Assert.HasCount(36, salt);
+            Assert.AreEqual(10, iterations);
         }
 
         /// -------------------------------------------------------------------
@@ -57,7 +57,7 @@ namespace Core.Test.Provider.Base
 
             WebApiResponse<TestStruct>? response = JsonSerializer.Deserialize<WebApiResponse<TestStruct>>(payload, options);
 
-            Assert.IsTrue(true);
+            //
         }
 
         /// -------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace Core.Test.Provider.Base
 
             TestStruct? response = JsonSerializer.Deserialize<TestStruct>(payload, options);
 
-            Assert.IsTrue(true);
+            //Assert.IsTrue(true);
         }
         #endregion
     }

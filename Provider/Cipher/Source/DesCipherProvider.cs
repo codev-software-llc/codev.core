@@ -178,11 +178,11 @@ namespace Codev.Core.Provider.Cipher
         private Byte[] GenerateKey(
             String keyHash)
         {
-            Byte[] keySalt = Encoding.UTF8.GetBytes("Quorent, Inc Salt Value");
+            Byte[] keySalt = Encoding.UTF8.GetBytes("Codev, Inc Salt Value");
 
-            Rfc2898DeriveBytes encoder = new Rfc2898DeriveBytes(keyHash, keySalt, 1000, HashAlgorithmName.SHA1);
+            Byte[] encoder = Rfc2898DeriveBytes.Pbkdf2(keyHash, keySalt, 1000, HashAlgorithmName.SHA256, 16);
 
-            return encoder.GetBytes(8);
+            return encoder;
         }
         #endregion
     }

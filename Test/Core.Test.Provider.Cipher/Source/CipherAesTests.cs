@@ -67,14 +67,18 @@ namespace Core.Test.Provider.Cipher
         [TestMethod]
         public void Test_Aes_NullHash()
         {
+            CoreErrorCode errorCode = CoreErrorCode.Success;
+
             try
             {
                 ICipherProvider provider = new AesCipherProvider(null);
             }
             catch (CoreProviderException e)
             {
-                Assert.AreEqual(e.ErrorCode, CoreErrorCode.InternalFailure);
+                errorCode = e.ErrorCode;
             }
+
+            Assert.AreEqual(CoreErrorCode.InternalFailure, errorCode);
         }
 
         /// -------------------------------------------------------------------
@@ -163,6 +167,8 @@ namespace Core.Test.Provider.Cipher
         [TestMethod]
         public void EncryptString_NullString()
         {
+            CoreErrorCode errorCode = CoreErrorCode.Success;
+
             String testHash = "AbCdE";
 
             ICipherProvider provider = new AesCipherProvider(testHash);
@@ -173,8 +179,10 @@ namespace Core.Test.Provider.Cipher
             }
             catch (CoreProviderException e)
             {
-                Assert.AreEqual(e.ErrorCode, CoreErrorCode.InternalFailure);
+                errorCode = e.ErrorCode;
             }
+
+            Assert.AreEqual(CoreErrorCode.InternalFailure, errorCode);
         }
 
         /// -------------------------------------------------------------------
@@ -185,6 +193,8 @@ namespace Core.Test.Provider.Cipher
         [TestMethod]
         public void DecryptString_NullString()
         {
+            CoreErrorCode errorCode = CoreErrorCode.Success;
+
             String testHash = "AbCdE";
 
             ICipherProvider provider = new AesCipherProvider(testHash);
@@ -195,8 +205,10 @@ namespace Core.Test.Provider.Cipher
             }
             catch (CoreProviderException e)
             {
-                Assert.AreEqual(e.ErrorCode, CoreErrorCode.InternalFailure);
+                errorCode = e.ErrorCode;
             }
+
+            Assert.AreEqual(CoreErrorCode.InternalFailure, errorCode);
         }
         #endregion
     }

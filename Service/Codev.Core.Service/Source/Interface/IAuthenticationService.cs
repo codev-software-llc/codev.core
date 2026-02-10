@@ -61,6 +61,15 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Confirm the authentication.  Return a JWT Token.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        SessionJWT Confirm(
+            Reference<Destination> destinationReference,
+            String                 confirmationCode);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Retrieve the destination.
         /// </summary>
         ///--------------------------------------------------------------------
