@@ -64,15 +64,13 @@ namespace Codev.Core.Service.Authentication
             ISecretProvider        secretProvider,
             IIdentityRepository    identityRepository,
             IDestinationRepository destinationRepository,
-            ISessionRepository     sessionRepository,
-            ISecurityTokenInfo     securityTokenInfo) : base(dataSource, clockService)
+            ISessionRepository     sessionRepository) : base(dataSource, clockService)
         {
             Validation.ValidateParameter<ISecretProvider>       ("secretProvider"       , secretProvider       );
             Validation.ValidateParameter<IIdentityRepository>   ("identityRepository"   , identityRepository   );
             Validation.ValidateParameter<IDestinationRepository>("destinationRepository", destinationRepository);
             Validation.ValidateParameter<ISessionRepository>    ("sessionRepository"    , sessionRepository    );
 
-            this.SecurityTokenInfo     = securityTokenInfo;
             this.SecretProvider        = secretProvider;
             this.IdentityRepository    = identityRepository;
             this.DestinationRepository = destinationRepository;
@@ -81,13 +79,6 @@ namespace Codev.Core.Service.Authentication
         #endregion
 
         #region Properties
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Get or set the repository for the identities.
-        /// </summary>
-        ///---------------------------------------------------------------
-        private ISecurityTokenInfo SecurityTokenInfo { get; set; }
-
         ///---------------------------------------------------------------
         /// <summary>
         /// Get or set the repository for the identities.
