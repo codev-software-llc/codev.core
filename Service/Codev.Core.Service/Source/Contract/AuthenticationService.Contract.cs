@@ -193,49 +193,6 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Confirm the identity.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        SessionJWT IAuthenticationService.Confirm(
-            Reference<Destination> destinationReference,
-            String                 confirmationSecret)
-        {
-            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
-            Validation.ValidateParameter<String>                ("confirmationSecret"  , confirmationSecret  );
-
-            try
-            {
-                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
-
-                if (destinationEntity != null)
-                {
-                    return this.Confirm(destinationEntity, confirmationSecret);
-                }
-                else
-                {
-                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
-                }
-            }
-            catch (CoreDataException cde)
-            {
-                throw new CoreServiceException(cde.ErrorCode, cde);
-            }
-            catch (CoreProviderException cpe)
-            {
-                throw new CoreServiceException(cpe.ErrorCode, cpe);
-            }
-            catch (CoreLogicException cle)
-            {
-                throw new CoreServiceException(cle.ErrorCode, cle);
-            }
-            catch (Exception e)
-            {
-                throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
-            }
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
         /// Retrieve the destination.
         /// </summary>
         ///--------------------------------------------------------------------
