@@ -61,8 +61,8 @@
   <Folder Name="/Test/">
     <Project Path="Test/Core.Test.Common.Base/Core.Test.Common.Base.csproj" />
     <Project Path="Test/Core.Test.Provider.Cipher/Core.Test.Provider.Cipher.csproj" />
+    <Project Path="Test/Core.Test.Provider.Communication/Core.Test.Provider.Communication.csproj" />
     <Project Path="Test/Core.Test.Provider.Export/Core.Test.Provider.Export.csproj" />
-    <Project Path="Test/Core.Test.Provider.SmsTwilio/Core.Test.Provider.SmsTwilio.csproj" />
     <Project Path="Test/Core.Test.Service.Clock/Core.Test.Service.Clock.csproj" />
     <Project Path="Test/Core.Tests/Core.Tests.csproj" />
   </Folder>

@@ -5,6 +5,7 @@
 // ----------------------------------------------------------------------------
 namespace Codev.Core.Service.Notify
 {
+    using System.Threading.Tasks;
     using Codev.Core.Interface;
     using Codev.Core.Model;
     using Codev.Core.Service.Clock;
@@ -69,10 +70,10 @@ namespace Codev.Core.Service.Notify
         /// controlled from the outside caller.
         /// </summary>
         ///--------------------------------------------------------------------
-        public void Send(
+        public async Task SendAsync(
             SmtpMessage message)
         {
-            this.EmailProvider.Send(message);
+            await this.EmailProvider.SendAsync(message);
         }
 
         ///--------------------------------------------------------------------

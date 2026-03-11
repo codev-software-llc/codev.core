@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Service.Notify
 {
+    using System.Threading.Tasks;
     using Codev.Core.Interface;
     using Codev.Core.Model;
 
@@ -21,8 +22,8 @@ namespace Codev.Core.Service.Notify
         /// Send email message.
         /// </summary>
         /// -------------------------------------------------------------------
-        void Send(
-            SmtpMessage emailMessage);
+        Task SendAsync(
+            SmtpMessage message);
 
         /// -------------------------------------------------------------------
         /// <summary>

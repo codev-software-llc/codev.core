@@ -83,7 +83,6 @@ namespace Codev.Core.Infrastructure
             services.AddScoped<ICipherProvider              , DesCipherProvider>();
             services.AddScoped<IAuthenticationProvider      , CodevAuthProvider>();
             services.AddScoped<IEmailClientProvider         , NoSmtpProvider>();
-            services.AddScoped<IEmailServerProvider         , NoEmailServerProvider>();
             services.AddScoped<ISmsClientProvider           , NoSmsProvider>();
             services.AddScoped<IExportProvider              , ExportXmlProvider>();
             services.AddScoped<ISecretProvider              , CodevSecretProvider>();

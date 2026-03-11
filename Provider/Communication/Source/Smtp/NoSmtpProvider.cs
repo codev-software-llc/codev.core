@@ -6,6 +6,7 @@
 namespace Codev.Core.Provider.Communication
 {
     using System;
+    using System.Threading.Tasks;
     using Codev.Core.Interface;
     using Codev.Core.Model;
 
@@ -30,12 +31,17 @@ namespace Codev.Core.Provider.Communication
         #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Email settings for SMTP client.
+        /// Get or set the From address.
         /// </summary>
         ///--------------------------------------------------------------------
-        public String SystemEmailAddress { get; private set; }
-        public String SystemEmailName { get; private set; }
-        public Int32 EmailFailingThreshold { get; private set; }
+        private String FromAddress { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Ger or set the From name.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private String FromName { get; set; }
         #endregion
 
         #region Methods
@@ -44,9 +50,11 @@ namespace Codev.Core.Provider.Communication
         /// Send email.
         /// </summary>
         ///--------------------------------------------------------------------
-        public void Send(
+        public async Task SendAsync(
             SmtpMessage message)
         {
+            await Task.CompletedTask;
+
             //
             // DO NOTHING.
             //

@@ -45,6 +45,20 @@ for %%X IN (Base,Interface,Model) DO (
   )
 )
 
+for %%X IN (Codev.Core.Service) DO (
+
+  @if EXIST "..\%%X" (
+    pushd ..\%%X
+
+    FOR %%Y IN (obj,bin) DO (
+      @if EXIST %%Y (
+        rd /s /q %%Y
+      )
+    )
+    popd
+  )
+)
+
 for %%X IN (Cache,Cipher,Common,Communication,Export,Secret) DO (
 
   @if EXIST "..\Provider\%%X" (
@@ -90,20 +104,6 @@ for %%X IN (Ado,Sqlite) DO (
   )
 )
 
-for %%X IN (Asset,Banking,Cache,Cipher,Common,Communication,Export,Licensing,Task) DO (
-
-  @if EXIST "..\Service\%%X" (
-    pushd ..\Service\%%X
-
-    FOR %%Y IN (obj,bin) DO (
-      @if EXIST %%Y (
-        rd /s /q %%Y
-      )
-    )
-
-    popd
-  )
-)
 
 for %%X IN (Infrastructure) DO (
 

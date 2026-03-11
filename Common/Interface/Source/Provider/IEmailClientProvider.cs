@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 namespace Codev.Core.Interface
 {
-    using System;
+    using System.Threading.Tasks;
     using Codev.Core.Model;
 
     /// -----------------------------------------------------------------------
@@ -15,36 +15,13 @@ namespace Codev.Core.Interface
     /// -----------------------------------------------------------------------
     public interface IEmailClientProvider : IProvider
     {
-        #region Properties
-        /// -------------------------------------------------------------------
-        /// <summary>
-        /// Returns the client threshold for email sending.
-        /// </summary>
-        /// -------------------------------------------------------------------
-        Int32 EmailFailingThreshold { get; }
-
-        /// -------------------------------------------------------------------
-        /// <summary>
-        /// Returns the system email address.
-        /// </summary>
-        /// -------------------------------------------------------------------
-        String SystemEmailAddress { get; }
-
-        /// -------------------------------------------------------------------
-        /// <summary>
-        /// Returns the system email name.
-        /// </summary>
-        /// -------------------------------------------------------------------
-        String SystemEmailName { get; }
-        #endregion
-
         #region Methods
         /// -------------------------------------------------------------------
         /// <summary>
         /// Send email message.
         /// </summary>
         /// -------------------------------------------------------------------
-        void Send(
+        Task SendAsync(
             SmtpMessage emailMessage);
         #endregion
     }

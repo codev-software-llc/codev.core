@@ -1,7 +1,7 @@
 ﻿-------------------------------------------------------------------------------
 -- Return the all entities that share the key.
 -------------------------------------------------------------------------------
-CREATE PROCEDURE [core].[Session_GetAllBySessionId]
+CREATE PROCEDURE [core].[Session_GetBySessionId]
 (
     @SessionId UNIQUEIDENTIFIER
 )

@@ -9,6 +9,7 @@ namespace Codev.Core.Provider.Communication
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Mail;
+    using System.Threading.Tasks;
     using Codev.Core.Base;
     using Codev.Core.Interface;
     using Codev.Core.Model;
@@ -50,8 +51,7 @@ namespace Codev.Core.Provider.Communication
             String useDefaultCredentials,
             String port,
             String fromAddress,
-            String fromAddressName,
-            String failingThreshold)
+            String fromAddressName)
         {
 
             this.Host                  = Environment.ExpandEnvironmentVariables(host);
@@ -60,21 +60,25 @@ namespace Codev.Core.Provider.Communication
             this.UseSSL                = Convert.ToBoolean(useSSL);
             this.UseDefaultCredentials = Convert.ToBoolean(useDefaultCredentials);
             this.Port                  = Convert.ToInt32(port);
-            this.SystemEmailAddress    = fromAddress;
-            this.SystemEmailName       = fromAddressName;
-            this.EmailFailingThreshold = Convert.ToInt32(failingThreshold);
+            this.FromAddress           = fromAddress;
+            this.FromName              = fromAddressName;
         }
         #endregion
 
         #region Properties
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Email settings for SMTP client.
+        /// Get or set the From address.
         /// </summary>
         ///--------------------------------------------------------------------
-        public  String  SystemEmailAddress    { get; private set; }
-        public  String  SystemEmailName       { get; private set; }
-        public  Int32   EmailFailingThreshold { get; private set; }
+        private String FromAddress { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the From name.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private String FromName { get; set; }
 
         ///--------------------------------------------------------------------
         /// <summary>
@@ -122,18 +126,18 @@ namespace Codev.Core.Provider.Communication
         #region Methods
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Send email.  This is a synchronous operation and as such is 
-        /// blocking.  It is recommended that email is asynchronously 
-        /// controlled from the outside caller.
+        /// Send email.
         /// </summary>
         ///--------------------------------------------------------------------
-        public void Send(
+        public async Task SendAsync(
             SmtpMessage message)
         {
+            await Task.CompletedTask;
+
             // Convert the SmtpMessage into the message format for the
             // SmtpClient.
             //
-            MailAddress fromAddress = new MailAddress(this.SystemEmailAddress, this.SystemEmailName);
+            MailAddress fromAddress = new MailAddress(this.FromAddress, this.FromName);
             MailAddress toAddress   = new MailAddress(message.To, message.ToName);
 
             MailMessage mailMessage = new MailMessage(fromAddress, toAddress);
@@ -141,6 +145,7 @@ namespace Codev.Core.Provider.Communication
             if (!String.IsNullOrWhiteSpace(message.Bcc))
             {
                 MailAddress bcc = new MailAddress(message.Bcc, message.BccName);
+
                 mailMessage.Bcc.Add(bcc);
             }
 

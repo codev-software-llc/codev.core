@@ -6,6 +6,7 @@
 namespace Codev.Core.Service.Notify
 {
     using System;
+    using System.Threading.Tasks;
     using Codev.Core.Base;
     using Codev.Core.Model;
 
@@ -22,14 +23,14 @@ namespace Codev.Core.Service.Notify
         /// Send email message.
         /// </summary>
         /// -------------------------------------------------------------------
-        void INotifyService.Send(
-            SmtpMessage emailMessage)
+        async Task INotifyService.SendAsync(
+            SmtpMessage message)
         {
-            Validation.ValidateParameter<SmtpMessage>("emailMessage", emailMessage);
+            Validation.ValidateParameter<SmtpMessage>("message", message);
 
             try
             {
-                this.Send(emailMessage);
+                await this.SendAsync(message);
             }
             catch (CoreDataException cde)
             {
