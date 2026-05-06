@@ -23,6 +23,11 @@ namespace Codev.Core.Model
         ///--------------------------------------------------------------------
         public Token()
         {
+            this.IsSuccess   = true;
+            this.Id          = String.Empty;
+            this.Type        = String.Empty;
+            this.Title       = String.Empty;
+            this.Description = String.Empty;
         }
         #endregion
 

@@ -247,6 +247,7 @@
     <Build Include="StoredProcedures\BlobContent_SetCurrent.sql" />
     <Build Include="StoredProcedures\Blob_CancelDrafts.sql" />
     <Build Include="StoredProcedures\Session_GetBySessionId.sql" />
+    <Build Include="StoredProcedures\License_GetAllByIdentityId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Codev.Core.Data.publish.xml" />

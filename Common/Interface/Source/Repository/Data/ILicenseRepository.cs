@@ -27,6 +27,14 @@ namespace Codev.Core.Interface
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Return all licenses for the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        EntityCollection<LicenseEntity> GetAllByIdentity(
+            IdentityEntity identityEntity);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Return the license by the license subscription.
         /// </summary>
         ///--------------------------------------------------------------------
