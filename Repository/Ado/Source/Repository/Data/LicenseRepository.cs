@@ -233,6 +233,36 @@ namespace Codev.Core.Repository.Ado
         #region Methods (Additional)
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Retrieve all entities by the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public EntityCollection<LicenseEntity> GetAllByIdentity(
+            IdentityEntity identityEntity)
+        {
+            EntityCollection<LicenseEntity> entities = new();
+
+            AdoAccess.CallProcedure(
+                "License_GetAllByIdentityId",
+                this.DataSource,
+                (command) =>
+                    {
+                        command.AddInputParameter<Int32>("IdentityId", identityEntity.Id);
+                    },
+                (command, reader) =>
+                    {
+                        while (reader.Read())
+                        {
+                            LicenseEntity entity = this.LoadEntity(reader);
+
+                            entities.Add(entity);
+                        }
+                    });
+
+            return entities;
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Retrieve all entities by the application name.
         /// </summary>
         ///-------------------------------------------------------------------- 

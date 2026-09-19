@@ -53,6 +53,14 @@ namespace Codev.Core.Service.Licensing
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Return all licenses for the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        List<License> GetAll(
+            Identity identity);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Locate a license for the identifier.
         /// </summary>
         ///--------------------------------------------------------------------

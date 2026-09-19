@@ -116,6 +116,50 @@ namespace Codev.Core.Service.Licensing
             }
         }
 
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get all licenses for the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        List<License> ILicenseService.GetAll(
+            Identity identity)
+        {
+            Validation.ValidateParameter<Identity>("identity", identity);
+
+            try
+            {
+                IdentityEntity identityEntity = this.IdentityRepository.GetById(identity.Id);
+
+                if (identityEntity != null)
+                {
+                    EntityCollection<LicenseEntity> entities = this.LicenseRepository.GetAllByIdentity(identityEntity);
+
+                    return entities.Select(x => x.ToModel()).ToList();
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.IdentityDoesNotExist);
+                }
+            }
+            catch (CoreDataException cde)
+            {
+                throw new CoreServiceException(cde.ErrorCode, cde);
+            }
+            catch (CoreProviderException cpe)
+            {
+                throw new CoreServiceException(cpe.ErrorCode, cpe);
+            }
+            catch (CoreLogicException cle)
+            {
+                throw new CoreServiceException(cle.ErrorCode, cle);
+            }
+            catch (Exception e)
+            {
+                throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
+            }
+        }
+
         ///--------------------------------------------------------------------
         /// <summary>
         /// Locate a license entry by the user key.

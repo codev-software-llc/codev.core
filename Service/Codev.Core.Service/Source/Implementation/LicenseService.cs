@@ -29,22 +29,19 @@ namespace Codev.Core.Service.Licensing
         /// </summary>
         ///---------------------------------------------------------------
         public LicenseService(
-            ICoreDataSource           dataSource,
-            IClockService             clockService,
-            IIdentityRepository       identityRepository,
-            ILicenseRepository        licenseRepository,
-            ISubscriptionRepository   subscriptionRepository,
-            ISubscriptionPlanProvider subscriptionPlanProvider) : base(dataSource, clockService)
+            ICoreDataSource         dataSource,
+            IClockService           clockService,
+            IIdentityRepository     identityRepository,
+            ILicenseRepository      licenseRepository,
+            ISubscriptionRepository subscriptionRepository) : base(dataSource, clockService)
         {
-            Validation.ValidateParameter<IIdentityRepository>      ("identityRepository"    , identityRepository      );
-            Validation.ValidateParameter<ILicenseRepository>       ("licenseRepository"     , licenseRepository       );
-            Validation.ValidateParameter<ISubscriptionRepository>  ("subscriptionRepository", subscriptionRepository  );
-            Validation.ValidateParameter<ISubscriptionPlanProvider>("clockService"          , subscriptionPlanProvider);
+            Validation.ValidateParameter<IIdentityRepository>    ("identityRepository"    , identityRepository    );
+            Validation.ValidateParameter<ILicenseRepository>     ("licenseRepository"     , licenseRepository     );
+            Validation.ValidateParameter<ISubscriptionRepository>("subscriptionRepository", subscriptionRepository);
 
-            this.IdentityRepository       = identityRepository;
-            this.LicenseRepository        = licenseRepository;
-            this.SubscriptionRepository   = subscriptionRepository;
-            this.SubscriptionPlanProvider = subscriptionPlanProvider;
+            this.IdentityRepository     = identityRepository;
+            this.LicenseRepository      = licenseRepository;
+            this.SubscriptionRepository = subscriptionRepository;
         }
         #endregion
 
@@ -69,14 +66,6 @@ namespace Codev.Core.Service.Licensing
         /// </summary>
         ///---------------------------------------------------------------
         private ISubscriptionRepository SubscriptionRepository { get; set; }
-
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Get or set the provider that will handling the subscription
-        /// management.
-        /// </summary>
-        ///---------------------------------------------------------------
-        private ISubscriptionPlanProvider SubscriptionPlanProvider { get; set; }
         #endregion
 
         #region Methods
@@ -95,10 +84,6 @@ namespace Codev.Core.Service.Licensing
             Int32                trialDays,
             List<LicenseFeature> features)
         {
-            // Invoke the provider to establish a plan.
-            //
-            Token token = this.SubscriptionPlanProvider.Create(applicationName, name, cost, interval, intervalCount, trialDays);
-
             // Persist our own information about the license.
             //
             Instant instantNow = this.ClockService.GetCurrentInstant();
@@ -111,7 +96,7 @@ namespace Codev.Core.Service.Licensing
                     Name        = name,
                     Cost        = cost,
                     Features    = features,
-                    Token       = token
+                    Token       = new Token()
                 };
 
             this.LicenseRepository.Add(entity);
@@ -132,13 +117,7 @@ namespace Codev.Core.Service.Licensing
 
             if (subscriptions.Count == 0)
             {
-                // Purge the license.
-                //
                 this.LicenseRepository.Purge(licenseEntity);
-
-                // Remove the plan from our provider.
-                //
-                this.SubscriptionPlanProvider.Delete(licenseEntity.Token);
             }
             else
             {
@@ -168,16 +147,11 @@ namespace Codev.Core.Service.Licensing
             String               name,
             List<LicenseFeature> features)
         {
-            // Update the information to the provider.
-            //
-            Token token = this.SubscriptionPlanProvider.Update(licenseEntity.Token, name);
-
-            // Persist the licence data.
+            // Persist the license data.
             //
             licenseEntity.DateModified = this.ClockService.GetCurrentInstant();
             licenseEntity.Name         = name;
             licenseEntity.Features     = features;
-            licenseEntity.Token        = token;
 
             // Call the provider to update the details for payment
             // processing.
@@ -191,24 +165,11 @@ namespace Codev.Core.Service.Licensing
         /// </summary>
         ///--------------------------------------------------------------------
         public Subscription Subscribe(
-            LicenseEntity   licenseEntity,
-            IdentityEntity  identityEntity,
-            LocalDate       dateExpiration)
+            LicenseEntity  licenseEntity,
+            IdentityEntity identityEntity,
+            LocalDate      dateExpiration)
         {
             Instant instantNow = this.ClockService.GetCurrentInstant();
-
-            // Subscribe to the license through the provider.
-            //
-            Token identityToken = new Token()
-                {
-                    Id          = identityEntity.Id.ToString(),
-                    Description = "Identity Customer Token",
-                    Title       = "Token",
-                    Type        = "Customer",
-                    IsSuccess   = true
-                };
-
-            Token token = this.SubscriptionPlanProvider.Subscribe(licenseEntity.Token, identityToken);
 
             // Persist the subscription against the identity.
             //
@@ -218,7 +179,7 @@ namespace Codev.Core.Service.Licensing
                     DateExpiration = this.GetExpirationInstant(identityEntity, dateExpiration),
                     Identity       = identityEntity,
                     License        = licenseEntity,
-                    Token          = token
+                    Token          = new Token()
                 };
 
             this.SubscriptionRepository.Add(subscriptionEntity);
@@ -234,11 +195,6 @@ namespace Codev.Core.Service.Licensing
         public void Unsubscribe(
             SubscriptionEntity subscriptionEntity)
         {
-            // First we invoke the 3rd party provider to remove the
-            // subscription.
-            //
-            this.SubscriptionPlanProvider.Unsubscribe(subscriptionEntity.Token);
-
             // Now remove from our repository tracking permanently.
             //
             this.SubscriptionRepository.Purge(subscriptionEntity);

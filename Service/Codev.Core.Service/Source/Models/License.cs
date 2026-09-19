@@ -26,6 +26,7 @@ namespace Codev.Core.Service
         ///--------------------------------------------------------------------
         public License() : base()
         {
+            this.Identity = new Identity();
             this.Features = new List<LicenseFeature>();
         }
         #endregion
@@ -79,6 +80,13 @@ namespace Codev.Core.Service
         /// </summary>
         ///--------------------------------------------------------------------
         public List<LicenseFeature> Features { get; set; }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the identity for the license.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Identity Identity { get; set; }
         #endregion
     }
 }

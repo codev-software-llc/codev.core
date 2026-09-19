@@ -31,7 +31,8 @@ namespace Codev.Core.Service
                     DateModified = entity.DateModified.ToLocalDateTime(entity.Identity.TimeZone),
                     Application  = entity.Application,
                     Name         = entity.Name,
-                    Cost         = entity.Cost
+                    Cost         = entity.Cost,
+                    Identity     = entity.Identity.ToModel()
                 };
 
             entity.Features.ForEach(x => license.Features.Add(x));

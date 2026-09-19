@@ -226,6 +226,36 @@ namespace Codev.Core.Repository.Sqlite
         #region Methods (Additional)
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Retrieve the entities by the identity.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public EntityCollection<LicenseEntity> GetAllByIdentity(
+            IdentityEntity identityEntity)
+        {
+            EntityCollection<LicenseEntity> entities = new();
+
+            SqliteAccess.CallStatement(
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Application], [Name], [CurrencyType], [Amount], [Features] FROM [Licenses] WHERE [IdentityId] = ?",
+                this.DataSource,
+                (command) =>
+                {
+                    command.AddInputParameter<Int32>("IdentityId", identityEntity.Id);
+                },
+                (command, reader) =>
+                {
+                    while (reader.Read())
+                    {
+                        LicenseEntity entity = this.LoadEntity(reader);
+
+                        entities.Add(entity);
+                    }
+                });
+
+            return entities;
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Retrieve the entities by the application name.
         /// </summary>
         ///-------------------------------------------------------------------- 
