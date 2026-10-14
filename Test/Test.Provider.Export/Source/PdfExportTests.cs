@@ -1,34 +1,42 @@
 //-----------------------------------------------------------------------------
-// <copyright file="CipherAesTests.cs" company="Codev Software, LLC">
-// Copyright © 2026
+// <copyright file="PdfExportTests.cs" company="Codev Software, LLC">
+// Copyright Â© 2026
 // </copyright>
 //-----------------------------------------------------------------------------
 namespace Core.Test.Provider.Export
 {
-    using System;
     using System.Data;
-    using Codev.Core.Base;
     using Codev.Core.Interface;
     using Codev.Core.Provider.Export;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This is the test for Aes provider.
+    /// This impolements tests for the deserialization methods.
     /// </summary>
     ///------------------------------------------------------------------------
-    [TestClass]
-    public class ExportPdfTests
+    public class PdfExportTests
     {
-        #region Methods
+        #region Setup
+        ///---------------------------------------------------------------
+        /// <summary>
+        /// Setup the class.
+        /// </summary>
+        ///---------------------------------------------------------------
+        [SetUp]
+        public void Setup()
+        {
+        }
+        #endregion
+
         /// -------------------------------------------------------------------
         /// <summary>
         /// Test with empty string.
         /// </summary>
         /// -------------------------------------------------------------------
-        [TestMethod]
-        public void ExportPdf_Default()
+        [Test]
+        public void Export_Convert()
         {
+            /*
             IExportProvider provider = new ExportPdfProvider();
 
             DataTable table = new DataTable();
@@ -42,8 +50,9 @@ namespace Core.Test.Provider.Export
             table.Rows.Add(new object[] { "Row1Value1", "Row1Value2" });
 
             Byte[] bytes = provider.Convert(table);
+            */
 
+            Assert.Fail();
         }
-        #endregion
     }
 }

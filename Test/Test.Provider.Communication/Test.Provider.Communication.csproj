@@ -7,7 +7,7 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <Configurations>Debug;Release;Live;Dev</Configurations>
+    <Configurations>Live;Dev</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,8 +32,8 @@
     <ProjectReference Include="..\..\Common\Base\Codev.Core.Base.csproj" />
     <ProjectReference Include="..\..\Common\Interface\Codev.Core.Interface.csproj" />
     <ProjectReference Include="..\..\Common\Model\Codev.Core.Model.csproj" />
+    <ProjectReference Include="..\..\Provider\Communication\Codev.Core.Provider.Communication.csproj" />
     <ProjectReference Include="..\..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
-    <ProjectReference Include="..\..\Service\Codev.Core.Service\Codev.Core.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

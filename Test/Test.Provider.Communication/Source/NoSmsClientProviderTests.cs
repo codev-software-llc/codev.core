@@ -1,33 +1,51 @@
 //-----------------------------------------------------------------------------
-// <copyright file="MailJetSmtpTests.cs" company="Codev Software, LLC">
-// Copyright © 2026
+// <copyright file="NoSmsClientProviderTests.cs" company="Codev Software, LLC">
+// Copyright Â© 2026
 // </copyright>
 //-----------------------------------------------------------------------------
 namespace Core.Test.Provider.Communication
 {
-    using System;
     using Codev.Core.Base;
+    using Codev.Core.Interface;
     using Codev.Core.Model;
     using Codev.Core.Provider.Communication;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Org.BouncyCastle.Bcpg;
 
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This contains tests for the MailJet SMTP provider.
+    /// This impolements tests for the clock service Reset method.
     /// </summary>
     ///------------------------------------------------------------------------
-    [TestClass]
-    public class MailJetSmtpTests
+    public class NoSmsClientProviderTests
     {
-        #region Methods
+        #region Setup
         /// -------------------------------------------------------------------
         /// <summary>
-        /// Test with valid string with a string hash.
+        /// This will setup the test.
         /// </summary>
         /// -------------------------------------------------------------------
-        [TestMethod]
-        public void Test_MailJet_Send()
+        [SetUp]
+        public void Setup()
+        {
+            this.SmsClientProvider = new NoSmsProvider();
+        }
+        #endregion
+
+        #region Properties
+        /// -------------------------------------------------------------------
+        /// <summary>
+        /// Get or set the provider.
+        /// </summary>
+        /// -------------------------------------------------------------------
+        private ISmsClientProvider SmsClientProvider { get; set; }
+        #endregion
+
+        /// -------------------------------------------------------------------
+        /// <summary>
+        /// Test the reset of the clock service.
+        /// </summary>
+        /// -------------------------------------------------------------------
+        [Test]
+        public void SendAsync_Reset()
         {
             try
             {
@@ -46,16 +64,16 @@ namespace Core.Test.Provider.Communication
                    );
 
                 SmtpMessage message = new SmtpMessage()
-                    {
-                        Bcc      = "",
-                        BccName  = "",
-                        From     = "",
-                        To       = "<some address>",
-                        ToName   = "<some name>",
-                        FromName = "test",
-                        Body    = "this is a test body",
-                        Subject = "this is a test subject"
-                    };
+                {
+                    Bcc = "",
+                    BccName = "",
+                    From = "",
+                    To = "<some address>",
+                    ToName = "<some name>",
+                    FromName = "test",
+                    Body = "this is a test body",
+                    Subject = "this is a test subject"
+                };
 
                 provider.SendAsync(message).Wait();
             }
@@ -64,7 +82,5 @@ namespace Core.Test.Provider.Communication
                 Assert.AreEqual(CoreErrorCode.InternalFailure, e.ErrorCode);
             }
         }
-
-        #endregion
     }
 }
