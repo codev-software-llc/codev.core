@@ -7,7 +7,6 @@ namespace Core.Test.Common.Base
 {
     using System.Text.Json;
     using Codev.Core.Base;
-    using Microsoft.Extensions.DependencyModel;
     using NodaTime;
     using NodaTime.Serialization.SystemTextJson;
 

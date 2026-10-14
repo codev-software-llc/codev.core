@@ -166,7 +166,7 @@ namespace Codev.Core.Provider.Cipher
         /// -------------------------------------------------------------------
         private Byte[] GenerateIV()
         {
-            return new Byte[] { 38, 55, 206, 48, 28, 64, 20, 16 };
+            return new Byte[] { 0x50, 0xEA, 0x08, 0x26, 0x62, 0x76, 0xC4, 0x29 };
         }
 
         ///--------------------------------------------------------------------
@@ -178,9 +178,9 @@ namespace Codev.Core.Provider.Cipher
         private Byte[] GenerateKey(
             String keyHash)
         {
-            Byte[] keySalt = Encoding.UTF8.GetBytes("Codev, Inc Salt Value");
+            Byte[] keySalt = Encoding.UTF8.GetBytes("Salt Value");
 
-            Byte[] encoder = Rfc2898DeriveBytes.Pbkdf2(keyHash, keySalt, 1000, HashAlgorithmName.SHA256, 16);
+            Byte[] encoder = Rfc2898DeriveBytes.Pbkdf2(keyHash, keySalt, 1000, HashAlgorithmName.SHA256,8);
 
             return encoder;
         }

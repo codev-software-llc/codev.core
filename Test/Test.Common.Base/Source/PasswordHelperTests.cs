@@ -6,7 +6,6 @@
 namespace Core.Test.Common.Base
 {
     using Codev.Core.Base;
-    using Microsoft.Extensions.DependencyModel;
 
     ///------------------------------------------------------------------------
     /// <summary>
