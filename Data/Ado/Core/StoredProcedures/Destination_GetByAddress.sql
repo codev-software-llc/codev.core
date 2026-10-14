@@ -22,6 +22,8 @@ BEGIN
         e.[DateCreated]                as 'DateCreated'       ,
         e.[DateModified]               as 'DateModified'      ,
         e.[Address]                    as 'Address'           ,
+        e.[PasswordHash]               as 'PasswordHash'      ,
+        e.[PasswordSalt]               as 'PasswordSalt'      ,
         e.[Type]                       as 'Type'              ,
         e.[ConfirmationSecret]         as 'ConfirmationSecret',
         e.[ConfirmationExpirationDate] as 'ConfirmationExpirationDate'

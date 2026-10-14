@@ -30,6 +30,7 @@ namespace Codev.Core.Service
                     DateCreated                = entity.DateCreated.ToLocalDateTime(entity.Identity.TimeZone),
                     DateModified               = entity.DateModified.ToLocalDateTime(entity.Identity.TimeZone),
                     Address                    = entity.Address,
+                    PasswordHash               = entity.PasswordHash,
                     DestinationType            = entity.DestinationType,
                     IsPrimary                  = (entity.Flags & DestinationFlags.Primary)    != 0,
                     IsConfirmed                = (entity.Flags & DestinationFlags.Confirmed)  != 0,

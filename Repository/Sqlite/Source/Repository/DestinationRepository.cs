@@ -54,7 +54,7 @@ namespace Codev.Core.Repository.Sqlite
             ValidateRepository<DestinationEntity>.Add(entity);
 
             SqliteAccess.CallStatement(
-                "INSERT INTO [Destinations] ([IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [Type], [ConfirmationSecret], [ConfirmationExpirationDate]) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?",
+                "INSERT INTO [Destinations] ([IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [PasswordHash], [PasswordSalt], [Type], [ConfirmationSecret], [ConfirmationExpirationDate]) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -63,6 +63,8 @@ namespace Codev.Core.Repository.Sqlite
                         command.AddInputParameter<Instant>         ("DateModified"              , entity.DateModified           );
                         command.AddInputParameter<Int32>           ("IdentityId"                , entity.Identity.Id            );
                         command.AddInputParameter<String>          ("Address"                   , entity.Address                );
+                        command.AddInputParameter<String>          ("PasswodHash"               , entity.PasswordHash           );
+                        command.AddInputParameter<String>          ("PasswodSalt"               , entity.PasswordSalt           );
                         command.AddInputParameter<DestinationType> ("Type"                      , entity.DestinationType        );
                         command.AddInputParameter<String>          ("ConfirmationSecret"        , entity.ConfirmationSecret     );
                         command.AddInputParameter<Instant>         ("ConfirmationExpirationDate", entity.DateConfirmationExpires);
@@ -132,7 +134,7 @@ namespace Codev.Core.Repository.Sqlite
             EntityCollection<DestinationEntity> entities = new EntityCollection<DestinationEntity>();
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations]",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [PasswordHash], [PasswordSalt], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations]",
                 this.DataSource,
                 (command) =>
                     {
@@ -163,7 +165,7 @@ namespace Codev.Core.Repository.Sqlite
             DestinationEntity entity = null;
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE [RowId] = ?",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [PasswordHash], [PasswordSalt], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE [RowId] = ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -191,7 +193,7 @@ namespace Codev.Core.Repository.Sqlite
             ValidateRepository<DestinationEntity>.Update(entity);
 
             SqliteAccess.CallStatement(
-                "UPDATE [Destinations] SET [Flags] = ?, [DateCreated] = ?, [DateModified] = ?, [IdentityId] = ?, [Address] = ?, [Type] = ?, [ConfirmationSecret] = ?, [ConfirmationExpirationDate] = ? WHERE [RowId] = ?",
+                "UPDATE [Destinations] SET [Flags] = ?, [DateCreated] = ?, [DateModified] = ?, [IdentityId] = ?, [Address] = ?, [PasswordHash] = ?, [PasswordSalt] = ?,[Type] = ?, [ConfirmationSecret] = ?, [ConfirmationExpirationDate] = ? WHERE [RowId] = ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -200,6 +202,8 @@ namespace Codev.Core.Repository.Sqlite
                         command.AddInputParameter<Instant>         ("DateModified"              , entity.DateModified           );
                         command.AddInputParameter<Int32>           ("IdentityId"                , entity.Identity.Id            );
                         command.AddInputParameter<String>          ("Address"                   , entity.Address                );
+                        command.AddInputParameter<String>          ("PasswordHash"              , entity.PasswordHash           );
+                        command.AddInputParameter<String>          ("PasswordSalt"              , entity.PasswordSalt           );
                         command.AddInputParameter<DestinationType> ("Type"                      , entity.DestinationType        );
                         command.AddInputParameter<String>          ("ConfirmationSecret"        , entity.ConfirmationSecret     );
                         command.AddInputParameter<Instant>         ("ConfirmationExpirationDate", entity.DateConfirmationExpires);
@@ -227,7 +231,7 @@ namespace Codev.Core.Repository.Sqlite
             EntityCollection<DestinationEntity> entities = new EntityCollection<DestinationEntity>();
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE [IdentityId] = ?",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [PasswordHash], [PasswordSalt], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE [IdentityId] = ?",
                 this.DataSource,
                 (command) =>
                     {
@@ -260,7 +264,7 @@ namespace Codev.Core.Repository.Sqlite
             Nullable<DestinationType> type = destinationType == DestinationType.Any ? null : destinationType;
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE ([Address] = ?) AND ([Type] = ?)",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [PasswordHash], [PasswordSalt], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE ([Address] = ?) AND ([Type] = ?)",
                 this.DataSource,
                 (command) =>
                     {
@@ -289,7 +293,7 @@ namespace Codev.Core.Repository.Sqlite
             DestinationEntity entity = null;
 
             SqliteAccess.CallStatement(
-                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE [ConfirmationSecret] = ?)",
+                "SELECT [RowId], [RowVersion], [IsActive], [Flags], [DateCreated], [DateModified], [IdentityId], [Address], [PasswordHash], [PasswordSalt], [Type], [ConfirmationSecret], [ConfirmationExpirationDate] FROM [Destinations] WHERE [ConfirmationSecret] = ?)",
                 this.DataSource,
                 (command) =>
                     {
@@ -321,6 +325,8 @@ namespace Codev.Core.Repository.Sqlite
                     {
                         Flags                   = reader.GetValue<DestinationFlags>("Flags")             ,
                         Address                 = reader.GetValue<String>          ("Address")           ,
+                        PasswordHash            = reader.GetValue<String>          ("PasswordHash")      ,
+                        PasswordSalt            = reader.GetValue<String>          ("PasswordSalt")      ,
                         DestinationType         = reader.GetValue<DestinationType> ("Type")              ,
                         ConfirmationSecret      = reader.GetValue<String>          ("ConfirmationSecret"),
                         DateConfirmationExpires = reader.GetValue<Instant>         ("DateConfirmationExpires")

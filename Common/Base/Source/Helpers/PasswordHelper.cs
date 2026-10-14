@@ -21,6 +21,60 @@ namespace Codev.Core.Base
         ///--------------------------------------------------------------------
         /// <summary>
         /// Generate a random salt value we can use for the authentication
+        /// password.  The first 4 bytes are the desired number of iterations
+        /// for hashing; the remaining 32 are actual salt.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public static String GenerateSalt(
+            Int32 iterations)
+        {
+            if (iterations > 0)
+            {
+                Byte[] saltValue = GenerateRandomSalt(iterations);
+
+                return Convert.ToBase64String(saltValue);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(iterations), "The number of iterations must be greater than zero.");
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Generate a salted-hash password.
+        /// The incoming salt has 4 bytes of iteration-count and 32 bytes of
+        /// actual salt.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public static String GenerateHash(
+            String password,
+            String salt)
+        {
+            if (String.IsNullOrWhiteSpace(password) == false)
+            {
+                if (String.IsNullOrWhiteSpace(salt) == false)
+                {
+                    Byte[] saltBytes = Convert.FromBase64String(salt);
+
+                    Byte[] passwordTextBytes = GenerateSaltedPasswordHash(password, saltBytes);
+
+                    return Convert.ToBase64String(passwordTextBytes);
+                }
+                else
+                {
+                    throw new ArgumentException("The salt cannot be null or empty.", nameof(salt));
+                }
+            }
+            else
+            {
+                throw new ArgumentException("The password cannot be null or empty.", nameof(password));
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Generate a random salt value we can use for the authentication
         /// password.  The first 4 bytes are the desired number of iterations 
         /// for hashing; the remaining 32 are actual salt.
         /// </summary>

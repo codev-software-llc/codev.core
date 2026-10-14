@@ -1,72 +1,61 @@
 //-----------------------------------------------------------------------------
-// <copyright file="DeserializeTests.cs" company="Codev Software, LLC">
-// Copyright © 2026
+// <copyright file="PasswordHelperTests.cs" company="Codev Software, LLC">
+// Copyright Â© 2026
 // </copyright>
 //-----------------------------------------------------------------------------
 namespace Core.Test.Common.Base
 {
-    using System;
     using System.Text.Json;
     using Codev.Core.Base;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Extensions.DependencyModel;
     using NodaTime;
     using NodaTime.Serialization.SystemTextJson;
 
     ///------------------------------------------------------------------------
     /// <summary>
-    /// This is the test for password helper utility.
+    /// This impolements tests for the deserialization methods.
     /// </summary>
     ///------------------------------------------------------------------------
-    [TestClass]
     public class DeserializeTests
     {
-        #region Methods
-        /// -------------------------------------------------------------------
+        #region Setup
+        ///---------------------------------------------------------------
         /// <summary>
-        /// Test with a iteration of ten.
+        /// Setup the class.
         /// </summary>
-        /// -------------------------------------------------------------------
-        [TestMethod]
-        public void PasswordHelper_GenerateRandomSalt_Interation10()
+        ///---------------------------------------------------------------
+        [SetUp]
+        public void Setup()
         {
-            Byte[] salt = PasswordHelper.GenerateRandomSalt(10);
-
-            Byte[] interationArray = [0, 0, 0, 0];
-
-            Buffer.BlockCopy(salt, 0, interationArray, 0, 4);
-
-            Int32 iterations = BitConverter.ToInt32(interationArray);
-
-            Assert.HasCount(36, salt);
-            Assert.AreEqual(10, iterations);
         }
+        #endregion
 
-        /// -------------------------------------------------------------------
+        ///---------------------------------------------------------------
         /// <summary>
-        /// Test with a iteration of ten.
+        /// Test hash uniqueness.
         /// </summary>
-        /// -------------------------------------------------------------------
-        [TestMethod]
-        public void Deserialize_Nested()
+        ///---------------------------------------------------------------
+        [Test]
+        public void DeserializedNested()
         {
             String payload = "{\"statusCode\":200,\"errorMessage\":\"\",\"value\":{\"DestinationAddress\":\"chriswil @codev.net\",\"durationValue\":\"0:30:00\"}}";
 
             JsonSerializerOptions options = new JsonSerializerOptions().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
-           
+
             options.PropertyNameCaseInsensitive = true;
 
             WebApiResponse<TestStruct>? response = JsonSerializer.Deserialize<WebApiResponse<TestStruct>>(payload, options);
 
-            //
         }
 
-        /// -------------------------------------------------------------------
+
+        ///---------------------------------------------------------------
         /// <summary>
-        /// Test with a iteration of ten.
+        /// Test hash uniqueness.
         /// </summary>
-        /// -------------------------------------------------------------------
-        [TestMethod]
-        public void Deserialize_Nested1()
+        ///---------------------------------------------------------------
+        [Test]
+        public void DeserializedNested1()
         {
             String payload = "{\"destinationAddress\":\"chriswil @codev.net\",\"durationValue\":\"0:30:00\"}";
 
@@ -76,8 +65,7 @@ namespace Core.Test.Common.Base
 
             TestStruct? response = JsonSerializer.Deserialize<TestStruct>(payload, options);
 
-            //Assert.IsTrue(true);
         }
-        #endregion
+
     }
 }

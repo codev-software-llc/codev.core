@@ -64,6 +64,8 @@ namespace Codev.Core.Repository.Ado
                         command.AddInputParameter<Instant>         ("DateModified"              , entity.DateModified           );
                         command.AddInputParameter<Instant>         ("ConfirmationExpirationDate", entity.DateConfirmationExpires);
                         command.AddInputParameter<String>          ("Address"                   , entity.Address                );
+                        command.AddInputParameter<String>          ("PasswordHash"              , entity.PasswordHash           );
+                        command.AddInputParameter<String>          ("PasswordSalt"              , entity.PasswordSalt           );
                         command.AddInputParameter<DestinationType> ("Type"                      , entity.DestinationType        );
                         command.AddInputParameter<String>          ("ConfirmationSecret"        , entity.ConfirmationSecret     );
                     },
@@ -205,6 +207,8 @@ namespace Codev.Core.Repository.Ado
                         command.AddInputParameter<Instant>         ("DateModified"              , entity.DateModified           );
                         command.AddInputParameter<Instant>         ("ConfirmationExpirationDate", entity.DateConfirmationExpires);
                         command.AddInputParameter<String>          ("Address"                   , entity.Address                );
+                        command.AddInputParameter<String>          ("PasswordHash"              , entity.PasswordHash           );
+                        command.AddInputParameter<String>          ("PasswordSalt"              , entity.PasswordSalt           );
                         command.AddInputParameter<DestinationType> ("Type"                      , entity.DestinationType        );
                         command.AddInputParameter<String>          ("ConfirmationSecret"        , entity.ConfirmationSecret     );
                     },
@@ -324,6 +328,8 @@ namespace Codev.Core.Repository.Ado
                     Flags                   = reader.GetValue<DestinationFlags>("Flags")                     ,
                     DateConfirmationExpires = reader.GetValue<Instant>         ("ConfirmationExpirationDate"),
                     Address                 = reader.GetValue<String>          ("Address")                   ,
+                    PasswordHash            = reader.GetValue<String>          ("PasswordHash")              ,
+                    PasswordSalt            = reader.GetValue<String>          ("PasswordSalt")              ,
                     DestinationType         = reader.GetValue<DestinationType> ("Type")                      ,
                     ConfirmationSecret      = reader.GetValue<String>          ("ConfirmationSecret")
                 };

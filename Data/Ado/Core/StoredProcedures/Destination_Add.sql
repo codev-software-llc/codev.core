@@ -8,6 +8,8 @@ CREATE PROCEDURE [core].[Destination_Add]
     @DateCreated                DATETIME     ,
     @DateModified               DATETIME     ,
     @Address                    NVARCHAR(512),
+    @PasswordHash               NVARCHAR(128),
+    @PasswordSalt               NVARCHAR(128),
     @Type                       NVARCHAR(64) ,
     @ConfirmationSecret         NVARCHAR(64) ,
     @ConfirmationExpirationDate DATETIME
@@ -25,6 +27,8 @@ BEGIN
             [DateCreated]       ,
             [DateModified]      ,
             [Address]           ,
+            [PasswordHash]      ,
+            [PasswordSalt]      ,
             [Type]              ,
             [ConfirmationSecret],
             [ConfirmationExpirationDate]
@@ -37,6 +41,8 @@ BEGIN
             @DateCreated      ,
             @DateModified     ,
             @Address          ,
+            @PasswordHash     ,
+            @PasswordSalt     ,
             @Type             ,
             @ConfirmationSecret,
             @ConfirmationExpirationDate

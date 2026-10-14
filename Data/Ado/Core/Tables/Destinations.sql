@@ -11,6 +11,8 @@ CREATE TABLE [core].[Destinations]
     [DateModified]               DATETIME            NOT NULL,
     [IdentityId]                 INT                 NOT NULL,
     [Address]                    NVARCHAR(512)       NOT NULL,
+    [PasswordHash]               NVARCHAR(128)       NOT NULL,
+    [PasswordSalt]               NVARCHAR(128)       NOT NULL,
     [Type]                       INT                 NOT NULL,
     [ConfirmationSecret]         NVARCHAR(16)        NOT NULL,
     [ConfirmationExpirationDate] DATETIME            NOT NULL
