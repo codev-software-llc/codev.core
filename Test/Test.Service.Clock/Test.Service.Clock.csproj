@@ -7,7 +7,7 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <Configurations>Live;Dev</Configurations>
+    <Configurations>Dev;Live</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +15,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.12" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.13" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageReference Include="NodaTime" Version="3.3.5" />
     <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.4.0" />
     <PackageReference Include="NUnit" Version="5.0.0" />
