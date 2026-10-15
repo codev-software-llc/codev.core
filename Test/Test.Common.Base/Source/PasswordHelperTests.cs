@@ -33,36 +33,11 @@ namespace Core.Test.Common.Base
         /// </summary>
         ///---------------------------------------------------------------
         [Test]
-        public void SaltGenerationIterationsZero()
+        public void SaltGenerationIterationSize()
         {
-            try
-            {
-                PasswordHelper.GenerateSalt(0);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Assert.Pass();
-            }
+            String salt = PasswordHelper.GenerateSalt();
 
-            Assert.Fail();
-        }
-
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Test that the salt generation is always 48 characters long.
-        /// </summary>
-        ///---------------------------------------------------------------
-        [Test]
-        public void SaltGenerationSize()
-        {
-            for (Int32 idx = 1; idx < 50; idx++)
-            {
-                String salt = PasswordHelper.GenerateSalt(idx);
-
-                Assert.AreEqual(48, salt.Length);
-            }
-
-            Assert.Pass();
+            Assert.AreEqual(salt.Length, 48);
         }
 
         ///---------------------------------------------------------------
@@ -77,7 +52,7 @@ namespace Core.Test.Common.Base
 
             for (Int32 idx = 1; idx < 50; idx++)
             {
-                String salt = PasswordHelper.GenerateSalt(idx);
+                String salt = PasswordHelper.GenerateSalt();
 
                 Boolean added = salts.Add(salt);
 
@@ -85,21 +60,6 @@ namespace Core.Test.Common.Base
             }
 
             Assert.Pass();
-        }
-
-        ///---------------------------------------------------------------
-        /// <summary>
-        /// Test that the salt generation is unique even with same
-        /// iteration count.
-        /// </summary>
-        ///---------------------------------------------------------------
-        [Test]
-        public void SaltGenerationUniquenessSameInteration()
-        {
-            String salt0 = PasswordHelper.GenerateSalt(10);
-            String salt1 = PasswordHelper.GenerateSalt(10);
-
-            Assert.AreNotEqual(salt0, salt1);
         }
 
         ///---------------------------------------------------------------
@@ -112,7 +72,7 @@ namespace Core.Test.Common.Base
         {
             for (Int32 idx = 1; idx < 50; idx++)
             {
-                String salt = PasswordHelper.GenerateSalt(idx);
+                String salt = PasswordHelper.GenerateSalt();
 
                 String hash = PasswordHelper.GenerateHash(String.Format("password{0}", idx), salt);
 
@@ -130,7 +90,7 @@ namespace Core.Test.Common.Base
         [Test]
         public void HashGenerationPasswordEmpty()
         {
-            String salt = PasswordHelper.GenerateSalt(10);
+            String salt = PasswordHelper.GenerateSalt();
 
             try
             {
@@ -172,7 +132,7 @@ namespace Core.Test.Common.Base
         [Test]
         public void HashGenerationConsistency()
         {
-            String salt = PasswordHelper.GenerateSalt(10);
+            String salt = PasswordHelper.GenerateSalt();
 
             String hash = PasswordHelper.GenerateHash("SamePassword", salt);
 
@@ -200,7 +160,7 @@ namespace Core.Test.Common.Base
 
             for (Int32 idx = 1; idx < 50; idx++)
             {
-                String salt = PasswordHelper.GenerateSalt(idx);
+                String salt = PasswordHelper.GenerateSalt();
 
                 String hash = PasswordHelper.GenerateHash(String.Format("password{0}", idx), salt);
 
@@ -215,19 +175,6 @@ namespace Core.Test.Common.Base
 
         ///---------------------------------------------------------------
         /// <summary>
-        /// Test hash uniqueness.
-        /// </summary>
-        ///---------------------------------------------------------------
-        [Test]
-        public void HashGenerationByteSaltLength()
-        {
-            Byte[] salt = PasswordHelper.GenerateRandomSalt(10);
-
-            Assert.AreEqual(36, salt.Length);
-        }
-
-        ///---------------------------------------------------------------
-        /// <summary>
         /// Test the Salt generation with a byte array and verify the 
         /// iteration count is correct.
         /// </summary>
@@ -235,7 +182,7 @@ namespace Core.Test.Common.Base
         [Test]
         public void HashGenerationByteSaltIteration()
         {
-            Byte[] salt = PasswordHelper.GenerateRandomSalt(10);
+            Byte[] salt = PasswordHelper.GenerateRandomSalt();
 
             Byte[] interationArray = [0, 0, 0, 0];
 
@@ -244,7 +191,7 @@ namespace Core.Test.Common.Base
             Int32 iterations = BitConverter.ToInt32(interationArray);
 
             Assert.AreEqual(36, salt.Length);
-            Assert.AreEqual(10, iterations);
+            Assert.AreEqual(600000, iterations);
         }
     }
 }

@@ -17,6 +17,17 @@ namespace Codev.Core.Base
     ///-----------------------------------------------------------------------
     public static class PasswordHelper
     {
+        #region Constants
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// This is the iteration count we use for salted hashes.  We use this
+        /// for SHA-256.  In the future this value may need to be increased as
+        /// computers get faster.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        private const Int32 SaltIterationCount = 600000;
+        #endregion
+
         #region Methods
         ///--------------------------------------------------------------------
         /// <summary>
@@ -25,19 +36,11 @@ namespace Codev.Core.Base
         /// for hashing; the remaining 32 are actual salt.
         /// </summary>
         ///--------------------------------------------------------------------
-        public static String GenerateSalt(
-            Int32 iterations)
+        public static String GenerateSalt()
         {
-            if (iterations > 0)
-            {
-                Byte[] saltValue = GenerateRandomSalt(iterations);
+            Byte[] saltValue = GenerateRandomSalt();
 
-                return Convert.ToBase64String(saltValue);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(iterations), "The number of iterations must be greater than zero.");
-            }
+            return Convert.ToBase64String(saltValue);
         }
 
         ///--------------------------------------------------------------------
@@ -79,17 +82,16 @@ namespace Codev.Core.Base
         /// for hashing; the remaining 32 are actual salt.
         /// </summary>
         ///--------------------------------------------------------------------   
-        public static Byte[] GenerateRandomSalt(
-            Int32 iterations)
+        public static Byte[] GenerateRandomSalt()
         {
             Byte[] saltValue = new Byte[32];
 
             using (RandomNumberGenerator cryptoProvider = RandomNumberGenerator.Create())
             {
-                cryptoProvider.GetNonZeroBytes(saltValue);
+                cryptoProvider.GetBytes(saltValue, 0, saltValue.Length);
             }
 
-            Byte[] iterationsBytes = BitConverter.GetBytes(iterations);
+            Byte[] iterationsBytes = BitConverter.GetBytes(SaltIterationCount);
 
             Byte[] returnValue = new Byte[iterationsBytes.Length + saltValue.Length];
 
@@ -102,9 +104,8 @@ namespace Codev.Core.Base
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Generate a salted-hash password.
-        /// The incoming salt has 4 bytes of iteration-count and 32 bytes of 
-        /// actual salt.
+        /// Generate a salted-hash password.  The incoming salt has 4 bytes of
+        /// iteration-count and 32 bytes of actual salt.
         /// </summary>
         ///--------------------------------------------------------------------   
         public static Byte[] GenerateSaltedPasswordHash(
@@ -117,9 +118,7 @@ namespace Codev.Core.Base
 
             Byte[] saltBytes = iterationsAndSalt.Skip(4).ToArray();
 
-            Byte[] encoder = Rfc2898DeriveBytes.Pbkdf2(passwordTextBytes, saltBytes, iterations, HashAlgorithmName.SHA256, 64);
-
-            return encoder;
+            return Rfc2898DeriveBytes.Pbkdf2(passwordTextBytes, saltBytes, iterations, HashAlgorithmName.SHA256, 64);
         }
 
         ///--------------------------------------------------------------------
