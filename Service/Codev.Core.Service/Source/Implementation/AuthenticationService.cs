@@ -118,6 +118,7 @@ namespace Codev.Core.Service.Authentication
         public Destination AddDestination(
             IdentityEntity  identityEntity,
             String          address,
+            String          password,
             DestinationType destinationType,
             Boolean         isPrimary)
         {
@@ -141,6 +142,10 @@ namespace Codev.Core.Service.Authentication
                 flags |= DestinationFlags.CanDelete;
             }
 
+            String salt = PasswordHelper.GenerateSalt();
+
+            String hash = PasswordHelper.GenerateHash(password, salt);
+
             // Add the destination.
             //
             DestinationEntity destinationEntity = new DestinationEntity(instantNow)
@@ -148,6 +153,8 @@ namespace Codev.Core.Service.Authentication
                     Identity                = identityEntity,
                     Flags                   = flags,
                     Address                 = address,
+                    PasswordHash            = hash,
+                    PasswordSalt            = salt,
                     DestinationType         = destinationType,
                     ConfirmationSecret      = this.GenerateConfirmationCode(),
                     DateConfirmationExpires = this.GenerateExpiration(Duration.FromDays(30))
@@ -256,10 +263,20 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         public Destination Login(
             DestinationEntity destinationEntity,
+            String            password,
             Duration          expiration)
         {
             if ((destinationEntity.Flags & DestinationFlags.Registered) != 0)
             {
+                // Validate password.
+                //
+                String hash = PasswordHelper.GenerateHash(password, destinationEntity.PasswordSalt);
+
+                if (String.Compare(hash, destinationEntity.PasswordHash, StringComparison.InvariantCultureIgnoreCase) != 0)
+                {
+                    throw new CoreLogicException(CoreErrorCode.AccessDenied, "Invalid password");
+                }   
+
                 Instant instantNow = this.ClockService.GetCurrentInstant();
 
                 destinationEntity.Flags &= ~DestinationFlags.Confirmed;
@@ -301,7 +318,8 @@ namespace Codev.Core.Service.Authentication
         /// </summary>
         ///--------------------------------------------------------------------
         public Destination Register(
-            String   emailAddress,
+            String   address,
+            String   password,
             Duration expiration,
             String   serializedData)
         {
@@ -319,11 +337,16 @@ namespace Codev.Core.Service.Authentication
 
             this.IdentityRepository.Add(identityEntity);
 
+            String salt = PasswordHelper.GenerateSalt();
+            String hash = PasswordHelper.GenerateHash(password, salt);
+
             DestinationEntity destinationEntity = new DestinationEntity(instantNow)
                 {
                     Identity                = identityEntity,
                     Flags                   = DestinationFlags.Primary | DestinationFlags.Registered,
-                    Address                 = emailAddress,
+                    Address                 = address,
+                    PasswordHash            = hash,
+                    PasswordSalt            = salt,
                     DestinationType         = DestinationType.Email,
                     ConfirmationSecret      = this.GenerateConfirmationCode(),
                     DateConfirmationExpires = this.GenerateExpiration(expiration)
@@ -342,6 +365,7 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         public Destination Register(
             DestinationEntity destinationEntity,
+            String            password,
             Duration          expiration)
         {
             if ((destinationEntity.Flags & DestinationFlags.Registered) != 0)
@@ -350,10 +374,15 @@ namespace Codev.Core.Service.Authentication
             }
             else
             {
+                String salt = PasswordHelper.GenerateSalt();
+                String hash = PasswordHelper.GenerateHash(password, salt);
+
                 Instant instantNow = this.ClockService.GetCurrentInstant();
 
                 destinationEntity.DateModified            = instantNow;
                 destinationEntity.Flags                   = DestinationFlags.None;
+                destinationEntity.PasswordHash            = hash;
+                destinationEntity.PasswordSalt            = salt;
                 destinationEntity.ConfirmationSecret      = this.GenerateConfirmationCode();
                 destinationEntity.DateConfirmationExpires = this.GenerateExpiration(expiration);
 
@@ -380,6 +409,32 @@ namespace Codev.Core.Service.Authentication
             {
                 throw new CoreLogicException(CoreErrorCode.InvalidOperation, "Destination is locked");
             }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Reset the destination password.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public void ResetPassword(
+            DestinationEntity destinationEntity,
+            String            password)
+        {
+            // Generate a new salt for the password.
+            //
+            String salt = PasswordHelper.GenerateSalt();
+
+            // Genearate a new has for the password.
+            //
+            String hash = PasswordHelper.GenerateHash(password, salt);
+
+            Instant instantNow = this.ClockService.GetCurrentInstant();
+
+            destinationEntity.DateModified = instantNow;
+            destinationEntity.PasswordSalt = salt;
+            destinationEntity.PasswordHash = hash;
+
+            this.DestinationRepository.Update(destinationEntity);
         }
 
         ///--------------------------------------------------------------------

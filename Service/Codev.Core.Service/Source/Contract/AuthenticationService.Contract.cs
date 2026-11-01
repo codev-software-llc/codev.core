@@ -7,6 +7,7 @@ namespace Codev.Core.Service.Authentication
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using Codev.Core.Base;
     using Codev.Core.Model;
     using NodaTime;
@@ -27,11 +28,13 @@ namespace Codev.Core.Service.Authentication
         Destination IAuthenticationService.AddDestination(
             Reference<Identity> identityReference,
             String              address,
+            String              password,
             DestinationType     destinationType,
             Boolean             isPrimary)
         {
             Validation.ValidateParameter<Reference<Identity>>("identityReference", identityReference);
             Validation.ValidateParameter<String>             ("address"          , address          );
+            Validation.ValidateParameter<String>             ("password"         , password         );
 
             try
             {
@@ -43,7 +46,7 @@ namespace Codev.Core.Service.Authentication
 
                     if (destinationEntity == null)
                     {
-                        return this.AddDestination(identityEntity, address, destinationType, isPrimary);
+                        return this.AddDestination(identityEntity, address, password,destinationType, isPrimary);
                     }
                     else
                     {
@@ -483,11 +486,13 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         Destination IAuthenticationService.Login(
             String          address,
+            String          password,
             DestinationType destinationType,
             String          applicationName,
             Duration        expiration)
         {
             Validation.ValidateParameter<String>  ("address"        , address        );
+            Validation.ValidateParameter<String>  ("password"       , password       );
             Validation.ValidateParameter<String>  ("applicationName", applicationName);
             Validation.ValidateParameter<Duration>("expiration"     , expiration     );
 
@@ -497,7 +502,7 @@ namespace Codev.Core.Service.Authentication
 
                 if (destinationEntity != null)
                 {
-                    return this.Login(destinationEntity, expiration);
+                    return this.Login(destinationEntity, password, expiration);
                 }
                 else
                 {
@@ -573,25 +578,31 @@ namespace Codev.Core.Service.Authentication
         /// </summary>
         ///--------------------------------------------------------------------
         Destination IAuthenticationService.Register(
-            String   emailAddress,
+            String   address,
+            String   password,
             Duration expiration,
             String   serializedData)
         {
-            Validation.ValidateParameter<String>  ("emailAddress", emailAddress);
-            Validation.ValidateParameter<Duration>("expiration"  , expiration  );
+            Validation.ValidateParameter<String>  ("address"   , address   );
+            Validation.ValidateParameter<String>  ("password"  , password  );
+            Validation.ValidateParameter<Duration>("expiration", expiration);
 
             serializedData = Validation.ValidateDefault<String>("serializedData", serializedData, String.Empty);
 
             try
             {
-                DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(emailAddress, DestinationType.Email);
+                String salt = PasswordHelper.GenerateSalt();
+
+                String hash = PasswordHelper.GenerateHash(password, salt);
+
+                DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(address, DestinationType.Email);
 
                 if (destinationEntity == null)
                 {
-                    return this.Register(emailAddress, expiration, serializedData);
+                    return this.Register(address, password, expiration, serializedData);
                 }
 
-                return this.Register(destinationEntity, expiration);
+                return this.Register(destinationEntity, password, expiration);
             }
             catch (CoreDataException cde)
             {
@@ -669,6 +680,52 @@ namespace Codev.Core.Service.Authentication
                 if (identityEntity != null)
                 {
                     this.IdentityRepository.Purge(identityEntity);
+                }
+                else
+                {
+                    //
+                    // Do not throw the exception, as we will treat a non-
+                    // existent entity as being removed.
+                    //
+                }
+            }
+            catch (CoreDataException cde)
+            {
+                throw new CoreServiceException(cde.ErrorCode, cde);
+            }
+            catch (CoreProviderException cpe)
+            {
+                throw new CoreServiceException(cpe.ErrorCode, cpe);
+            }
+            catch (CoreLogicException cle)
+            {
+                throw new CoreServiceException(cle.ErrorCode, cle);
+            }
+            catch (Exception e)
+            {
+                throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Reset password.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        void IAuthenticationService.ResetPassword(
+            Reference<Destination> destinationReference,
+            String                 password)
+        {
+            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
+            Validation.ValidateParameter<String>                ("password"            , password);
+
+            try
+            {
+                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
+
+                if (destinationEntity != null)
+                {
+                    this.ResetPassword(destinationEntity, password);
                 }
                 else
                 {

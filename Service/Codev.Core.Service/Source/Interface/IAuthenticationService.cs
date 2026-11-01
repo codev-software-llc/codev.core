@@ -29,6 +29,7 @@ namespace Codev.Core.Service.Authentication
         Destination AddDestination(
             Reference<Identity> identityReference,
             String              address,
+            String              password,
             DestinationType     destinationType,
             Boolean             isPrimary);
 
@@ -122,6 +123,7 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         Destination Login(
             String          address,
+            String          password,
             DestinationType destinationType,
             String          applicationName,
             Duration        expiration);
@@ -132,8 +134,8 @@ namespace Codev.Core.Service.Authentication
         /// </summary>
         ///--------------------------------------------------------------------
         void Logout(
-            String sessionSecret,
-            Boolean  logoutAll);
+            String  sessionSecret,
+            Boolean logoutAll);
 
         ///--------------------------------------------------------------------
         /// <summary>
@@ -141,7 +143,8 @@ namespace Codev.Core.Service.Authentication
         /// </summary>
         ///--------------------------------------------------------------------
         Destination Register(
-            String   emailAddress,
+            String   address,
+            String   password,
             Duration expiration,
             String   serializedData);
 
@@ -163,6 +166,15 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
+        /// Reset password.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        void ResetPassword(
+            Reference<Destination> destinationReference,
+            String                 password);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
         /// Set the destination as primary.
         /// </summary>
         ///--------------------------------------------------------------------
@@ -176,7 +188,7 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         void SetTimeZone(
             Reference<Identity> identityReference,
-            DateTimeZone timeZone);
+            DateTimeZone        timeZone);
 
         ///--------------------------------------------------------------------
         /// <summary>
