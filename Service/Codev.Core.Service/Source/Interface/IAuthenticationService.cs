@@ -51,13 +51,24 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Confirm the identity.  Thir removes the confirmation secret and
-        /// creates a session for the destination.
+        /// Confirm the destination.
         /// </summary>
         ///--------------------------------------------------------------------
         Session Confirm(
             Reference<Destination> destinationReference,
             String                 confirmationCode,
+            Duration               expiration);
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Confirm the destination.  In the process this will change the
+        /// password.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        Session Confirm(
+            Reference<Destination> destinationReference,
+            String                 confirmationCode,
+            String                 password,
             Duration               expiration);
 
         ///--------------------------------------------------------------------
@@ -163,15 +174,6 @@ namespace Codev.Core.Service.Authentication
         ///--------------------------------------------------------------------
         void RemoveIdentity(
             Reference<Identity> identityReference);
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Reset password.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        void ResetPassword(
-            Reference<Destination> destinationReference,
-            String                 password);
 
         ///--------------------------------------------------------------------
         /// <summary>

@@ -7,7 +7,6 @@ namespace Codev.Core.Service.Authentication
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading;
     using Codev.Core.Base;
     using Codev.Core.Model;
     using NodaTime;
@@ -151,7 +150,7 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Confirm the identity.
+        /// Confirm the destination.
         /// </summary>
         ///--------------------------------------------------------------------
         Session IAuthenticationService.Confirm(
@@ -170,6 +169,53 @@ namespace Codev.Core.Service.Authentication
                 if (destinationEntity != null)
                 {
                     return this.Confirm(destinationEntity, confirmationSecret, expiration);
+                }
+                else
+                {
+                    throw new CoreLogicException(CoreErrorCode.DoesNotExist, ExceptionMessage.DestinationDoesNotExistMessage);
+                }
+            }
+            catch (CoreDataException cde)
+            {
+                throw new CoreServiceException(cde.ErrorCode, cde);
+            }
+            catch (CoreProviderException cpe)
+            {
+                throw new CoreServiceException(cpe.ErrorCode, cpe);
+            }
+            catch (CoreLogicException cle)
+            {
+                throw new CoreServiceException(cle.ErrorCode, cle);
+            }
+            catch (Exception e)
+            {
+                throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Confirm the destination and reset the password.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        Session IAuthenticationService.Confirm(
+            Reference<Destination> destinationReference,
+            String                 confirmationSecret,
+            String                 password,
+            Duration               expiration)
+        {
+            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
+            Validation.ValidateParameter<String>                ("confirmationSecret"  , confirmationSecret  );
+            Validation.ValidateParameter<String>                ("password"            , password            );
+            Validation.ValidateParameter<Duration>              ("expiration"          , expiration          );
+
+            try
+            {
+                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
+
+                if (destinationEntity != null)
+                {
+                    return this.Confirm(destinationEntity, confirmationSecret, password,expiration);
                 }
                 else
                 {
@@ -680,52 +726,6 @@ namespace Codev.Core.Service.Authentication
                 if (identityEntity != null)
                 {
                     this.IdentityRepository.Purge(identityEntity);
-                }
-                else
-                {
-                    //
-                    // Do not throw the exception, as we will treat a non-
-                    // existent entity as being removed.
-                    //
-                }
-            }
-            catch (CoreDataException cde)
-            {
-                throw new CoreServiceException(cde.ErrorCode, cde);
-            }
-            catch (CoreProviderException cpe)
-            {
-                throw new CoreServiceException(cpe.ErrorCode, cpe);
-            }
-            catch (CoreLogicException cle)
-            {
-                throw new CoreServiceException(cle.ErrorCode, cle);
-            }
-            catch (Exception e)
-            {
-                throw new CoreServiceException(CoreErrorCode.InternalFailure, e);
-            }
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Reset password.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        void IAuthenticationService.ResetPassword(
-            Reference<Destination> destinationReference,
-            String                 password)
-        {
-            Validation.ValidateParameter<Reference<Destination>>("destinationReference", destinationReference);
-            Validation.ValidateParameter<String>                ("password"            , password);
-
-            try
-            {
-                DestinationEntity destinationEntity = this.DestinationRepository.GetById(destinationReference.Id);
-
-                if (destinationEntity != null)
-                {
-                    this.ResetPassword(destinationEntity, password);
                 }
                 else
                 {

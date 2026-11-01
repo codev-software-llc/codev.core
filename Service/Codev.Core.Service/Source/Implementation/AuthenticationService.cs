@@ -188,20 +188,19 @@ namespace Codev.Core.Service.Authentication
 
         ///--------------------------------------------------------------------
         /// <summary>
-        /// Confirm the identity and return the session that is 
-        /// established.
+        /// Confirm the destination and return the session that is established.
         /// </summary>
         ///--------------------------------------------------------------------
         public Session Confirm(
             DestinationEntity destinationEntity,
             String            confirmationSecret,
-            Duration          expiratrion)
+            Duration          expiration)
         {
             if (String.Compare(confirmationSecret, destinationEntity.ConfirmationSecret, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 Instant instantNow = this.ClockService.GetCurrentInstant();
 
-                // Tag the destination as registered.
+                // Tag the destination as confirmed.
                 //
                 destinationEntity.Flags |= DestinationFlags.Confirmed;
 
@@ -211,6 +210,11 @@ namespace Codev.Core.Service.Authentication
 
                 this.DestinationRepository.Update(destinationEntity);
 
+                //
+                // WORK: Purge sessions for the destination.
+                //
+                this.SessionRepository.GetAllByIdentity(destinationEntity.Identity).Where(x => x.Identity.Id == destinationEntity.Identity.Id).ToList().ForEach(x => this.SessionRepository.Purge(x));
+
                 // Create a session.
                 //
                 SessionEntity entity = new SessionEntity(instantNow)
@@ -219,7 +223,65 @@ namespace Codev.Core.Service.Authentication
                         Flags          = SessionFlags.None,
                         Secret         = this.GenerationSessionSecret(),
                         SessionId      = Guid.NewGuid(),
-                        DateExpiration = this.GenerateExpiration(expiratrion)
+                        DateExpiration = this.GenerateExpiration(expiration)
+                    };
+
+                this.SessionRepository.Add(entity);
+
+                return entity.ToModel();
+            }
+            else
+            {
+                throw new CoreLogicException(CoreErrorCode.AccessDenied, "Invalid confirmation code");
+            }
+        }
+
+        ///--------------------------------------------------------------------
+        /// <summary>
+        /// Confirm the destination and return the session that is established.
+        /// </summary>
+        ///--------------------------------------------------------------------
+        public Session Confirm(
+            DestinationEntity destinationEntity,
+            String            confirmationSecret,
+            String            password,
+            Duration          expiration)
+        {
+            if (String.Compare(confirmationSecret, destinationEntity.ConfirmationSecret, StringComparison.InvariantCultureIgnoreCase) == 0)
+            {
+                Instant instantNow = this.ClockService.GetCurrentInstant();
+
+                // Generate a new salt and has for the password.
+                //
+                String salt = PasswordHelper.GenerateSalt();
+                String hash = PasswordHelper.GenerateHash(password, salt);
+
+                // Tag the destination as registered.
+                //
+                destinationEntity.Flags |= DestinationFlags.Confirmed;
+
+                destinationEntity.DateModified            = instantNow;
+                destinationEntity.ConfirmationSecret      = String.Empty;
+                destinationEntity.DateConfirmationExpires = Instant.MaxValue;
+                destinationEntity.PasswordSalt            = salt;
+                destinationEntity.PasswordHash            = hash;
+
+                this.DestinationRepository.Update(destinationEntity);
+
+                //
+                // WORK: Purge sessions for the destination.
+                //
+                this.SessionRepository.GetAllByIdentity(destinationEntity.Identity).Where(x => x.Identity.Id == destinationEntity.Identity.Id).ToList().ForEach(x => this.SessionRepository.Purge(x));
+
+                // Create a session.
+                //
+                SessionEntity entity = new SessionEntity(instantNow)
+                    {
+                        Identity       = destinationEntity.Identity,
+                        Flags          = SessionFlags.None,
+                        Secret         = this.GenerationSessionSecret(),
+                        SessionId      = Guid.NewGuid(),
+                        DateExpiration = this.GenerateExpiration(expiration)
                     };
 
                 this.SessionRepository.Add(entity);
@@ -409,32 +471,6 @@ namespace Codev.Core.Service.Authentication
             {
                 throw new CoreLogicException(CoreErrorCode.InvalidOperation, "Destination is locked");
             }
-        }
-
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Reset the destination password.
-        /// </summary>
-        ///--------------------------------------------------------------------
-        public void ResetPassword(
-            DestinationEntity destinationEntity,
-            String            password)
-        {
-            // Generate a new salt for the password.
-            //
-            String salt = PasswordHelper.GenerateSalt();
-
-            // Genearate a new has for the password.
-            //
-            String hash = PasswordHelper.GenerateHash(password, salt);
-
-            Instant instantNow = this.ClockService.GetCurrentInstant();
-
-            destinationEntity.DateModified = instantNow;
-            destinationEntity.PasswordSalt = salt;
-            destinationEntity.PasswordHash = hash;
-
-            this.DestinationRepository.Update(destinationEntity);
         }
 
         ///--------------------------------------------------------------------
