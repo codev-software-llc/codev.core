@@ -6,12 +6,10 @@
 namespace Codev.Core.Provider.Communication
 {
     using System;
-    using System.Collections.Generic;
-    using System.Net;
     using System.Threading.Tasks;
-    using Codev.Core.Base;
     using Codev.Core.Interface;
     using Codev.Core.Model;
+    using MailKit;
     using MailKit.Net.Smtp;
     using MailKit.Security;
     using MimeKit;
