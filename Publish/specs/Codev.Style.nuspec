@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Codev.Core.Styles</id>
-    <version>10.0.0</version>
+    <version>11.0.0</version>
     <authors>Codev Software, LLC</authors>
     <owners>Codev Software, LLC</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
