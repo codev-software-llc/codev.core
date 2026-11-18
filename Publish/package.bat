@@ -12,6 +12,6 @@ popd
 goto Done
 
 :Usage
-@echo Usage: package.exe [version]
+@echo Usage: package.exe [version xx.yy.zz]
 
 :Done

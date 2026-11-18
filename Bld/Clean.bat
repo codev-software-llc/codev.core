@@ -45,7 +45,7 @@ for %%X IN (Base,Interface,Model) DO (
   )
 )
 
-for %%X IN (Codev.Core.Service) DO (
+for %%X IN (Service) DO (
 
   @if EXIST "..\%%X" (
     pushd ..\%%X
@@ -119,6 +119,24 @@ for %%X IN (Infrastructure) DO (
     popd
   )
 )
+
+pushd ..\Test
+
+for %%X IN (Test.Common.Base,Test.Provider.Cipher,Test.Provider.Communication,Test.Provider.Export,Test.Service.Clock) DO (
+
+  @if EXIST "%%X" (
+    pushd %%X
+
+    FOR %%Y IN (obj,bin) DO (
+      @if EXIST %%Y (
+        rd /s /q %%Y
+      )
+    )
+
+    popd
+  )
+)
+popd
 
 
 @rem ----------------------------------------------------------------

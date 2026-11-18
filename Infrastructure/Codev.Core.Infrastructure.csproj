@@ -4,16 +4,16 @@
     <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Live;Dev</Configurations>
+    <Configurations>Dev;Live</Configurations>
   </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|AnyCPU'">
-		<OutputPath>..\Publish\bin\Infrastructure\Dev</OutputPath>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|AnyCPU'">
+    <OutputPath>..\Publish\bin\Infrastructure\Dev</OutputPath>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Live|AnyCPU'">
-		<OutputPath>..\Publish\bin\Infrastructure\Live</OutputPath>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Live|AnyCPU'">
+    <OutputPath>..\Publish\bin\Infrastructure\Live</OutputPath>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
@@ -35,7 +35,7 @@
     <ProjectReference Include="..\Provider\Communication\Codev.Core.Provider.Communication.csproj" />
     <ProjectReference Include="..\Provider\Export\Codev.Core.Provider.Export.csproj" />
     <ProjectReference Include="..\Repository\Ado\Codev.Core.Repository.Ado.csproj" />
-    <ProjectReference Include="..\Service\Codev.Core.Service\Codev.Core.Service.csproj" />
+    <ProjectReference Include="..\Service\Codev.Core.Service.csproj" />
   </ItemGroup>
 
 </Project>

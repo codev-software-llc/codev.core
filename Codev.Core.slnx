@@ -47,11 +47,22 @@
     <Project Path="Repository/Sqlite/Codev.Core.Repository.Sqlite.csproj" />
   </Folder>
   <Folder Name="/Service/">
-    <Project Path="Service/Codev.Core.Service/Codev.Core.Service.csproj" />
+    <Project Path="Service/Codev.Core.Service.csproj" />
   </Folder>
   <Folder Name="/Solution Files/" />
   <Folder Name="/Solution Files/Config/">
     <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/Solution Files/Documents/">
+    <File Path="LICENSE" />
+  </Folder>
+  <Folder Name="/Solution Files/Publish/">
+    <File Path="Publish/deploy.bat" />
+    <File Path="Publish/docs/readme.md" />
+    <File Path="Publish/package.bat" />
+    <File Path="Publish/specs/Codev.Core.nuspec" />
+    <File Path="Publish/specs/Codev.Style.nuspec" />
   </Folder>
   <Folder Name="/Solution Files/Scripts/">
     <File Path="Bld/Build.bat" />
