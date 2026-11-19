@@ -330,6 +330,15 @@ namespace Codev.Core.Service.Authentication
         {
             if ((destinationEntity.Flags & DestinationFlags.Registered) != 0)
             {
+                // If we do not have a salt for password hashes, then we will
+                // generate one and update the destination entity.
+                //
+                if (String.IsNullOrWhiteSpace(destinationEntity.PasswordSalt))
+                {
+                    destinationEntity.PasswordSalt = PasswordHelper.GenerateSalt();
+                    destinationEntity.PasswordHash = PasswordHelper.GenerateHash(password, destinationEntity.PasswordSalt);
+                }
+
                 // Validate password.
                 //
                 String hash = PasswordHelper.GenerateHash(password, destinationEntity.PasswordSalt);

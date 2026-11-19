@@ -637,10 +637,6 @@ namespace Codev.Core.Service.Authentication
 
             try
             {
-                String salt = PasswordHelper.GenerateSalt();
-
-                String hash = PasswordHelper.GenerateHash(password, salt);
-
                 DestinationEntity destinationEntity = this.DestinationRepository.GetByAddress(address, DestinationType.Email);
 
                 if (destinationEntity == null)
