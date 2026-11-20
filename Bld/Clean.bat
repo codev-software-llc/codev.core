@@ -6,6 +6,17 @@
 
 pushd %~dp0%
 
+@rem ----------------------------------------------------------------
+@rem Remove the .VS directory if we want to clean everything.
+@rem ----------------------------------------------------------------
+@if /I "%~1" == "all" (
+  pushd ..
+
+  @if EXIST ".vs" rd /S /Q ".vs"
+
+  popd
+)
+
 
 @rem ----------------------------------------------------------------
 @rem Run the clean script.
