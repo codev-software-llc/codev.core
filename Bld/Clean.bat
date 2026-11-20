@@ -7,14 +7,19 @@
 pushd %~dp0%
 
 @rem ----------------------------------------------------------------
-@rem Remove the .VS directory if we want to clean everything.
+@rem Remove VS generated directories.
 @rem ----------------------------------------------------------------
 @if /I "%~1" == "all" (
+
   pushd ..
 
-  @if EXIST ".vs" rd /S /Q ".vs"
+  FOR %%X IN (.vs, TestResults) DO (
+
+    @if EXIST "%%X" rd /S /Q "%%X"
+  )
 
   popd
+
 )
 
 
